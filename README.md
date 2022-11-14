@@ -21,7 +21,20 @@ Tematem projektu będzie stworzenie aplikacji/gry w stylu "Football Managera".
 - Dodatkowe ligi
 - Rozgrywki międzynarodowe
 
-### Założenia techniczne
-- Interfejs graficzny (GUI) -> JavaFX / Spring Boot + Vaadin
-- Serwer wystawiający metody zgodnie z architekturą REST -> Spring-MVC
-- Połączenie z bazą danych (baza udostępniona na przedmiocie BD1) -> JDBC 
+### Iteracje
+##### Etap 2 (Prototyp):
+- Stworzenie modelu danych
+- Podstawowy interfejs graficzny
+- Połączenie z bazą danych
+- Wstępna komunikacja pomiędzy warstwami architektury 
+##### Etap 3 (Działająca aplikacja):
+- Serwer z metodami REST
+- Dopracowany interfejs graficzny
+- Zaimplementowanie wszystkich funkcjonalności podstawowych
+- Dokumentacja
+##### Etap 4 (Poprawki):
+- Uwzględnienie uwag prowadzącego
+- Ewentualne dodanie funkcjonalności dodatkowych 
+
+### Technologie
+- Spring Boot, Vaadin, JDBC
