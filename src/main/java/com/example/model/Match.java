@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,8 +15,7 @@ public class Match {
     private Club homeTeam;
     private Club awayTeam;
     private LocalDate date;
-    private int homeTeamGoals;
-    private int awayTeamGoals;
+    private List<MatchEvent> events;
     private MatchResult result;
     private Stadium stadium;
     private Referee referee;
