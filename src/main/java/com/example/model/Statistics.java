@@ -17,4 +17,8 @@ public class Statistics {
     private int defence;
     private int physically;
 
+    public static Statistics getStatisticsById(int statsId) {
+        return new Statistics();
+    }
+
 }

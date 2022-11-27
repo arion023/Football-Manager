@@ -19,4 +19,8 @@ public class Club {
     private Stadium stadium;
     private List<Match> matchesPlayed;
     private List<Trophy> trophies;
+
+    public static Club getClubById(int clubId) {
+        return new Club();
+    }
 }
