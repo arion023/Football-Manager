@@ -61,6 +61,7 @@ public class SquadView extends HorizontalLayout {
         shirt.setHeight(100, Unit.PIXELS);
         Span surname = new Span(player.getSurname());
         surname.getStyle().set("font-weight", "bold");
+        surname.getStyle().set("font-size", "1.1rem");
 
         verticalLayout.add(shirt, surname);
         return verticalLayout;
