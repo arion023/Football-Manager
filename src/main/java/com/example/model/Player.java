@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -34,18 +36,20 @@ public class Player extends Person {
         DatabaseController dbController = new DatabaseController();
         String query = dbController.createSelectQuery(DatabaseConfig.PLAYERS_TABLE_NAME);
         ResultSet resultSet = dbController.doQuery(query);
-        return getAllPlayers(resultSet);
+        return resultSetToPlayers(resultSet);
     }
 
     public static List<Player> getAllPlayersFromClub(int clubId) {
         DatabaseController dbController = new DatabaseController();
         String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.PLAYERS_TABLE_NAME), List.of("club_id = " + clubId));
         ResultSet resultSet = dbController.doQuery(query);
-        return getAllPlayers(resultSet);
+        return resultSetToPlayers(resultSet);
     }
 
-    private static List<Player> getAllPlayers(ResultSet result) {
+    private static List<Player> resultSetToPlayers(ResultSet result) {
         List<Player> players = new ArrayList<>();
+        Map<Integer, Country> countries = new HashMap<>();
+        Map<Integer, Club> clubs = new HashMap<>();
         try {
             while (result.next()) {
                 var id = result.getInt("id");
@@ -57,18 +61,20 @@ public class Player extends Person {
                 var statsId = result.getInt("statistics_id");
                 var position = result.getString("position");
 
-                Country country = Country.getCountryById(countryId);
-                Club club = Club.getClubById(clubId);
+                Country country = countries.getOrDefault(countryId, Country.getCountryById(countryId));
+                Club club = clubs.getOrDefault(clubId, Club.getClubById(clubId));
                 List<Club> clubsHistory = getClubsHistory(id);
                 Statistics statistics = Statistics.getStatisticsById(statsId);
                 Position positionEnum = getPositionEnum(position);
 
+                countries.put(countryId, country);
+                clubs.put(clubId, club);
 
                 Player player = new Player(id, name, surname, birthDate.toLocalDate(), country, club, clubsHistory, statistics, positionEnum);
                 players.add(player);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); //TODO Dedicated exception
         }
 
         return players;
