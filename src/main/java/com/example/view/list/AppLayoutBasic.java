@@ -10,7 +10,7 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 
-@Route("fm")
+@Route("")
 public class AppLayoutBasic extends AppLayout {
 
     public AppLayoutBasic() {

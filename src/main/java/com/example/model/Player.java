@@ -90,7 +90,7 @@ public class Player extends Person {
 
     @Getter
     @RequiredArgsConstructor
-    enum Position {
+    public enum Position {
         GK("Goalkeeper"),
         LB("Left Back"),
         CB("Center Back"),
