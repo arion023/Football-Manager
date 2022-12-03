@@ -1,6 +1,7 @@
 package com.example.view.list;
 
 import com.example.model.Player;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
@@ -20,24 +21,106 @@ import java.util.List;
 public class SquadView extends HorizontalLayout {
 
     public SquadView() {
+        setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
         add(pitchLayout(), playerListLayout());
     }
 
     private VerticalLayout pitchLayout() {
         VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        verticalLayout.setWidth(100, Unit.PERCENTAGE);
+        verticalLayout.setHeight(90, Unit.PERCENTAGE);
+        verticalLayout.setMinWidth(200, Unit.PIXELS);
+        verticalLayout.getStyle().set("background-image", "url(images/pitch.png)");
+        verticalLayout.getStyle().set("background-size", "contain");
+        verticalLayout.getStyle().set("background-repeat", "no-repeat");
+        verticalLayout.getStyle().set("background-position", "center");
 
-        Image pitchImg = new Image("images/pitch.png", "pitch");
-        pitchImg.setWidth("1000px");
-        add(pitchImg);
+        verticalLayout.add(getForwardsLayout());
+        verticalLayout.add(getMidfieldersLayout());
+        verticalLayout.add(getDefendersLayout());
+        verticalLayout.add(getGoalkeeperLayout());
 
         return verticalLayout;
     }
 
+    private HorizontalLayout getForwardsLayout() {
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        Image player1 = new Image("images/shirt.png", "shirt");
+        player1.setHeight(100, Unit.PIXELS);
+        Image player2 = new Image("images/shirt.png", "shirt");
+        player2.setHeight(100, Unit.PIXELS);
+        horizontalLayout.add(player1);
+        horizontalLayout.add(player2);
+
+        horizontalLayout.getStyle().set("padding-top", "100px");
+
+        return horizontalLayout;
+    }
+
+    private HorizontalLayout getMidfieldersLayout() {
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        Image player1 = new Image("images/shirt.png", "shirt");
+        player1.setHeight(100, Unit.PIXELS);
+        Image player2 = new Image("images/shirt.png", "shirt");
+        player2.setHeight(100, Unit.PIXELS);
+        Image player3 = new Image("images/shirt.png", "shirt");
+        player3.setHeight(100, Unit.PIXELS);
+        Image player4 = new Image("images/shirt.png", "shirt");
+        player4.setHeight(100, Unit.PIXELS);
+
+        horizontalLayout.add(player1);
+        horizontalLayout.add(player2);
+        horizontalLayout.add(player3);
+        horizontalLayout.add(player4);
+
+        horizontalLayout.getStyle().set("padding-top", "75px");
+
+        return horizontalLayout;
+    }
+
+    private HorizontalLayout getDefendersLayout() {
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        Image player1 = new Image("images/shirt.png", "shirt");
+        player1.setHeight(100, Unit.PIXELS);
+        Image player2 = new Image("images/shirt.png", "shirt");
+        player2.setHeight(100, Unit.PIXELS);
+        Image player3 = new Image("images/shirt.png", "shirt");
+        player3.setHeight(100, Unit.PIXELS);
+        Image player4 = new Image("images/shirt.png", "shirt");
+        player4.setHeight(100, Unit.PIXELS);
+
+        horizontalLayout.add(player1);
+        horizontalLayout.add(player2);
+        horizontalLayout.add(player3);
+        horizontalLayout.add(player4);
+
+        horizontalLayout.getStyle().set("padding-top", "75px");
+
+        return horizontalLayout;
+    }
+
+    private HorizontalLayout getGoalkeeperLayout() {
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        Image player = new Image("images/shirt.png", "shirt");
+        player.setHeight(100, Unit.PIXELS);
+        horizontalLayout.add(player);
+
+        horizontalLayout.getStyle().set("padding-top", "75px");
+
+        return horizontalLayout;
+    }
+
     private VerticalLayout playerListLayout() {
         VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.setWidth(100, Unit.PERCENTAGE);
+        verticalLayout.setHeight(100, Unit.PERCENTAGE);
+        verticalLayout.setMinWidth(300, Unit.PIXELS);
+        verticalLayout.getStyle().set("overflow-y", "auto"); //Scroll
 
         MultiSelectListBox<Player> multiSelectListBox = new MultiSelectListBox<>();
+        multiSelectListBox.setWidth(100, Unit.PERCENTAGE);
         multiSelectListBox.setItems(getSamplePlayers());
         multiSelectListBox.setRenderer(new ComponentRenderer<>(player -> {
             HorizontalLayout row = new HorizontalLayout();
@@ -69,16 +152,27 @@ public class SquadView extends HorizontalLayout {
     private List<Player> getSamplePlayers() {
         List<Player> players = new ArrayList<>();
         players.add(new Player(1, "Wojciech", "Szczęsny", null, null, null, null, null, Player.Position.GK));
-        players.add(new Player(1, "Bartosz", "Bereszyński", null, null, null, null, null, Player.Position.LB));
-        players.add(new Player(1, "Kamil", "Glik", null, null, null, null, null, Player.Position.CB));
-        players.add(new Player(1, "Jakub", "Kiwior", null, null, null, null, null, Player.Position.CB));
-        players.add(new Player(1, "Matty", "Cash", null, null, null, null, null, Player.Position.RB));
-        players.add(new Player(1, "Przemysław", "Frankowski", null, null, null, null, null, Player.Position.RM));
-        players.add(new Player(1, "Krystian", "Bielik", null, null, null, null, null, Player.Position.CM));
-        players.add(new Player(1, "Piotr", "Zieliński", null, null, null, null, null, Player.Position.CM));
-        players.add(new Player(1, "Nicola", "Zalewski", null, null, null, null, null, Player.Position.LM));
-        players.add(new Player(1, "Arkadiusz", "Milik", null, null, null, null, null, Player.Position.CF));
-        players.add(new Player(1, "Robert", "Lewandowski", null, null, null, null, null, Player.Position.CF));
+        players.add(new Player(2, "Bartosz", "Bereszyński", null, null, null, null, null, Player.Position.LB));
+        players.add(new Player(3, "Kamil", "Glik", null, null, null, null, null, Player.Position.CB));
+        players.add(new Player(4, "Jakub", "Kiwior", null, null, null, null, null, Player.Position.CB));
+        players.add(new Player(5, "Matty", "Cash", null, null, null, null, null, Player.Position.RB));
+        players.add(new Player(6, "Przemysław", "Frankowski", null, null, null, null, null, Player.Position.RM));
+        players.add(new Player(7, "Krystian", "Bielik", null, null, null, null, null, Player.Position.CM));
+        players.add(new Player(8, "Piotr", "Zieliński", null, null, null, null, null, Player.Position.CM));
+        players.add(new Player(9, "Nicola", "Zalewski", null, null, null, null, null, Player.Position.LM));
+        players.add(new Player(10, "Arkadiusz", "Milik", null, null, null, null, null, Player.Position.CF));
+        players.add(new Player(11, "Robert", "Lewandowski", null, null, null, null, null, Player.Position.CF));
+        players.add(new Player(12, "Łukasz", "Skorupski", null, null, null, null, null, Player.Position.GK));
+        players.add(new Player(13, "Kamil", "Grabara", null, null, null, null, null, Player.Position.GK));
+        players.add(new Player(14, "Grzegorz", "Krychowiak", null, null, null, null, null, Player.Position.CM));
+        players.add(new Player(15, "Artur", "Jędrzejczyk", null, null, null, null, null, Player.Position.CB));
+        players.add(new Player(16, "Jakub", "Kamiński", null, null, null, null, null, Player.Position.RM));
+        players.add(new Player(17, "Michał", "Skóraś", null, null, null, null, null, Player.Position.LM));
+        players.add(new Player(18, "Kamil", "Grosicki", null, null, null, null, null, Player.Position.LM));
+        players.add(new Player(19, "Krzysztof", "Piątek", null, null, null, null, null, Player.Position.CF));
+        players.add(new Player(20, "Karol", "Świderski", null, null, null, null, null, Player.Position.CF));
+        players.add(new Player(21, "Kamil", "Wieteska", null, null, null, null, null, Player.Position.CB));
+        players.add(new Player(22, "Sebastian", "Szymański", null, null, null, null, null, Player.Position.CM));
         return players;
     }
 }
