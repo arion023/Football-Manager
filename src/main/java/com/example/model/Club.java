@@ -2,6 +2,7 @@ package com.example.model;
 
 import com.example.controller.database.DatabaseConfig;
 import com.example.controller.database.DatabaseController;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -13,9 +14,10 @@ import java.util.List;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class Club {
     private int id;
+    private String name;
     private List<Player> players;
     private Statistics overallStatistics;
     private int budget;
@@ -40,7 +42,8 @@ public class Club {
                 var id = result.getInt("id");
                 var budget = result.getInt("budget");
 
-                Club club = new Club();
+                Club club = new Club(1, "Klub", null, null, 0,
+                        null, null, null, null, null); //TODO sql
                 clubs.add(club);
             }
         } catch (SQLException e) {
