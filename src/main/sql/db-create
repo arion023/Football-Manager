@@ -1,0 +1,224 @@
+/* DROPPING TABLES */
+DROP TABLE Player;
+DROP TABLE PlayerStats;
+DROP TABLE Position;
+DROP TABLE Trophy;
+DROP TABLE Coach;
+DROP TABLE CLubHistory;
+DROP TABLE Club;
+DROP TABLE Referee;
+DROP TABLE League;
+DROP TABLE Match;
+DROP TABLE Card;
+DROP TABLE Stadium;
+DROP TABLE Country;
+
+/* CREATING TABLES */
+
+CREATE TABLE Player
+(
+    Player_ID       NUMBER NOT NULL CONSTRAINT Player_pk PRIMARY KEY,
+    Name            VARCHAR2(20) NOT NULL,
+    Surname         VARCHAR2(20) NOT NULL,
+    Stats_ID        NUMBER NOT NULL,
+    Birth_date      DATE NOT NULL,
+    Club_ID         NUMBER NOT NULL,
+    Position        VARCHAR2(20) NOT NULL,
+    Country_ID      CHAR(3) NOT NULL,
+    ClubHistory_ID  NUMBER NOT NULL
+);
+
+CREATE TABLE Position
+(
+    Position_ID     NUMBER NOT NULL CONSTRAINT Position_pk PRIMARY KEY,
+    Name            VARCHAR2(20) NOT NULL
+);
+
+
+CREATE TABLE PlayerStats
+(
+    PlayerStats_ID  NUMBER NOT NULL CONSTRAINT PlayerStats_pk PRIMARY KEY,
+    Overall         NUMBER NOT NULL,
+    Pace            NUMBER NOT NULL,
+    Shooting        NUMBER NOT NULL,
+    Passing         NUMBER NOT NULL,
+    Dribbling       NUMBER NOT NULL,
+    Defense         NUMBER NOT NULL,
+    Physical        NUMBER NOT NULL
+);
+
+
+CREATE TABLE Club
+(
+    Club_ID         NUMBER NOT NULL CONSTRAINT Club_pk PRIMARY KEY,
+    Name            VARCHAR2(20) NOT NULL,
+    Country_ID      CHAR(3) NOT NULL,
+    Budget          NUMBER NOT NULL,
+    League_ID       NUMBER NOT NULL,
+    Stadium_ID      NUMBER NOT NULL
+
+);
+
+CREATE TABLE ClubHistory
+(
+    ClubHistory_ID  NUMBER NOT NULL CONSTRAINT ClubHistory_pk PRIMARY KEY,
+    Club_ID         NUMBER NOT NULL,
+    StartDate       DATE NOT NULL,
+    EndDate         DATE NOT NULL
+
+);
+
+CREATE TABLE Coach
+(
+    Coach_ID        NUMBER NOT NULL CONSTRAINT Coach_pk PRIMARY KEY,
+    Name            VARCHAR2(20) NOT NULL,
+    Surname         VARCHAR2(20) NOT NULL,
+    Birth_date      DATE NOT NULL,
+    Country         CHAR(3) NOT NULL,
+    Club            NUMBER NOT NULL,
+    Club_history    NUMBER NOT NULL
+);
+
+CREATE TABLE Referee
+(
+    Referee_ID      NUMBER NOT NULL CONSTRAINT Referee_pk PRIMARY KEY,
+    Name            VARCHAR2(20) NOT NULL,
+    Surname         VARCHAR2(20) NOT NULL,
+    Country_ID      CHAR(3) NOT NULL
+);
+
+CREATE TABLE League
+(
+    League_ID       NUMBER NOT NULL CONSTRAINT League_pk PRIMARY KEY,
+    Name            VARCHAR2(20) NOT NULL,
+    Country_ID      CHAR(3) NOT NULL
+);
+
+
+CREATE TABLE Match
+(
+MatchID             NUMBER NOT NULL CONSTRAINT Match_pk PRIMARY KEY,
+Club_A              NUMBER NOT NULL,
+Club_B              NUMBER NOT NULL,
+"Date"              DATE NOT NULL,
+Result              CHAR(3) NOT NULL,
+Stadium_ID          NUMBER NOT NULL,
+Referee_ID          NUMBER NOT NULL
+);
+
+CREATE TABLE Card
+(
+    Card_ID         NUMBER NOT NULL CONSTRAINT Card_pk PRIMARY KEY,
+    Match_ID        NUMBER NOT NULL,
+    Player_ID       NUMBER NOT NULL
+);
+
+CREATE TABLE Stadium
+(
+    Stadium_ID      NUMBER NOT NULL CONSTRAINT Stadium_pk PRIMARY KEY,
+    Address         VARCHAR2(20) NOT NULL,
+    Country_ID      CHAR(3) NOT NULL,
+    Capacity        NUMBER NOT NULL,
+    Build_date      DATE NOT NULL
+);
+
+CREATE TABLE Country
+(
+    Country_ID      CHAR(3) NOT NULL CONSTRAINT Country_pk PRIMARY KEY,
+    Name            VARCHAR2(20) NOT NULL
+);
+
+CREATE TABLE Trophy
+(
+    Name            VARCHAR2(30),
+    League_ID       NUMBER NOT NULL,
+    Season          DATE,
+    Club_ID          NUMBER NOT NULL,
+    CONSTRAINT Trophy_pk PRIMARY KEY (League_ID, Season)
+    -- Primary key from 2 values?
+);
+
+
+/* CONSTRAINTS (FOREIGN KEY - REFERENCES) */
+
+-- PLAYER
+
+ALTER TABLE Player ADD CONSTRAINT Player_PlayerStats_fk FOREIGN KEY(Stats_ID)
+REFERENCES PlayerStats (PlayerStats_ID);
+
+ALTER TABLE Player ADD CONSTRAINT Player_Club_fk FOREIGN KEY(Club_ID)
+REFERENCES Club (Club_ID);
+
+ALTER TABLE Player ADD CONSTRAINT Player_Country_fk FOREIGN KEY(Country_ID)
+REFERENCES Country (Country_ID);
+
+ALTER TABLE Player ADD CONSTRAINT Player_ClubHistory_fk FOREIGN KEY(ClubHistory_ID)
+REFERENCES ClubHistory (ClubHistory_ID);
+
+--CLUB
+
+ALTER TABLE Club ADD CONSTRAINT Club_Country_fk FOREIGN KEY(Country_ID)
+REFERENCES Country (Country_ID);
+
+ALTER TABLE Club ADD CONSTRAINT Club_League_fk FOREIGN KEY(League_ID)
+REFERENCES League (League_ID);
+
+ALTER TABLE Club ADD CONSTRAINT Club_Stadium_fk FOREIGN KEY(Stadium_ID)
+REFERENCES Stadium (Stadium_ID);
+
+--CLUB HISTORY
+
+ALTER TABLE ClubHistory ADD CONSTRAINT ClubHistory_Club_fk FOREIGN KEY(Club_ID)
+REFERENCES Club (Club_ID);
+
+--COACH
+
+ALTER TABLE Coach ADD CONSTRAINT Coach_Country_fk FOREIGN KEY(Country)
+REFERENCES Country (Country_ID);
+
+ALTER TABLE Coach ADD CONSTRAINT Coach_Club_fk FOREIGN KEY(Club)
+REFERENCES Club (Club_ID);
+
+ALTER TABLE Coach ADD CONSTRAINT Coach_ClubHistory_fk FOREIGN KEY(Club_history)
+REFERENCES ClubHistory (ClubHistory_ID);
+
+--REFEREE
+
+ALTER TABLE Referee ADD CONSTRAINT Referee_Country_fk FOREIGN KEY(Country_ID)
+REFERENCES Country (Country_ID);
+
+--LEAGUE
+
+ALTER TABLE League ADD CONSTRAINT League_Country_fk FOREIGN KEY(Country_ID)
+REFERENCES Country (Country_ID);
+
+--MATCH
+
+ALTER TABLE Match ADD CONSTRAINT Match_Stadium_fk FOREIGN KEY(Stadium_ID)
+REFERENCES Stadium (Stadium_ID);
+
+ALTER TABLE Match ADD CONSTRAINT Match_Referee FOREIGN KEY(Referee_ID)
+REFERENCES Referee (Referee_ID);
+
+--CARDS
+
+ALTER TABLE Card ADD CONSTRAINT Cards_Match_fk FOREIGN KEY(Match_ID)
+REFERENCES Match (MatchID);
+
+ALTER TABLE Card ADD CONSTRAINT Cards_Player_fk FOREIGN KEY(Player_ID)
+REFERENCES Player (Player_ID);
+
+-- STADIUM
+
+ALTER TABLE Stadium ADD CONSTRAINT Stadium_Country_fk FOREIGN KEY(Country_ID)
+REFERENCES Country (Country_ID);
+
+--Trophy
+
+ALTER TABLE Trophy ADD CONSTRAINT Trophy_League_fk FOREIGN KEY(League_ID)
+REFERENCES Match (MatchID);
+
+ALTER TABLE Trophy ADD CONSTRAINT Cards_Club_fk FOREIGN KEY(Club_ID)
+REFERENCES Club (Club_ID);
+
+
