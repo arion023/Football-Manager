@@ -23,7 +23,7 @@ CREATE TABLE Player
     Stats_ID        NUMBER NOT NULL,
     Birth_date      DATE NOT NULL,
     Club_ID         NUMBER NOT NULL,
-    Position        VARCHAR2(20) NOT NULL,
+    Position        NUMBER NOT NULL,
     Country_ID      CHAR(3) NOT NULL,
     ClubHistory_ID  NUMBER NOT NULL
 );
@@ -145,6 +145,9 @@ CREATE TABLE Trophy
 
 ALTER TABLE Player ADD CONSTRAINT Player_PlayerStats_fk FOREIGN KEY(Stats_ID)
 REFERENCES PlayerStats (PlayerStats_ID);
+
+ALTER TABLE Player ADD CONSTRAINT Player_Position_fk FOREIGN KEY(Stats_ID)
+REFERENCES Position (Position_ID);
 
 ALTER TABLE Player ADD CONSTRAINT Player_Club_fk FOREIGN KEY(Club_ID)
 REFERENCES Club (Club_ID);
