@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Setter
 @RequiredArgsConstructor
 public class Stadium {
+    private String name;
     private int id;
     private Address address;
     private int capacity;
