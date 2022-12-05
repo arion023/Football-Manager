@@ -1,0 +1,1844 @@
+[
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "335"
+    },
+    "errors": [],
+    "results": 2,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "id": 11988,
+            "name": "I. Ko\u015bcielniak",
+            "firstname": "Ireneusz",
+            "lastname": "Ko\u015bcielniak",
+            "age": 48,
+            "birth": {
+                "date": "1974-01-16",
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/11988.png",
+            "team": {
+                "id": 335,
+                "name": "Mied\u017a Legnica",
+                "logo": "https://media.api-sports.io/football/teams/335.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 335,
+                        "name": "Mied\u017a Legnica",
+                        "logo": "https://media.api-sports.io/football/teams/335.png"
+                    },
+                    "start": "2020-06-01",
+                    "end": "2020-07-01"
+                },
+                {
+                    "team": {
+                        "id": 12835,
+                        "name": "Polonia Bytom",
+                        "logo": "https://media.api-sports.io/football/teams/12835.png"
+                    },
+                    "start": "2015-12-01",
+                    "end": "2016-10-01"
+                }
+            ]
+        },
+        {
+            "id": 15064,
+            "name": "W. \u0141obodzi\u0144ski",
+            "firstname": "Wojciech",
+            "lastname": "\u0141obodzi\u0144ski",
+            "age": 40,
+            "birth": {
+                "date": "1982-10-20",
+                "place": "Bydgoszcz",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": "188 cm",
+            "weight": "80 kg",
+            "photo": "https://media.api-sports.io/football/coachs/15064.png",
+            "team": {
+                "id": 335,
+                "name": "Mied\u017a Legnica",
+                "logo": "https://media.api-sports.io/football/teams/335.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 335,
+                        "name": "Mied\u017a Legnica",
+                        "logo": "https://media.api-sports.io/football/teams/335.png"
+                    },
+                    "start": "2021-07-01",
+                    "end": null
+                }
+            ]
+        }
+    ]
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "342"
+    },
+    "errors": [],
+    "results": 3,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "id": 1218,
+            "name": "K. Moskal",
+            "firstname": "Kazimierz",
+            "lastname": "Moskal",
+            "age": 55,
+            "birth": {
+                "date": "1967-01-09",
+                "place": "Su\u0142kowice",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": "182 cm",
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/1218.png",
+            "team": {
+                "id": 342,
+                "name": "Zag\u0142\u0119bie Sosnowiec",
+                "logo": "https://media.api-sports.io/football/teams/342.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 342,
+                        "name": "Zag\u0142\u0119bie Sosnowiec",
+                        "logo": "https://media.api-sports.io/football/teams/342.png"
+                    },
+                    "start": "2020-11-01",
+                    "end": "2021-09-01"
+                },
+                {
+                    "team": {
+                        "id": 3498,
+                        "name": "\u0141KS \u0141\u00f3d\u017a",
+                        "logo": "https://media.api-sports.io/football/teams/3498.png"
+                    },
+                    "start": "2018-07-01",
+                    "end": "2020-05-01"
+                },
+                {
+                    "team": {
+                        "id": 3492,
+                        "name": "Sandecja Nowy S\u0105cz",
+                        "logo": "https://media.api-sports.io/football/teams/3492.png"
+                    },
+                    "start": "2017-12-01",
+                    "end": "2018-06-01"
+                },
+                {
+                    "team": {
+                        "id": 348,
+                        "name": "Pogon Szczecin",
+                        "logo": "https://media.api-sports.io/football/teams/348.png"
+                    },
+                    "start": "2016-07-01",
+                    "end": "2017-06-01"
+                },
+                {
+                    "team": {
+                        "id": 338,
+                        "name": "Wis\u0142a Krak\u00f3w",
+                        "logo": "https://media.api-sports.io/football/teams/338.png"
+                    },
+                    "start": "2015-03-01",
+                    "end": "2015-11-01"
+                },
+                {
+                    "team": {
+                        "id": 3484,
+                        "name": "GKS Katowice",
+                        "logo": "https://media.api-sports.io/football/teams/3484.png"
+                    },
+                    "start": "2013-08-01",
+                    "end": "2014-10-01"
+                },
+                {
+                    "team": {
+                        "id": 3487,
+                        "name": "Nieciecza",
+                        "logo": "https://media.api-sports.io/football/teams/3487.png"
+                    },
+                    "start": "2012-06-01",
+                    "end": "2013-06-01"
+                },
+                {
+                    "team": {
+                        "id": 338,
+                        "name": "Wis\u0142a Krak\u00f3w",
+                        "logo": "https://media.api-sports.io/football/teams/338.png"
+                    },
+                    "start": "2011-11-01",
+                    "end": "2012-03-01"
+                }
+            ]
+        },
+        {
+            "id": 1240,
+            "name": "A. Skowronek",
+            "firstname": "Artur",
+            "lastname": "Skowronek",
+            "age": 40,
+            "birth": {
+                "date": "1982-05-22",
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/1240.png",
+            "team": {
+                "id": 342,
+                "name": "Zag\u0142\u0119bie Sosnowiec",
+                "logo": "https://media.api-sports.io/football/teams/342.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 342,
+                        "name": "Zag\u0142\u0119bie Sosnowiec",
+                        "logo": "https://media.api-sports.io/football/teams/342.png"
+                    },
+                    "start": "2021-09-01",
+                    "end": null
+                },
+                {
+                    "team": {
+                        "id": 338,
+                        "name": "Wis\u0142a Krak\u00f3w",
+                        "logo": "https://media.api-sports.io/football/teams/338.png"
+                    },
+                    "start": "2019-11-01",
+                    "end": "2020-11-01"
+                },
+                {
+                    "team": {
+                        "id": 3493,
+                        "name": "Stal Mielec",
+                        "logo": "https://media.api-sports.io/football/teams/3493.png"
+                    },
+                    "start": "2018-06-01",
+                    "end": "2019-09-01"
+                },
+                {
+                    "team": {
+                        "id": 3497,
+                        "name": "Wigry Suwa\u0142ki",
+                        "logo": "https://media.api-sports.io/football/teams/3497.png"
+                    },
+                    "start": "2017-07-01",
+                    "end": "2018-06-01"
+                },
+                {
+                    "team": {
+                        "id": 4247,
+                        "name": "Olimpia Grudzi\u0105dz",
+                        "logo": "https://media.api-sports.io/football/teams/4247.png"
+                    },
+                    "start": "2015-09-01",
+                    "end": "2015-11-01"
+                },
+                {
+                    "team": {
+                        "id": 3484,
+                        "name": "GKS Katowice",
+                        "logo": "https://media.api-sports.io/football/teams/3484.png"
+                    },
+                    "start": "2014-10-01",
+                    "end": "2015-04-01"
+                },
+                {
+                    "team": {
+                        "id": 6962,
+                        "name": "Widzew \u0141\u00f3d\u017a",
+                        "logo": "https://media.api-sports.io/football/teams/6962.png"
+                    },
+                    "start": "2014-01-01",
+                    "end": "2014-06-01"
+                },
+                {
+                    "team": {
+                        "id": 12835,
+                        "name": "Polonia Bytom",
+                        "logo": "https://media.api-sports.io/football/teams/12835.png"
+                    },
+                    "start": "2013-10-01",
+                    "end": "2013-11-01"
+                },
+                {
+                    "team": {
+                        "id": 348,
+                        "name": "Pogon Szczecin",
+                        "logo": "https://media.api-sports.io/football/teams/348.png"
+                    },
+                    "start": "2012-07-01",
+                    "end": "2013-03-01"
+                },
+                {
+                    "team": {
+                        "id": 18407,
+                        "name": "Ruch Radzionk\u00f3w",
+                        "logo": "https://media.api-sports.io/football/teams/18407.png"
+                    },
+                    "start": "2011-01-01",
+                    "end": "2012-06-01"
+                }
+            ]
+        },
+        {
+            "id": 11935,
+            "name": "K. D\u0119bek",
+            "firstname": "Krzysztof",
+            "lastname": "D\u0119bek",
+            "age": 44,
+            "birth": {
+                "date": "1978-09-18",
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/11935.png",
+            "team": {
+                "id": 342,
+                "name": "Zag\u0142\u0119bie Sosnowiec",
+                "logo": "https://media.api-sports.io/football/teams/342.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 342,
+                        "name": "Zag\u0142\u0119bie Sosnowiec",
+                        "logo": "https://media.api-sports.io/football/teams/342.png"
+                    },
+                    "start": "2020-05-01",
+                    "end": "2020-11-01"
+                },
+                {
+                    "team": {
+                        "id": null,
+                        "name": "Victoria Sulej\u00f3wek",
+                        "logo": null
+                    },
+                    "start": "2018-07-01",
+                    "end": "2020-04-01"
+                },
+                {
+                    "team": {
+                        "id": null,
+                        "name": "Legia Warszawa U23",
+                        "logo": null
+                    },
+                    "start": "2017-11-01",
+                    "end": "2018-06-01"
+                },
+                {
+                    "team": {
+                        "id": 7987,
+                        "name": "Legia Warszawa U19",
+                        "logo": "https://media.api-sports.io/football/teams/7987.png"
+                    },
+                    "start": "2016-07-01",
+                    "end": "2017-06-01"
+                }
+            ]
+        }
+    ]
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "344"
+    },
+    "errors": [],
+    "results": 2,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "id": 1245,
+            "name": "R. Tarasiewicz",
+            "firstname": "Ryszard Jerzy",
+            "lastname": "Tarasiewicz",
+            "age": 60,
+            "birth": {
+                "date": "1962-04-27",
+                "place": "Wroclaw",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": "177 cm",
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/1245.png",
+            "team": {
+                "id": 344,
+                "name": "Arka Gdynia",
+                "logo": "https://media.api-sports.io/football/teams/344.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 344,
+                        "name": "Arka Gdynia",
+                        "logo": "https://media.api-sports.io/football/teams/344.png"
+                    },
+                    "start": "2021-10-01",
+                    "end": null
+                },
+                {
+                    "team": {
+                        "id": null,
+                        "name": "Tychy",
+                        "logo": null
+                    },
+                    "start": "2017-10-01",
+                    "end": "2020-03-01"
+                },
+                {
+                    "team": {
+                        "id": 335,
+                        "name": "Mied\u017a Legnica",
+                        "logo": "https://media.api-sports.io/football/teams/335.png"
+                    },
+                    "start": "2015-08-01",
+                    "end": "2017-06-01"
+                },
+                {
+                    "team": {
+                        "id": 346,
+                        "name": "Korona Kielce",
+                        "logo": "https://media.api-sports.io/football/teams/346.png"
+                    },
+                    "start": "2014-06-01",
+                    "end": "2015-06-01"
+                },
+                {
+                    "team": {
+                        "id": 13843,
+                        "name": "Zawisza Bydgoszcz",
+                        "logo": "https://media.api-sports.io/football/teams/13843.png"
+                    },
+                    "start": "2013-04-01",
+                    "end": "2014-06-01"
+                },
+                {
+                    "team": {
+                        "id": 348,
+                        "name": "Pogon Szczecin",
+                        "logo": "https://media.api-sports.io/football/teams/348.png"
+                    },
+                    "start": "2012-04-01",
+                    "end": "2012-06-01"
+                },
+                {
+                    "team": {
+                        "id": 3498,
+                        "name": "\u0141KS \u0141\u00f3d\u017a",
+                        "logo": "https://media.api-sports.io/football/teams/3498.png"
+                    },
+                    "start": "2011-11-01",
+                    "end": "2012-02-01"
+                },
+                {
+                    "team": {
+                        "id": 337,
+                        "name": "Slask Wroclaw",
+                        "logo": "https://media.api-sports.io/football/teams/337.png"
+                    },
+                    "start": "2007-06-01",
+                    "end": "2010-09-01"
+                }
+            ]
+        },
+        {
+            "id": 2618,
+            "name": "D. Marzec",
+            "firstname": "Dariusz",
+            "lastname": "Marzec",
+            "age": 53,
+            "birth": {
+                "date": "1969-09-14",
+                "place": "Krak\u00f3w",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/2618.png",
+            "team": {
+                "id": 344,
+                "name": "Arka Gdynia",
+                "logo": "https://media.api-sports.io/football/teams/344.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 344,
+                        "name": "Arka Gdynia",
+                        "logo": "https://media.api-sports.io/football/teams/344.png"
+                    },
+                    "start": "2020-12-01",
+                    "end": "2021-10-01"
+                },
+                {
+                    "team": {
+                        "id": 3493,
+                        "name": "Stal Mielec",
+                        "logo": "https://media.api-sports.io/football/teams/3493.png"
+                    },
+                    "start": "2019-09-01",
+                    "end": "2020-07-01"
+                }
+            ]
+        }
+    ]
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "346"
+    },
+    "errors": [],
+    "results": 2,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "id": 1226,
+            "name": "L. Ojrzynski",
+            "firstname": "Leszek",
+            "lastname": "Ojrzynski",
+            "age": 50,
+            "birth": {
+                "date": "1972-05-31",
+                "place": "Ciechanow",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/1226.png",
+            "team": {
+                "id": 346,
+                "name": "Korona Kielce",
+                "logo": "https://media.api-sports.io/football/teams/346.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 346,
+                        "name": "Korona Kielce",
+                        "logo": "https://media.api-sports.io/football/teams/346.png"
+                    },
+                    "start": "2021-12-01",
+                    "end": null
+                },
+                {
+                    "team": {
+                        "id": 3493,
+                        "name": "Stal Mielec",
+                        "logo": "https://media.api-sports.io/football/teams/3493.png"
+                    },
+                    "start": "2020-11-01",
+                    "end": "2021-04-01"
+                },
+                {
+                    "team": {
+                        "id": 341,
+                        "name": "Wis\u0142a P\u0142ock",
+                        "logo": "https://media.api-sports.io/football/teams/341.png"
+                    },
+                    "start": "2019-04-01",
+                    "end": "2019-07-01"
+                },
+                {
+                    "team": {
+                        "id": 344,
+                        "name": "Arka Gdynia",
+                        "logo": "https://media.api-sports.io/football/teams/344.png"
+                    },
+                    "start": "2017-04-01",
+                    "end": "2018-06-01"
+                },
+                {
+                    "team": {
+                        "id": 340,
+                        "name": "G\u00f3rnik Zabrze",
+                        "logo": "https://media.api-sports.io/football/teams/340.png"
+                    },
+                    "start": "2015-08-01",
+                    "end": "2016-03-01"
+                },
+                {
+                    "team": {
+                        "id": 3489,
+                        "name": "Podbeskidzie",
+                        "logo": "https://media.api-sports.io/football/teams/3489.png"
+                    },
+                    "start": "2013-10-01",
+                    "end": "2015-05-01"
+                },
+                {
+                    "team": {
+                        "id": 346,
+                        "name": "Korona Kielce",
+                        "logo": "https://media.api-sports.io/football/teams/346.png"
+                    },
+                    "start": "2011-06-01",
+                    "end": "2013-08-01"
+                }
+            ]
+        },
+        {
+            "id": 1237,
+            "name": "D. Nowak",
+            "firstname": "Dominik",
+            "lastname": "Nowak",
+            "age": 50,
+            "birth": {
+                "date": "1972-02-07",
+                "place": "\u0141\u00f3d\u017c",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/1237.png",
+            "team": {
+                "id": 346,
+                "name": "Korona Kielce",
+                "logo": "https://media.api-sports.io/football/teams/346.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 346,
+                        "name": "Korona Kielce",
+                        "logo": "https://media.api-sports.io/football/teams/346.png"
+                    },
+                    "start": "2021-04-01",
+                    "end": "2021-11-01"
+                },
+                {
+                    "team": {
+                        "id": 335,
+                        "name": "Mied\u017a Legnica",
+                        "logo": "https://media.api-sports.io/football/teams/335.png"
+                    },
+                    "start": "2017-07-01",
+                    "end": "2020-06-01"
+                },
+                {
+                    "team": {
+                        "id": 3497,
+                        "name": "Wigry Suwa\u0142ki",
+                        "logo": "https://media.api-sports.io/football/teams/3497.png"
+                    },
+                    "start": "2016-04-01",
+                    "end": "2017-06-01"
+                },
+                {
+                    "team": {
+                        "id": 16246,
+                        "name": "Flota \u015awinouj\u015bcie",
+                        "logo": "https://media.api-sports.io/football/teams/16246.png"
+                    },
+                    "start": "2012-07-01",
+                    "end": "2013-04-01"
+                },
+                {
+                    "team": {
+                        "id": 9132,
+                        "name": "G\u00f3rnik Polkowice",
+                        "logo": "https://media.api-sports.io/football/teams/9132.png"
+                    },
+                    "start": "2011-07-01",
+                    "end": "2011-09-01"
+                }
+            ]
+        }
+    ]
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "3483"
+    },
+    "errors": [],
+    "results": 3,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "id": 1238,
+            "name": "I. Djurdjevic",
+            "firstname": "Ivan",
+            "lastname": "\u0110ur\u0111evi\u0107",
+            "age": 45,
+            "birth": {
+                "date": "1977-02-05",
+                "place": "Beograd",
+                "country": "Serbia"
+            },
+            "nationality": "Serbia",
+            "height": "183 cm",
+            "weight": "81 kg",
+            "photo": "https://media.api-sports.io/football/coachs/1238.png",
+            "team": {
+                "id": 3483,
+                "name": "Chrobry G\u0142og\u00f3w",
+                "logo": "https://media.api-sports.io/football/teams/3483.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3483,
+                        "name": "Chrobry G\u0142og\u00f3w",
+                        "logo": "https://media.api-sports.io/football/teams/3483.png"
+                    },
+                    "start": "2019-07-01",
+                    "end": "2022-05-01"
+                },
+                {
+                    "team": {
+                        "id": 347,
+                        "name": "Lech Pozna\u0144",
+                        "logo": "https://media.api-sports.io/football/teams/347.png"
+                    },
+                    "start": "2018-05-01",
+                    "end": "2018-11-01"
+                }
+            ]
+        },
+        {
+            "id": 4448,
+            "name": "G. Nici\u0144ski",
+            "firstname": "Grzegorz",
+            "lastname": "Nici\u0144ski",
+            "age": 46,
+            "birth": {
+                "date": "1973-05-16",
+                "place": "Gdynia",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": "186 cm",
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/4448.png",
+            "team": {
+                "id": 3483,
+                "name": "Chrobry G\u0142og\u00f3w",
+                "logo": "https://media.api-sports.io/football/teams/3483.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3483,
+                        "name": "Chrobry G\u0142og\u00f3w",
+                        "logo": "https://media.api-sports.io/football/teams/3483.png"
+                    },
+                    "start": "2017-06-14",
+                    "end": null
+                },
+                {
+                    "team": {
+                        "id": 344,
+                        "name": "Arka Gdynia",
+                        "logo": "https://media.api-sports.io/football/teams/344.png"
+                    },
+                    "start": "2014-09-22",
+                    "end": "2017-04-10"
+                },
+                {
+                    "team": {
+                        "id": 6940,
+                        "name": "Gryf Wejherowo",
+                        "logo": "https://media.api-sports.io/football/teams/6940.png"
+                    },
+                    "start": "2013-07-01",
+                    "end": "2014-06-30"
+                },
+                {
+                    "team": {
+                        "id": 6940,
+                        "name": "Gryf Wejherowo",
+                        "logo": "https://media.api-sports.io/football/teams/6940.png"
+                    },
+                    "start": "2011-07-01",
+                    "end": "2012-08-30"
+                }
+            ]
+        },
+        {
+            "id": 14033,
+            "name": "M. Go\u0142\u0119biewski",
+            "firstname": "Marek",
+            "lastname": "Go\u0142\u0119biewski",
+            "age": 42,
+            "birth": {
+                "date": "1980-05-18",
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": "186 cm",
+            "weight": "84 kg",
+            "photo": "https://media.api-sports.io/football/coachs/14033.png",
+            "team": {
+                "id": 3483,
+                "name": "Chrobry G\u0142og\u00f3w",
+                "logo": "https://media.api-sports.io/football/teams/3483.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3483,
+                        "name": "Chrobry G\u0142og\u00f3w",
+                        "logo": "https://media.api-sports.io/football/teams/3483.png"
+                    },
+                    "start": "2022-06-01",
+                    "end": null
+                },
+                {
+                    "team": {
+                        "id": 339,
+                        "name": "Legia Warsaw",
+                        "logo": "https://media.api-sports.io/football/teams/339.png"
+                    },
+                    "start": "2021-10-01",
+                    "end": "2022-06-01"
+                },
+                {
+                    "team": {
+                        "id": 6954,
+                        "name": "SKRA Cz\u0119stochowa",
+                        "logo": "https://media.api-sports.io/football/teams/6954.png"
+                    },
+                    "start": "2020-08-01",
+                    "end": "2021-05-01"
+                }
+            ]
+        }
+    ]
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "3484"
+    },
+    "errors": [],
+    "results": 1,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "id": 5049,
+            "name": "R. G\u00f3rak",
+            "firstname": "Rafa\u0142",
+            "lastname": "G\u00f3rak",
+            "age": 49,
+            "birth": {
+                "date": "1973-03-30",
+                "place": "Bytom",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/5049.png",
+            "team": {
+                "id": 3484,
+                "name": "GKS Katowice",
+                "logo": "https://media.api-sports.io/football/teams/3484.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3484,
+                        "name": "GKS Katowice",
+                        "logo": "https://media.api-sports.io/football/teams/3484.png"
+                    },
+                    "start": "2019-06-01",
+                    "end": null
+                },
+                {
+                    "team": {
+                        "id": 6938,
+                        "name": "Elana Toru\u0144",
+                        "logo": "https://media.api-sports.io/football/teams/6938.png"
+                    },
+                    "start": "2017-04-01",
+                    "end": "2019-06-01"
+                },
+                {
+                    "team": {
+                        "id": 3484,
+                        "name": "GKS Katowice",
+                        "logo": "https://media.api-sports.io/football/teams/3484.png"
+                    },
+                    "start": "2011-06-01",
+                    "end": "2013-08-01"
+                }
+            ]
+        }
+    ]
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "3486"
+    },
+    "errors": [],
+    "results": 5,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "id": 5659,
+            "name": "J. Trzeciak",
+            "firstname": "Jacek",
+            "lastname": "Trzeciak",
+            "age": 51,
+            "birth": {
+                "date": "1971-12-26",
+                "place": "Bielawa",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": "173 cm",
+            "weight": "67 kg",
+            "photo": "https://media.api-sports.io/football/coachs/5659.png",
+            "team": {
+                "id": 3486,
+                "name": "Jastrz\u0119bie",
+                "logo": "https://media.api-sports.io/football/teams/3486.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3486,
+                        "name": "Jastrz\u0119bie",
+                        "logo": "https://media.api-sports.io/football/teams/3486.png"
+                    },
+                    "start": "2021-07-01",
+                    "end": "2021-11-01"
+                },
+                {
+                    "team": {
+                        "id": 6945,
+                        "name": "Olimpia Elbl\u0105g",
+                        "logo": "https://media.api-sports.io/football/teams/6945.png"
+                    },
+                    "start": "2020-11-01",
+                    "end": "2021-06-01"
+                },
+                {
+                    "team": {
+                        "id": 4247,
+                        "name": "Olimpia Grudzi\u0105dz",
+                        "logo": "https://media.api-sports.io/football/teams/4247.png"
+                    },
+                    "start": "2019-09-01",
+                    "end": "2020-06-01"
+                },
+                {
+                    "team": {
+                        "id": 6949,
+                        "name": "ROW Rybnik",
+                        "logo": "https://media.api-sports.io/football/teams/6949.png"
+                    },
+                    "start": "2018-11-01",
+                    "end": "2019-09-01"
+                },
+                {
+                    "team": {
+                        "id": 12835,
+                        "name": "Polonia Bytom",
+                        "logo": "https://media.api-sports.io/football/teams/12835.png"
+                    },
+                    "start": "2014-07-01",
+                    "end": "2015-11-01"
+                },
+                {
+                    "team": {
+                        "id": 12835,
+                        "name": "Polonia Bytom",
+                        "logo": "https://media.api-sports.io/football/teams/12835.png"
+                    },
+                    "start": "2012-10-01",
+                    "end": "2013-10-01"
+                }
+            ]
+        },
+        {
+            "id": 6463,
+            "name": "P. Sciebura",
+            "firstname": "Pawel",
+            "lastname": "Sciebura",
+            "age": 37,
+            "birth": {
+                "date": "1985-05-11",
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/6463.png",
+            "team": {
+                "id": 3486,
+                "name": "Jastrz\u0119bie",
+                "logo": "https://media.api-sports.io/football/teams/3486.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3486,
+                        "name": "Jastrz\u0119bie",
+                        "logo": "https://media.api-sports.io/football/teams/3486.png"
+                    },
+                    "start": "2020-07-01",
+                    "end": "2021-04-01"
+                },
+                {
+                    "team": {
+                        "id": 6954,
+                        "name": "SKRA Cz\u0119stochowa",
+                        "logo": "https://media.api-sports.io/football/teams/6954.png"
+                    },
+                    "start": "2018-07-01",
+                    "end": "2020-07-01"
+                }
+            ]
+        },
+        {
+            "id": 14372,
+            "name": "\u0141. W\u0142odarek",
+            "firstname": "\u0141ukasz",
+            "lastname": "W\u0142odarek",
+            "age": 35,
+            "birth": {
+                "date": "1987-09-21",
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/14372.png",
+            "team": {
+                "id": 3486,
+                "name": "Jastrz\u0119bie",
+                "logo": "https://media.api-sports.io/football/teams/3486.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3486,
+                        "name": "Jastrz\u0119bie",
+                        "logo": "https://media.api-sports.io/football/teams/3486.png"
+                    },
+                    "start": "2021-04-01",
+                    "end": "2021-06-01"
+                }
+            ]
+        },
+        {
+            "id": 16212,
+            "name": "M. Galikowski",
+            "firstname": "Mateusz",
+            "lastname": "Galikowski",
+            "age": null,
+            "birth": {
+                "date": null,
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/16212.png",
+            "team": {
+                "id": 3486,
+                "name": "Jastrz\u0119bie",
+                "logo": "https://media.api-sports.io/football/teams/3486.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3486,
+                        "name": "Jastrz\u0119bie",
+                        "logo": "https://media.api-sports.io/football/teams/3486.png"
+                    },
+                    "start": "2021-11-01",
+                    "end": "2021-11-01"
+                }
+            ]
+        },
+        {
+            "id": 16356,
+            "name": "G. Kurdziel",
+            "firstname": "Grzegorz",
+            "lastname": "Kurdziel",
+            "age": 46,
+            "birth": {
+                "date": "1976-08-07",
+                "place": "Jaslo",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/16356.png",
+            "team": {
+                "id": 3486,
+                "name": "Jastrz\u0119bie",
+                "logo": "https://media.api-sports.io/football/teams/3486.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3486,
+                        "name": "Jastrz\u0119bie",
+                        "logo": "https://media.api-sports.io/football/teams/3486.png"
+                    },
+                    "start": "2021-11-01",
+                    "end": null
+                },
+                {
+                    "team": {
+                        "id": 12835,
+                        "name": "Polonia Bytom",
+                        "logo": "https://media.api-sports.io/football/teams/12835.png"
+                    },
+                    "start": "2014-01-01",
+                    "end": "2014-04-01"
+                }
+            ]
+        }
+    ]
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "3488"
+    },
+    "errors": [],
+    "results": 2,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "id": 1253,
+            "name": "P. Plewnia",
+            "firstname": "Piotr",
+            "lastname": "Plewnia",
+            "age": 45,
+            "birth": {
+                "date": "1977-05-29",
+                "place": "Opole",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": "181 cm",
+            "weight": "73 kg",
+            "photo": "https://media.api-sports.io/football/coachs/1253.png",
+            "team": {
+                "id": 3488,
+                "name": "Odra Opole",
+                "logo": "https://media.api-sports.io/football/teams/3488.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3488,
+                        "name": "Odra Opole",
+                        "logo": "https://media.api-sports.io/football/teams/3488.png"
+                    },
+                    "start": "2021-08-01",
+                    "end": null
+                },
+                {
+                    "team": {
+                        "id": 3488,
+                        "name": "Odra Opole",
+                        "logo": "https://media.api-sports.io/football/teams/3488.png"
+                    },
+                    "start": "2021-03-01",
+                    "end": "2021-06-01"
+                },
+                {
+                    "team": {
+                        "id": 3488,
+                        "name": "Odra Opole",
+                        "logo": "https://media.api-sports.io/football/teams/3488.png"
+                    },
+                    "start": "2019-08-01",
+                    "end": "2019-12-01"
+                },
+                {
+                    "team": {
+                        "id": 3488,
+                        "name": "Odra Opole",
+                        "logo": "https://media.api-sports.io/football/teams/3488.png"
+                    },
+                    "start": "2018-05-01",
+                    "end": "2018-05-01"
+                }
+            ]
+        },
+        {
+            "id": 8069,
+            "name": "D. Brehmer",
+            "firstname": "Dietmar",
+            "lastname": "Brehmer",
+            "age": 48,
+            "birth": {
+                "date": "1974-12-27",
+                "place": "Warszawa",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/8069.png",
+            "team": {
+                "id": 3488,
+                "name": "Odra Opole",
+                "logo": "https://media.api-sports.io/football/teams/3488.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3488,
+                        "name": "Odra Opole",
+                        "logo": "https://media.api-sports.io/football/teams/3488.png"
+                    },
+                    "start": "2020-01-01",
+                    "end": "2021-06-01"
+                },
+                {
+                    "team": {
+                        "id": 6949,
+                        "name": "ROW Rybnik",
+                        "logo": "https://media.api-sports.io/football/teams/6949.png"
+                    },
+                    "start": "2015-07-01",
+                    "end": "2016-10-01"
+                },
+                {
+                    "team": {
+                        "id": 6952,
+                        "name": "Rozw\u00f3j Katowice",
+                        "logo": "https://media.api-sports.io/football/teams/6952.png"
+                    },
+                    "start": "2013-06-01",
+                    "end": "2015-03-01"
+                }
+            ]
+        }
+    ]
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "3489"
+    },
+    "errors": [],
+    "results": 5,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "id": 1233,
+            "name": "M. Smy\u0142a",
+            "firstname": "Miros\u0142aw",
+            "lastname": "Smy\u0142a",
+            "age": 53,
+            "birth": {
+                "date": "1969-07-25",
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/1233.png",
+            "team": {
+                "id": 3489,
+                "name": "Podbeskidzie",
+                "logo": "https://media.api-sports.io/football/teams/3489.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3489,
+                        "name": "Podbeskidzie",
+                        "logo": "https://media.api-sports.io/football/teams/3489.png"
+                    },
+                    "start": "2022-04-01",
+                    "end": null
+                },
+                {
+                    "team": {
+                        "id": 346,
+                        "name": "Korona Kielce",
+                        "logo": "https://media.api-sports.io/football/teams/346.png"
+                    },
+                    "start": "2019-09-01",
+                    "end": "2020-03-01"
+                },
+                {
+                    "team": {
+                        "id": 3497,
+                        "name": "Wigry Suwa\u0142ki",
+                        "logo": "https://media.api-sports.io/football/teams/3497.png"
+                    },
+                    "start": "2019-04-01",
+                    "end": "2019-06-01"
+                },
+                {
+                    "team": {
+                        "id": 3488,
+                        "name": "Odra Opole",
+                        "logo": "https://media.api-sports.io/football/teams/3488.png"
+                    },
+                    "start": "2017-07-01",
+                    "end": "2018-05-01"
+                },
+                {
+                    "team": {
+                        "id": 6952,
+                        "name": "Rozw\u00f3j Katowice",
+                        "logo": "https://media.api-sports.io/football/teams/6952.png"
+                    },
+                    "start": "2015-09-01",
+                    "end": "2016-12-01"
+                },
+                {
+                    "team": {
+                        "id": 342,
+                        "name": "Zag\u0142\u0119bie Sosnowiec",
+                        "logo": "https://media.api-sports.io/football/teams/342.png"
+                    },
+                    "start": "2013-10-01",
+                    "end": "2015-03-01"
+                },
+                {
+                    "team": {
+                        "id": 6952,
+                        "name": "Rozw\u00f3j Katowice",
+                        "logo": "https://media.api-sports.io/football/teams/6952.png"
+                    },
+                    "start": "2010-08-01",
+                    "end": "2013-05-01"
+                },
+                {
+                    "team": {
+                        "id": null,
+                        "name": "Rozw\u00f3j Katowice II",
+                        "logo": null
+                    },
+                    "start": "2010-08-01",
+                    "end": "2013-05-01"
+                }
+            ]
+        },
+        {
+            "id": 1243,
+            "name": "K. Brede",
+            "firstname": "Krzysztof",
+            "lastname": "Brede",
+            "age": 41,
+            "birth": {
+                "date": "1981-02-08",
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/1243.png",
+            "team": {
+                "id": 3489,
+                "name": "Podbeskidzie",
+                "logo": "https://media.api-sports.io/football/teams/3489.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3489,
+                        "name": "Podbeskidzie",
+                        "logo": "https://media.api-sports.io/football/teams/3489.png"
+                    },
+                    "start": "2018-07-01",
+                    "end": "2020-12-01"
+                },
+                {
+                    "team": {
+                        "id": 3482,
+                        "name": "Chojniczanka Chojnice",
+                        "logo": "https://media.api-sports.io/football/teams/3482.png"
+                    },
+                    "start": "2017-07-01",
+                    "end": "2018-06-01"
+                }
+            ]
+        },
+        {
+            "id": 12390,
+            "name": "P. Jawny",
+            "firstname": "Piotr",
+            "lastname": "Jawny",
+            "age": 51,
+            "birth": {
+                "date": "1971-10-18",
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/12390.png",
+            "team": {
+                "id": 3489,
+                "name": "Podbeskidzie",
+                "logo": "https://media.api-sports.io/football/teams/3489.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3489,
+                        "name": "Podbeskidzie",
+                        "logo": "https://media.api-sports.io/football/teams/3489.png"
+                    },
+                    "start": "2021-06-01",
+                    "end": "2022-04-01"
+                },
+                {
+                    "team": {
+                        "id": 12900,
+                        "name": "\u015al\u0105sk Wroc\u0142aw II",
+                        "logo": "https://media.api-sports.io/football/teams/12900.png"
+                    },
+                    "start": "2018-07-01",
+                    "end": "2021-06-01"
+                }
+            ]
+        },
+        {
+            "id": 13825,
+            "name": "H. Kosciukiewicz",
+            "firstname": "Hubert",
+            "lastname": "Kosciukiewicz",
+            "age": 44,
+            "birth": {
+                "date": "1978-10-24",
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": "191 cm",
+            "weight": "88 kg",
+            "photo": "https://media.api-sports.io/football/coachs/13825.png",
+            "team": {
+                "id": 3489,
+                "name": "Podbeskidzie",
+                "logo": "https://media.api-sports.io/football/teams/3489.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3489,
+                        "name": "Podbeskidzie",
+                        "logo": "https://media.api-sports.io/football/teams/3489.png"
+                    },
+                    "start": "2020-12-01",
+                    "end": "2020-12-01"
+                },
+                {
+                    "team": {
+                        "id": 4247,
+                        "name": "Olimpia Grudzi\u0105dz",
+                        "logo": "https://media.api-sports.io/football/teams/4247.png"
+                    },
+                    "start": "2015-05-01",
+                    "end": "2015-06-01"
+                }
+            ]
+        },
+        {
+            "id": 13912,
+            "name": "R. Kasperczyk",
+            "firstname": "Robert",
+            "lastname": "Kasperczyk",
+            "age": 55,
+            "birth": {
+                "date": "1967-01-22",
+                "place": null,
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": "188 cm",
+            "weight": "81 kg",
+            "photo": "https://media.api-sports.io/football/coachs/13912.png",
+            "team": {
+                "id": 3489,
+                "name": "Podbeskidzie",
+                "logo": "https://media.api-sports.io/football/teams/3489.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3489,
+                        "name": "Podbeskidzie",
+                        "logo": "https://media.api-sports.io/football/teams/3489.png"
+                    },
+                    "start": "2020-12-01",
+                    "end": "2021-06-01"
+                },
+                {
+                    "team": {
+                        "id": 3492,
+                        "name": "Sandecja Nowy S\u0105cz",
+                        "logo": "https://media.api-sports.io/football/teams/3492.png"
+                    },
+                    "start": "2015-06-01",
+                    "end": "2016-01-01"
+                },
+                {
+                    "team": {
+                        "id": null,
+                        "name": "Limanovia",
+                        "logo": null
+                    },
+                    "start": "2014-05-01",
+                    "end": "2014-09-01"
+                },
+                {
+                    "team": {
+                        "id": 14562,
+                        "name": "Motor Lublin",
+                        "logo": "https://media.api-sports.io/football/teams/14562.png"
+                    },
+                    "start": "2013-09-01",
+                    "end": "2014-04-01"
+                },
+                {
+                    "team": {
+                        "id": 6957,
+                        "name": "Stal Rzesz\u00f3w",
+                        "logo": "https://media.api-sports.io/football/teams/6957.png"
+                    },
+                    "start": "2013-01-01",
+                    "end": "2013-05-01"
+                },
+                {
+                    "team": {
+                        "id": 3489,
+                        "name": "Podbeskidzie",
+                        "logo": "https://media.api-sports.io/football/teams/3489.png"
+                    },
+                    "start": "2009-12-01",
+                    "end": "2012-10-01"
+                }
+            ]
+        }
+    ]
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "3490"
+    },
+    "errors": [],
+    "results": 1,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "id": 1235,
+            "name": "T. Tu\u0142acz",
+            "firstname": "Tomasz",
+            "lastname": "Tu\u0142acz",
+            "age": 53,
+            "birth": {
+                "date": "1969-12-29",
+                "place": "Mielec",
+                "country": "Poland"
+            },
+            "nationality": "Poland",
+            "height": null,
+            "weight": null,
+            "photo": "https://media.api-sports.io/football/coachs/1235.png",
+            "team": {
+                "id": 3490,
+                "name": "Puszcza Niepo\u0142omice",
+                "logo": "https://media.api-sports.io/football/teams/3490.png"
+            },
+            "career": [
+                {
+                    "team": {
+                        "id": 3490,
+                        "name": "Puszcza Niepo\u0142omice",
+                        "logo": "https://media.api-sports.io/football/teams/3490.png"
+                    },
+                    "start": "2015-08-01",
+                    "end": null
+                },
+                {
+                    "team": {
+                        "id": 6955,
+                        "name": "Siarka Tarnobrzeg",
+                        "logo": "https://media.api-sports.io/football/teams/6955.png"
+                    },
+                    "start": "2013-07-01",
+                    "end": "2014-09-01"
+                },
+                {
+                    "team": {
+                        "id": 6951,
+                        "name": "Resovia Rzesz\u00f3w",
+                        "logo": "https://media.api-sports.io/football/teams/6951.png"
+                    },
+                    "start": "2012-06-01",
+                    "end": "2013-06-01"
+                }
+            ]
+        }
+    ]
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "3492"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "3494"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "3495"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "3498"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "6951"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "6954"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "6962"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "9132"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "336"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "337"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "338"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "339"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}, 
+{
+    "get": "coachs",
+    "parameters": {
+        "team": "340"
+    },
+    "errors": {
+        "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    },
+    "results": 0,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": []
+}
+]

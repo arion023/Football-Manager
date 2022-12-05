@@ -13,6 +13,10 @@ DROP TABLE referee;
 DROP TABLE stadium;
 DROP TABLE country;
 
+/* DATES IN THIS FORMAT */
+
+ALTER SESSION SET nls_date_format='yyyy-mm-dd';
+
 /* CREATING TABLES */
 
 CREATE TABLE player
@@ -21,11 +25,11 @@ CREATE TABLE player
     name            VARCHAR2(20) NOT NULL,
     surname         VARCHAR2(20) NOT NULL,
     player_stats_id NUMBER NOT NULL,
-    birth_date      DATE NOT NULL,
-    club_id         NUMBER NOT NULL,
-    position        NUMBER NOT NULL,
-    country_id      CHAR(3) NOT NULL,
-    club_history_id NUMBER NOT NULL
+    birth_date      DATE,
+    club_id         NUMBER,
+    position_id     NUMBER,
+    country_id      CHAR(2) NOT NULL,
+    club_history_id NUMBER
 );
 
 CREATE TABLE position
@@ -51,12 +55,11 @@ CREATE TABLE player_stats
 CREATE TABLE club
 (
     club_id         NUMBER NOT NULL CONSTRAINT club_pk PRIMARY KEY,
-    name            VARCHAR2(20) NOT NULL,
-    country_id      CHAR(3) NOT NULL,
-    budget          NUMBER NOT NULL,
+    name            VARCHAR2(30) NOT NULL,
+    country_id      CHAR(2) NOT NULL,
+    budget          NUMBER,
     league_id       NUMBER NOT NULL,
-    stadium_id      NUMBER NOT NULL
-
+    stadium_id      NUMBER
 );
 
 CREATE TABLE club_history
@@ -64,7 +67,7 @@ CREATE TABLE club_history
     club_history_id NUMBER NOT NULL CONSTRAINT club_history_pk PRIMARY KEY,
     club_id         NUMBER NOT NULL,
     start_date      DATE NOT NULL,
-    end_date        DATE NOT NULL
+    end_date        DATE
 
 );
 
@@ -73,10 +76,10 @@ CREATE TABLE coach
     coach_id        NUMBER NOT NULL CONSTRAINT coach_pk PRIMARY KEY,
     name            VARCHAR2(20) NOT NULL,
     surname         VARCHAR2(20) NOT NULL,
-    birth_date      DATE NOT NULL,
-    country         CHAR(3) NOT NULL,
-    club            NUMBER NOT NULL,
-    club_history    NUMBER NOT NULL
+    birth_date      DATE,
+    country_id      CHAR(2) NOT NULL,
+    club_id         NUMBER NOT NULL,
+    club_history_id NUMBER
 );
 
 CREATE TABLE referee
@@ -84,14 +87,14 @@ CREATE TABLE referee
     referee_id      NUMBER NOT NULL CONSTRAINT referee_pk PRIMARY KEY,
     name            VARCHAR2(20) NOT NULL,
     surname         VARCHAR2(20) NOT NULL,
-    country_id      CHAR(3) NOT NULL
+    country_id      CHAR(2) NOT NULL
 );
 
 CREATE TABLE league
 (
     league_id       NUMBER NOT NULL CONSTRAINT League_pk PRIMARY KEY,
     name            VARCHAR2(20) NOT NULL,
-    country_id      CHAR(3) NOT NULL
+    country_id      CHAR(2) NOT NULL
 );
 
 
@@ -116,23 +119,24 @@ CREATE TABLE card
 CREATE TABLE stadium
 (
     stadium_id      NUMBER NOT NULL CONSTRAINT stadium_pk PRIMARY KEY,
-    address         VARCHAR2(30) NOT NULL,
-    country_id      CHAR(3) NOT NULL,
-    capacity        NUMBER NOT NULL,
-    build_date      DATE NOT NULL
+    name            VARCHAR2(60) NOT NULL,
+    address         VARCHAR2(60),
+    country_id      CHAR(2),
+    capacity        NUMBER,
+    build_date      DATE
 );
 
-CREATE TABLE Country
+CREATE TABLE country
 (
-    country_id      CHAR(3) NOT NULL CONSTRAINT country_pk PRIMARY KEY,
-    name            VARCHAR2(20) NOT NULL
+    country_id      CHAR(2) NOT NULL CONSTRAINT country_pk PRIMARY KEY,
+    name            VARCHAR2(30) NOT NULL
 );
 
 CREATE TABLE trophy
 (
     name            VARCHAR2(30),
     league_id       NUMBER NOT NULL,
-    season          DATE,
+    season          DATE NOT NULL,
     club_id         NUMBER NOT NULL,
     CONSTRAINT trophy_pk PRIMARY KEY (League_ID, Season)
     -- Primary key from 2 values?
@@ -146,7 +150,7 @@ CREATE TABLE trophy
 ALTER TABLE player ADD CONSTRAINT player_player_stats_fk FOREIGN KEY(player_stats_id)
 REFERENCES player_stats (player_stats_id);
 
-ALTER TABLE player ADD CONSTRAINT player_position_fk FOREIGN KEY(player_stats_id)
+ALTER TABLE player ADD CONSTRAINT player_position_fk FOREIGN KEY(position_id)
 REFERENCES position (position_id);
 
 ALTER TABLE player ADD CONSTRAINT player_club_fk FOREIGN KEY(club_id)
@@ -176,13 +180,13 @@ REFERENCES club (club_id);
 
 --COACH
 
-ALTER TABLE coach ADD CONSTRAINT coach_country_fk FOREIGN KEY(country)
+ALTER TABLE coach ADD CONSTRAINT coach_country_fk FOREIGN KEY(country_id)
 REFERENCES country (country_id);
 
-ALTER TABLE coach ADD CONSTRAINT coach_club_fk FOREIGN KEY(club)
+ALTER TABLE coach ADD CONSTRAINT coach_club_fk FOREIGN KEY(club_id)
 REFERENCES club (club_id);
 
-ALTER TABLE coach ADD CONSTRAINT coach_club_history_fk FOREIGN KEY(club_history)
+ALTER TABLE coach ADD CONSTRAINT coach_club_history_fk FOREIGN KEY(club_history_id)
 REFERENCES club_history (club_history_id);
 
 --REFEREE
