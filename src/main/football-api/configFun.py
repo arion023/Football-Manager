@@ -1,5 +1,5 @@
-
 import json
+
 
 def get_leagues_id_from_json():
     leagues_id = []
@@ -8,6 +8,7 @@ def get_leagues_id_from_json():
     for element in data:
         leagues_id.append(element['league']['id'])
     return leagues_id
+
 
 def get_teams_id_from_json():
     teams_id = []

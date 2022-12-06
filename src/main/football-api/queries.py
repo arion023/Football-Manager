@@ -259,17 +259,12 @@ def coachs():
     with open(f"json/{endpoint}.json", 'w') as fp:
         fp.write("[\n")
 
-    i = 0
-    k = 0
+    i = 1
     for id in teams_ids:
-        if i == 8:  #limit 10 requestes in shor period
-            i = 0
-            sleep(2)
+        if i % 10 == 0:  #limit 10 requestes in 60s period
+            sleep(70)
 
-        if k == 23:
-            break
         i+= 1
-        k+= 1
 
         errors = []
         queries.append(f"\n\n-- TEAM: {id} \n\n")
@@ -292,14 +287,22 @@ def coachs():
 
 
                 id = element['id']
-                name = element['name']
+                name = element['firstname']
                 surname = element["lastname"]
                 b_date = element["birth"]["date"]
-                country_id = countries_dict[element['nationality']]
+
+                nationality = element['nationality']
+
+                if nationality in countries_dict.keys():
+                    country_id = countries_dict[nationality]
+                else:
+                    country_id = None
+                    correct = False
+
                 club_id = element['team']['id']
                 club_history = None
 
-                values = [id, name, surname, b_date, country_id, club_id, club_history]
+                values = [id, name, surname, b_date, country_id, club_id]
 
                 query += '( '
                 for value in values[:-1]:
@@ -353,73 +356,94 @@ def players():
         errors = []
         queries.append(f"\n\n-- LEAGUE: {id} \n\n")
         player_params["league"] = id
-        response = requests.request("GET", URL + endpoint, headers=headers, data=payload, params=player_params)
 
-        with open(f"json/{endpoint}.json", 'a') as fp:
-            json.dump(response.json(), fp, indent=4)
-            if id in leagues_ids[:-1]:
-                fp.write(", \n")
+        next_page = True
+        page = 0
 
-        if response.status_code == 200:
+        while(next_page == True):
+            page += 1
 
-            response = response.json()['response'] #list
+            if page%10 == 0: # check if correct!!
+                sleep(70)
 
+            player_params["page"] = page
+            response = requests.request("GET", URL + endpoint, headers=headers, data=payload, params=player_params)
 
-            for element in response:
-                query = INSERT + INTO + table_player + VALUES
-                correct = True
+            response_json = response.json()
 
-                statistics = element["statistics"][0]
-                nationality = element["player"]["nationality"]
+            last_page = response_json["paging"]["total"]
 
-                p_id = element["player"]["id"]
-                name = element["player"]["name"]
-                surname = element["player"]["lastname"]
-                p_stats_id = None
-                b_date = element["player"]["birth"]["date"]
-                club_id = statistics["team"]["id"]
-                if nationality in countries_dict.keys():
-                    country_id = countries_dict[nationality]
-                else:
-                    country_id = None
-                    correct = False
-                club_history = None
+            if page == last_page:
+                next_page = False
+
+            with open(f"json/{endpoint}.json", 'a') as fp:
+                json.dump(response_json, fp, indent=4)
+                if (id in leagues_ids[:-1] or page < last_page):
+                    fp.write(", \n")
+
+            if response.status_code == 200:
+
+                response = response_json['response'] #list
 
 
-                values = [p_id, name, surname, p_stats_id, b_date, club_id, country_id, club_history]
+                for element in response:
+                    query = INSERT + INTO + table_player + VALUES
+                    correct = True
 
-                query += '( '
-                for value in values[:-1]:
-                    if type(value) == str:
-                        query += "\'"+value + "\', "
-                    elif type(value) == int:
-                        query += str(value) + ", "
+                    statistics = element["statistics"][0]
+                    nationality = element["player"]["nationality"]
+
+                    p_id = element["player"]["id"]
+                    name = element["player"]["firstname"]
+                    surname = element["player"]["lastname"]
+                    p_stats_id = None
+                    b_date = element["player"]["birth"]["date"]
+                    club_id = statistics["team"]["id"]
+                    position_id = None
+
+                    if nationality in countries_dict.keys():
+                        country_id = countries_dict[nationality]
                     else:
-                        query += "NULL" + ", "
+                        country_id = None
                         correct = False
 
+                    club_history = None
 
-                if type(values[-1]) == str:
-                    query += "\'"+ values[-1] + "\'"
-                elif type(values[-1]) == int:
-                    query += str(values[-1])
-                else:
-                    query += "NULL"
-                    correct = False
-                query += ' );\n'
 
-                if correct:
-                    queries.append(query)
-                else:
-                    errors.append(query)
+                    values = [p_id, name, surname, p_stats_id, b_date, club_id, position_id, country_id]
 
-            if (len(errors) > 0):
-                queries.append("\n--ERRORS\n")
-                queries.extend(errors)
+                    query += '( '
+                    for value in values[:-1]:
+                        if type(value) == str:
+                            query += "\'"+value + "\', "
+                        elif type(value) == int:
+                            query += str(value) + ", "
+                        else:
+                            query += "NULL" + ", "
+                            correct = False
+
+
+                    if type(values[-1]) == str:
+                        query += "\'"+ values[-1] + "\'"
+                    elif type(values[-1]) == int:
+                        query += str(values[-1])
+                    else:
+                        query += "NULL"
+                        correct = False
+                    query += ' );\n'
+
+                    if correct:
+                        queries.append(query)
+                    else:
+                        errors.append(query)
             else:
-                queries.append("\n--NO ERRORS")
+                return [f"\nError {response.code}\n"]
+
+        if (len(errors) > 0):
+            queries.append("\n--ERRORS\n")
+            queries.extend(errors)
         else:
-            return [f"\nError {response.code}\n"]
+            queries.append("\n--NO ERRORS")
 
     with open(f"json/{endpoint}.json", 'a') as fp:
         fp.write("\n]\n")

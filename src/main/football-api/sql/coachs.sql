@@ -1,152 +1,132 @@
 
 
--- TEAM: 335 
-
-
---ERRORS
-INSERT INTO coach VALUES ( 11988, 'I. Koscielniak', 'Koscielniak', '1974-01-16', 'PL', 335, NULL );
-INSERT INTO coach VALUES ( 15064, 'W. Lobodzinski', 'Lobodzinski', '1982-10-20', 'PL', 335, NULL );
-
-
--- TEAM: 342 
-
-
---ERRORS
-INSERT INTO coach VALUES ( 1218, 'K. Moskal', 'Moskal', '1967-01-09', 'PL', 342, NULL );
-INSERT INTO coach VALUES ( 1240, 'A. Skowronek', 'Skowronek', '1982-05-22', 'PL', 342, NULL );
-INSERT INTO coach VALUES ( 11935, 'K. Debek', 'Debek', '1978-09-18', 'PL', 342, NULL );
-
-
--- TEAM: 344 
-
-
---ERRORS
-INSERT INTO coach VALUES ( 1245, 'R. Tarasiewicz', 'Tarasiewicz', '1962-04-27', 'PL', 344, NULL );
-INSERT INTO coach VALUES ( 2618, 'D. Marzec', 'Marzec', '1969-09-14', 'PL', 344, NULL );
-
-
--- TEAM: 346 
-
-
---ERRORS
-INSERT INTO coach VALUES ( 1226, 'L. Ojrzynski', 'Ojrzynski', '1972-05-31', 'PL', 346, NULL );
-INSERT INTO coach VALUES ( 1237, 'D. Nowak', 'Nowak', '1972-02-07', 'PL', 346, NULL );
-
-
--- TEAM: 3483 
-
-
---ERRORS
-INSERT INTO coach VALUES ( 1238, 'I. Djurdjevic', 'Durdevic', '1977-02-05', 'RS', 3483, NULL );
-INSERT INTO coach VALUES ( 4448, 'G. Nicinski', 'Nicinski', '1973-05-16', 'PL', 3483, NULL );
-INSERT INTO coach VALUES ( 14033, 'M. Golebiewski', 'Golebiewski', '1980-05-18', 'PL', 3483, NULL );
-
-
--- TEAM: 3484 
-
-
---ERRORS
-INSERT INTO coach VALUES ( 5049, 'R. Gorak', 'Gorak', '1973-03-30', 'PL', 3484, NULL );
-
-
--- TEAM: 3486 
-
-
---ERRORS
-INSERT INTO coach VALUES ( 5659, 'J. Trzeciak', 'Trzeciak', '1971-12-26', 'PL', 3486, NULL );
-INSERT INTO coach VALUES ( 6463, 'P. Sciebura', 'Sciebura', '1985-05-11', 'PL', 3486, NULL );
-INSERT INTO coach VALUES ( 14372, 'L. Wlodarek', 'Wlodarek', '1987-09-21', 'PL', 3486, NULL );
-INSERT INTO coach VALUES ( 16212, 'M. Galikowski', 'Galikowski', NULL, 'PL', 3486, NULL );
-INSERT INTO coach VALUES ( 16356, 'G. Kurdziel', 'Kurdziel', '1976-08-07', 'PL', 3486, NULL );
-
-
--- TEAM: 3488 
-
-
---ERRORS
-INSERT INTO coach VALUES ( 1253, 'P. Plewnia', 'Plewnia', '1977-05-29', 'PL', 3488, NULL );
-INSERT INTO coach VALUES ( 8069, 'D. Brehmer', 'Brehmer', '1974-12-27', 'PL', 3488, NULL );
-
-
--- TEAM: 3489 
-
-
---ERRORS
-INSERT INTO coach VALUES ( 1233, 'M. Smyla', 'Smyla', '1969-07-25', 'PL', 3489, NULL );
-INSERT INTO coach VALUES ( 1243, 'K. Brede', 'Brede', '1981-02-08', 'PL', 3489, NULL );
-INSERT INTO coach VALUES ( 12390, 'P. Jawny', 'Jawny', '1971-10-18', 'PL', 3489, NULL );
-INSERT INTO coach VALUES ( 13825, 'H. Kosciukiewicz', 'Kosciukiewicz', '1978-10-24', 'PL', 3489, NULL );
-INSERT INTO coach VALUES ( 13912, 'R. Kasperczyk', 'Kasperczyk', '1967-01-22', 'PL', 3489, NULL );
-
-
--- TEAM: 3490 
-
-
---ERRORS
-INSERT INTO coach VALUES ( 1235, 'T. Tulacz', 'Tulacz', '1969-12-29', 'PL', 3490, NULL );
-
-
--- TEAM: 3492 
-
-
---NO ERRORS
-
--- TEAM: 3494 
-
-
---NO ERRORS
-
--- TEAM: 3495 
-
-
---NO ERRORS
-
--- TEAM: 3498 
-
-
---NO ERRORS
-
--- TEAM: 6951 
-
-
---NO ERRORS
-
--- TEAM: 6954 
-
-
---NO ERRORS
-
--- TEAM: 6962 
-
-
---NO ERRORS
-
--- TEAM: 9132 
-
-
---NO ERRORS
-
 -- TEAM: 336 
 
+INSERT INTO coach VALUES ( 1215, 'Ireneusz', 'Mamrot', '1970-12-13', 'PL', 336 );
+INSERT INTO coach VALUES ( 5711, 'Piotr', 'Nowak', '1964-07-05', 'PL', 336 );
+INSERT INTO coach VALUES ( 7621, 'Rafal', 'Grzyb', '1983-01-16', 'PL', 336 );
 
 --NO ERRORS
 
 -- TEAM: 337 
 
+INSERT INTO coach VALUES ( 1242, 'Piotr', 'Tworek', '1975-03-10', 'PL', 337 );
+INSERT INTO coach VALUES ( 2862, 'Tadeusz', 'Pawlowski', '1953-10-14', 'PL', 337 );
+INSERT INTO coach VALUES ( 8187, 'Jacek', 'Magiera', '1977-01-01', 'PL', 337 );
 
 --NO ERRORS
 
 -- TEAM: 338 
 
+INSERT INTO coach VALUES ( 118, 'Jerzy Jozef', 'Brzeczek', '1971-03-18', 'PL', 338 );
+INSERT INTO coach VALUES ( 14999, 'Kazimierz', 'Kmiecik', '1951-09-19', 'PL', 338 );
 
 --NO ERRORS
 
 -- TEAM: 339 
 
 
---NO ERRORS
+--ERRORS
+INSERT INTO coach VALUES ( 1216, 'Aleksandar', 'Vukovic', '1979-08-25', NULL, 339 );
+
 
 -- TEAM: 340 
 
+INSERT INTO coach VALUES ( 1227, 'Marcin', 'Brosz', '1973-04-11', 'PL', 340 );
+INSERT INTO coach VALUES ( 15260, 'Jan', 'Urban', '1962-05-14', 'PL', 340 );
+
+--NO ERRORS
+
+-- TEAM: 341 
+
+INSERT INTO coach VALUES ( 1230, 'Radoslaw', 'Sobolewski', '1976-12-13', 'PL', 341 );
+INSERT INTO coach VALUES ( 3148, 'Dariusz', 'Dzwigala', '1969-03-22', 'PL', 341 );
+INSERT INTO coach VALUES ( 4457, 'Maciej', 'Bartoszek', '1977-04-12', 'PL', 341 );
+INSERT INTO coach VALUES ( 7751, 'Pavol', 'Stano', '1977-09-29', 'SK', 341 );
+INSERT INTO coach VALUES ( 16814, 'Lukasz', 'Nadolski', '1987-09-03', 'PL', 341 );
+
+--NO ERRORS
+
+-- TEAM: 343 
+
+INSERT INTO coach VALUES ( 2959, 'Tomasz', 'Kaczmarek', '1984-09-20', 'PL', 343 );
+
+--NO ERRORS
+
+-- TEAM: 345 
+
+INSERT INTO coach VALUES ( 1219, 'Piotr', 'Stokowiec', '1972-05-25', 'PL', 345 );
+INSERT INTO coach VALUES ( 1221, 'Dariusz', 'Zuraw', '1972-11-14', 'PL', 345 );
+INSERT INTO coach VALUES ( 1228, 'Ben', 'van Dael', '1965-03-03', 'NL', 345 );
+INSERT INTO coach VALUES ( 16414, 'Pawel', 'Karmelita', '1977-08-28', 'PL', 345 );
+INSERT INTO coach VALUES ( 17625, 'Orest', 'Lenczyk', '1942-12-28', 'PL', 345 );
+
+--NO ERRORS
+
+-- TEAM: 347 
+
+INSERT INTO coach VALUES ( 2864, 'Adam', 'Nawalka', '1957-10-23', 'PL', 347 );
+INSERT INTO coach VALUES ( 8956, 'Maciej', 'Skorza', '1972-01-10', 'PL', 347 );
+INSERT INTO coach VALUES ( 14420, 'Janusz', 'Gora', '1963-07-08', 'PL', 347 );
+
+--NO ERRORS
+
+-- TEAM: 348 
+
+INSERT INTO coach VALUES ( 1217, 'Kosta', 'Runjaic', '1971-06-04', 'DE', 348 );
+
+--NO ERRORS
+
+-- TEAM: 349 
+
+INSERT INTO coach VALUES ( 1220, 'Waldemar', 'Fornalik', '1963-04-11', 'PL', 349 );
+
+--NO ERRORS
+
+-- TEAM: 350 
+
+
+--NO ERRORS
+
+-- TEAM: 3487 
+
+
+--ERRORS
+INSERT INTO coach VALUES ( 1805, 'Radoslav', 'Latal', '1970-01-06', NULL, 3487 );
+
+
+-- TEAM: 3491 
+
+INSERT INTO coach VALUES ( 1222, 'Marek', 'Papszun', '1974-08-08', 'PL', 3491 );
+
+--NO ERRORS
+
+-- TEAM: 3493 
+
+INSERT INTO coach VALUES ( 11951, 'Adam', 'Majewski', '1973-12-24', 'PL', 3493 );
+INSERT INTO coach VALUES ( 12249, 'Dariusz', 'Skrzypczak', '1967-11-13', 'PL', 3493 );
+
+--NO ERRORS
+
+-- TEAM: 3496 
+
+INSERT INTO coach VALUES ( 12298, 'Dawid', 'Szulczek', '1990-01-26', 'PL', 3496 );
+
+--ERRORS
+INSERT INTO coach VALUES ( 4453, 'Petr', 'Nemec', '1957-06-07', NULL, 3496 );
+
+
+-- TEAM: 4248 
+
+INSERT INTO coach VALUES ( 1251, 'Dariusz', 'Banasik', '1973-07-16', 'PL', 4248 );
+INSERT INTO coach VALUES ( 3147, 'Mariusz', 'Lewandowski', '1979-05-18', 'PL', 4248 );
+
+--NO ERRORS
+
+-- TEAM: 6941 
+
+INSERT INTO coach VALUES ( 4454, 'Kamil', 'Kieres', '1974-07-16', 'PL', 6941 );
+INSERT INTO coach VALUES ( 8949, 'Piotr', 'Mazurkiewicz', '1984-03-16', 'PL', 6941 );
+INSERT INTO coach VALUES ( 17106, 'Marcin', 'Prasol', '1980-10-12', 'PL', 6941 );
 
 --NO ERRORS
