@@ -6,6 +6,7 @@ import com.example.model.Country;
 import com.example.model.Player;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
@@ -26,8 +27,9 @@ import java.util.List;
 @PageTitle("Profile")
 
 public class MyCoach extends VerticalLayout {
-    Club club = new Club(1, "Legia Warszawa", null, null, 0, null, null, null, null, null);
-    Coach coach  =  new Coach(1, "Czeslaw", "Michniewicz", LocalDate.of(1980, 1,1),
+    Club club = new Club(1, "Radomiak", null, null, 0, null,
+            null, null, null, null, new Image("images/radomiak.png", "radomiak"));
+    Coach coach  =  new Coach(1, "Dariusz", "Banasik", LocalDate.of(1970, 1,1),
             new Country(1, "Poland", "POL"), club, getSampleClubs()); //TODO link to player
 
     public MyCoach() {
@@ -72,9 +74,9 @@ public class MyCoach extends VerticalLayout {
     }
     private List<Club> getSampleClubs() { // TODO
         List<Club> clubs = new ArrayList<>();
-        clubs.add(new Club(1, "Arka Gdynia", null, null, 0, null, null, null, null, null));
-        clubs.add(new Club(2, "Radomiak Radom", null, null, 0, null, null, null, null, null));
-        clubs.add(new Club(3, "Wisla Plock", null, null, 0, null, null, null, null, null));
+        clubs.add(new Club(1, "Arka Gdynia", null, null, 0, null, null, null, null, null, null));
+        clubs.add(new Club(2, "Ruch Chorzów", null, null, 0, null, null, null, null, null, null));
+        clubs.add(new Club(3, "Wisla Plock", null, null, 0, null, null, null, null, null, null));
 
         return clubs;
     }
