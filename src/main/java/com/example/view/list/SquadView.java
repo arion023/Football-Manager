@@ -24,7 +24,8 @@ public class SquadView extends HorizontalLayout {
     public SquadView() {
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
-        var players = getSamplePlayers(); //TODO get players from database and from first squad
+        var players = getSamplePlayers();
+//        var players = Player.getAllPlayersFromDB();
         add(pitchLayout(players), playerListLayout(players));
     }
 
@@ -39,10 +40,10 @@ public class SquadView extends HorizontalLayout {
         verticalLayout.getStyle().set("background-repeat", "no-repeat");
         verticalLayout.getStyle().set("background-position", "center");
 
-        verticalLayout.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.LF, Position.CF, Position.RF))));
-        verticalLayout.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.LM, Position.CM, Position.RM))));
-        verticalLayout.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.LB, Position.CB, Position.RB))));
-        verticalLayout.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.GK))));
+        verticalLayout.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.LF, Position.CF, Position.RF)), 2));
+        verticalLayout.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.LM, Position.CM, Position.RM)), 4));
+        verticalLayout.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.LB, Position.CB, Position.RB)), 4));
+        verticalLayout.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.GK)), 1));
 
         return verticalLayout;
     }
@@ -67,10 +68,13 @@ public class SquadView extends HorizontalLayout {
         return verticalLayout;
     }
 
-    private HorizontalLayout getPlayersLineLayout(List<Player> players) {
+    private HorizontalLayout getPlayersLineLayout(List<Player> players, int players_no) {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
-        for (var player : players) {
-            horizontalLayout.add(getPlayerImageWithSurname(player));
+//        for (var player : players) {
+//            horizontalLayout.add(getPlayerImageWithSurname(player));
+//        }
+        for (int i = 0; i < players_no; i++) {
+            horizontalLayout.add(getPlayerImageWithSurname(players.get(i)));
         }
         horizontalLayout.getStyle().set("padding-top", "15px");
 
@@ -128,17 +132,17 @@ public class SquadView extends HorizontalLayout {
         players.add(new Player(9, "Nicola", "Zalewski", null, null, null, null, null, Position.LM));
         players.add(new Player(10, "Arkadiusz", "Milik", null, null, null, null, null, Position.CF));
         players.add(new Player(11, "Robert", "Lewandowski", null, null, null, null, null, Position.CF));
-//        players.add(new Player(12, "Łukasz", "Skorupski", null, null, null, null, null, Position.GK));
-//        players.add(new Player(13, "Kamil", "Grabara", null, null, null, null, null, Position.GK));
-//        players.add(new Player(14, "Grzegorz", "Krychowiak", null, null, null, null, null, Position.CM));
-//        players.add(new Player(15, "Artur", "Jędrzejczyk", null, null, null, null, null, Position.CB));
-//        players.add(new Player(16, "Jakub", "Kamiński", null, null, null, null, null, Position.RM));
-//        players.add(new Player(17, "Michał", "Skóraś", null, null, null, null, null, Position.LM));
-//        players.add(new Player(18, "Kamil", "Grosicki", null, null, null, null, null, Position.LM));
-//        players.add(new Player(19, "Krzysztof", "Piątek", null, null, null, null, null, Position.CF));
-//        players.add(new Player(20, "Karol", "Świderski", null, null, null, null, null, Position.CF));
-//        players.add(new Player(21, "Kamil", "Wieteska", null, null, null, null, null, Position.CB));
-//        players.add(new Player(22, "Sebastian", "Szymański", null, null, null, null, null, Position.CM));
+        players.add(new Player(12, "Łukasz", "Skorupski", null, null, null, null, null, Position.GK));
+        players.add(new Player(13, "Kamil", "Grabara", null, null, null, null, null, Position.GK));
+        players.add(new Player(14, "Grzegorz", "Krychowiak", null, null, null, null, null, Position.CM));
+        players.add(new Player(15, "Artur", "Jędrzejczyk", null, null, null, null, null, Position.CB));
+        players.add(new Player(16, "Jakub", "Kamiński", null, null, null, null, null, Position.RM));
+        players.add(new Player(17, "Michał", "Skóraś", null, null, null, null, null, Position.LM));
+        players.add(new Player(18, "Kamil", "Grosicki", null, null, null, null, null, Position.LM));
+        players.add(new Player(19, "Krzysztof", "Piątek", null, null, null, null, null, Position.CF));
+        players.add(new Player(20, "Karol", "Świderski", null, null, null, null, null, Position.CF));
+        players.add(new Player(21, "Kamil", "Wieteska", null, null, null, null, null, Position.CB));
+        players.add(new Player(22, "Sebastian", "Szymański", null, null, null, null, null, Position.CM));
         return players;
     }
 }
