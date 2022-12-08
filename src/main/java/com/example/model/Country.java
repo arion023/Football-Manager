@@ -11,4 +11,8 @@ public class Country {
     private int id;
     private String name;
     private String shortName;
+
+    public static Country getCountryById(int countryId) {
+        return new Country();
+    }
 }
