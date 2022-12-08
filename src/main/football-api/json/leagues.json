@@ -1,0 +1,139 @@
+{
+    "get": "leagues",
+    "parameters": {
+        "code": "PL"
+    },
+    "errors": [],
+    "results": 10,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "league": {
+                "id": 106,
+                "name": "Ekstraklasa",
+                "type": "League",
+                "logo": "https://media.api-sports.io/football/leagues/106.png"
+            },
+            "country": {
+                "name": "Poland",
+                "code": "PL",
+                "flag": "https://media.api-sports.io/flags/pl.svg"
+            },
+            "seasons": [
+                {
+                    "year": 2018,
+                    "start": "2018-07-20",
+                    "end": "2019-05-19",
+                    "current": false,
+                    "coverage": {
+                        "fixtures": {
+                            "events": true,
+                            "lineups": true,
+                            "statistics_fixtures": true,
+                            "statistics_players": false
+                        },
+                        "standings": true,
+                        "players": true,
+                        "top_scorers": true,
+                        "top_assists": true,
+                        "top_cards": true,
+                        "injuries": false,
+                        "predictions": true,
+                        "odds": false
+                    }
+                },
+                {
+                    "year": 2019,
+                    "start": "2019-07-19",
+                    "end": "2020-07-19",
+                    "current": false,
+                    "coverage": {
+                        "fixtures": {
+                            "events": true,
+                            "lineups": true,
+                            "statistics_fixtures": true,
+                            "statistics_players": false
+                        },
+                        "standings": true,
+                        "players": true,
+                        "top_scorers": true,
+                        "top_assists": true,
+                        "top_cards": true,
+                        "injuries": false,
+                        "predictions": true,
+                        "odds": false
+                    }
+                },
+                {
+                    "year": 2020,
+                    "start": "2020-08-21",
+                    "end": "2021-05-16",
+                    "current": false,
+                    "coverage": {
+                        "fixtures": {
+                            "events": true,
+                            "lineups": true,
+                            "statistics_fixtures": true,
+                            "statistics_players": false
+                        },
+                        "standings": true,
+                        "players": true,
+                        "top_scorers": true,
+                        "top_assists": true,
+                        "top_cards": true,
+                        "injuries": false,
+                        "predictions": true,
+                        "odds": false
+                    }
+                },
+                {
+                    "year": 2021,
+                    "start": "2021-07-23",
+                    "end": "2022-05-21",
+                    "current": false,
+                    "coverage": {
+                        "fixtures": {
+                            "events": true,
+                            "lineups": true,
+                            "statistics_fixtures": true,
+                            "statistics_players": true
+                        },
+                        "standings": true,
+                        "players": true,
+                        "top_scorers": true,
+                        "top_assists": true,
+                        "top_cards": true,
+                        "injuries": false,
+                        "predictions": true,
+                        "odds": false
+                    }
+                },
+                {
+                    "year": 2022,
+                    "start": "2022-07-16",
+                    "end": "2023-05-27",
+                    "current": true,
+                    "coverage": {
+                        "fixtures": {
+                            "events": true,
+                            "lineups": true,
+                            "statistics_fixtures": true,
+                            "statistics_players": true
+                        },
+                        "standings": true,
+                        "players": true,
+                        "top_scorers": true,
+                        "top_assists": true,
+                        "top_cards": true,
+                        "injuries": false,
+                        "predictions": true,
+                        "odds": false
+                    }
+                }
+            ]
+        }
+    ]
+}

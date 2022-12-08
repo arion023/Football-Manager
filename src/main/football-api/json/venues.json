@@ -1,0 +1,1684 @@
+{
+    "get": "venues",
+    "parameters": {
+        "country": "Poland"
+    },
+    "errors": [],
+    "results": 167,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "id": 1245,
+            "name": "Stadion Narodowy",
+            "address": "Aleja Ksi\u0119cia J. Poniatowskiego 1",
+            "city": "Warszawa",
+            "country": "Poland",
+            "capacity": 58145,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1245.png"
+        },
+        {
+            "id": 1254,
+            "name": "Stadion im. Or\u0142a Bia\u0142ego",
+            "address": "Aleja Or\u0142a Bia\u0142ego 1",
+            "city": "Legnica",
+            "country": "Poland",
+            "capacity": 6244,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1254.png"
+        },
+        {
+            "id": 1249,
+            "name": "Stadion Miejski",
+            "address": "ul. S\u0142oneczna 1",
+            "city": "Bia\u0142ystok",
+            "country": "Poland",
+            "capacity": 22372,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1249.png"
+        },
+        {
+            "id": 18628,
+            "name": "Tarczy\u0144ski Arena",
+            "address": "al. \u015al\u0105ska 1",
+            "city": "Wroc\u0142aw",
+            "country": "Poland",
+            "capacity": 42771,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18628.png"
+        },
+        {
+            "id": 1258,
+            "name": "Stadion Miejski im. Henryka Reymana",
+            "address": "ul. Reymonta 22",
+            "city": "Krak\u00f3w",
+            "country": "Poland",
+            "capacity": 33268,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1258.png"
+        },
+        {
+            "id": 1253,
+            "name": "Stadion Miejski Legii Warszawa im. Marsza\u0142ka J\u00f3zefa Pi\u0142sudskiego",
+            "address": "ul. \u0141azienkowska 3",
+            "city": "Warszawa",
+            "country": "Poland",
+            "capacity": 31103,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1253.png"
+        },
+        {
+            "id": 18625,
+            "name": "Stadion im. Ernesta Pohla",
+            "address": "ul. Roosevelta 81",
+            "city": "Zabrze",
+            "country": "Poland",
+            "capacity": 31871,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18625.png"
+        },
+        {
+            "id": 1259,
+            "name": "Stadion im. Kazimierza G\u00f3rskiego",
+            "address": "ul. \u0141ukasiewicza 34",
+            "city": "P\u0142ock",
+            "country": "Poland",
+            "capacity": 12798,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1259.png"
+        },
+        {
+            "id": 1261,
+            "name": "Stadion Ludowy",
+            "address": "ul. Kresowa 1",
+            "city": "Sosnowiec",
+            "country": "Poland",
+            "capacity": 7500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1261.png"
+        },
+        {
+            "id": 18627,
+            "name": "Polsat Plus Arena Gda\u0144sk",
+            "address": "Pokole\u0144 Lechii Gda\u0144sk 1",
+            "city": "Gda\u0144sk",
+            "country": "Poland",
+            "capacity": 43615,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18627.png"
+        },
+        {
+            "id": 1246,
+            "name": "Stadion Miejski",
+            "address": "ul. Olimpijska 5/9, Red\u0142owo",
+            "city": "Gdynia",
+            "country": "Poland",
+            "capacity": 15139,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1246.png"
+        },
+        {
+            "id": 1260,
+            "name": "Stadion Zag\u0142\u0119bia Lubin",
+            "address": "ul. Marii Sk\u0142odowskiej Curie 98",
+            "city": "Lubin",
+            "country": "Poland",
+            "capacity": 16068,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1260.png"
+        },
+        {
+            "id": 1250,
+            "name": "Suzuki Arena",
+            "address": "ul. \u015aciegiennego 8",
+            "city": "Kielce",
+            "country": "Poland",
+            "capacity": 15550,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1250.png"
+        },
+        {
+            "id": 18626,
+            "name": "Stadion Pozna\u0144",
+            "address": "ul. Bu\u0142garska 17",
+            "city": "Pozna\u0144",
+            "country": "Poland",
+            "capacity": 43269,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18626.png"
+        },
+        {
+            "id": 1256,
+            "name": "Stadion Miejski im. Floriana Krygiera",
+            "address": "ul. Kar\u0142owicza 28",
+            "city": "Szczecin",
+            "country": "Poland",
+            "capacity": 18027,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1256.png"
+        },
+        {
+            "id": 1255,
+            "name": "Stadion Miejski",
+            "address": "ul. Stefana Okrzei 20",
+            "city": "Gliwice",
+            "country": "Poland",
+            "capacity": 9913,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1255.png"
+        },
+        {
+            "id": 1247,
+            "name": "Stadion Cracovii im. J\u00f3zefa Pi\u0142sudskiego",
+            "address": "ul. J\u00f3zefa Ka\u0142u\u017cy 1",
+            "city": "Krak\u00f3w",
+            "country": "Poland",
+            "capacity": 15016,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/1247.png"
+        },
+        {
+            "id": 2282,
+            "name": "Stadion MOSiR",
+            "address": "ul. Mickiewicza 13",
+            "city": "Byt\u00f3w",
+            "country": "Poland",
+            "capacity": 5000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2282.png"
+        },
+        {
+            "id": 2283,
+            "name": "Stadion Miejski Chojnice",
+            "address": "ul. Mickiewicza 12",
+            "city": "Chojnice",
+            "country": "Poland",
+            "capacity": 4500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2283.png"
+        },
+        {
+            "id": 2284,
+            "name": "Stadion GOS",
+            "address": "ul. Wita Stwosza 3",
+            "city": "G\u0142og\u00f3w",
+            "country": "Poland",
+            "capacity": 2895,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2284.png"
+        },
+        {
+            "id": 2285,
+            "name": "Stadion ul. Bukowa",
+            "address": "ul. Bukowa 1",
+            "city": "Katowice",
+            "country": "Poland",
+            "capacity": 10052,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2285.png"
+        },
+        {
+            "id": 2286,
+            "name": "Stadion Garbarni przy ul. Barskiej",
+            "address": "ul. Rydl\u00f3wka 23",
+            "city": "Krak\u00f3w",
+            "country": "Poland",
+            "capacity": 4000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2286.png"
+        },
+        {
+            "id": 2287,
+            "name": "Stadion Miejski",
+            "address": "ul. Harcerska 14b",
+            "city": "Jastrz\u0119bie Zdr\u00f3j",
+            "country": "Poland",
+            "capacity": 20000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2287.png"
+        },
+        {
+            "id": 18632,
+            "name": "Stadion Sportowy Bruk-Bet Termalica",
+            "address": "ul. Nieciecza 150",
+            "city": "Nieciecza",
+            "country": "Poland",
+            "capacity": 4666,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18632.png"
+        },
+        {
+            "id": 2289,
+            "name": "Stadion Miejski",
+            "address": "ul. Oleska 51",
+            "city": "Opole",
+            "country": "Poland",
+            "capacity": 5500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2289.png"
+        },
+        {
+            "id": 2290,
+            "name": "Stadion Miejski",
+            "address": "ul. Rychli\u0144skiego 19",
+            "city": "Bielsko-Bia\u0142a",
+            "country": "Poland",
+            "capacity": 15292,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2290.png"
+        },
+        {
+            "id": 2291,
+            "name": "Stadion ul. Kusoci\u0144skiego",
+            "address": "ul. Janusza Kusoci\u0144skiego 2",
+            "city": "Niepo\u0142omice",
+            "country": "Poland",
+            "capacity": 2118,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2291.png"
+        },
+        {
+            "id": 18633,
+            "name": "Miejski Stadion Pi\u0142karski Rak\u00f3w",
+            "address": "ul. Limanowskiego 83",
+            "city": "Cz\u0119stochowa",
+            "country": "Poland",
+            "capacity": 5500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18633.png"
+        },
+        {
+            "id": 2293,
+            "name": "Stadion im. Ojca W\u0142adys\u0142awa Augustynka",
+            "address": "ul. Kili\u0144skiego 47",
+            "city": "Nowy S\u0105cz",
+            "country": "Poland",
+            "capacity": 7000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2293.png"
+        },
+        {
+            "id": 18634,
+            "name": "Stadion Miejski w Mielcu",
+            "address": "ul. Solskiego 1",
+            "city": "Mielec",
+            "country": "Poland",
+            "capacity": 6864,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18634.png"
+        },
+        {
+            "id": 2295,
+            "name": "Stadion OSiR",
+            "address": "ul. Marsza\u0142ka J\u00f3zefa Pi\u0142sudskiego 69A",
+            "city": "Olsztyn",
+            "country": "Poland",
+            "capacity": 16800,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2295.png"
+        },
+        {
+            "id": 2296,
+            "name": "Stadion Miejski",
+            "address": "ul. Edukacji 7",
+            "city": "Tychy",
+            "country": "Poland",
+            "capacity": 15300,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2296.png"
+        },
+        {
+            "id": 10506,
+            "name": "Stadion Groclinu Dyskobolii",
+            "address": "ul. Powsta\u0144c\u00f3w Chocieszy\u0144skich 52",
+            "city": "Grodzisk Wielkopolski",
+            "country": "Poland",
+            "capacity": 5383,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/10506.png"
+        },
+        {
+            "id": 2298,
+            "name": "Stadion Miejski",
+            "address": "ul. Zarzecze 26",
+            "city": "Suwa\u0142ki",
+            "country": "Poland",
+            "capacity": 4800,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/2298.png"
+        },
+        {
+            "id": 12602,
+            "name": "Stadion Miejski LKS Lodz",
+            "address": "Al. Unii Lubelskiej 2",
+            "city": "\u0141\u00f3d\u017a",
+            "country": "Poland",
+            "capacity": 18033,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12602.png"
+        },
+        {
+            "id": 3241,
+            "name": "Stadion GKS-u",
+            "address": "ul. Sportowa 3",
+            "city": "Be\u0142chat\u00f3w",
+            "country": "Poland",
+            "capacity": 5238,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/3241.png"
+        },
+        {
+            "id": 3242,
+            "name": "Stadion Miejski im. Bronis\u0142awa Malinowskiego",
+            "address": "ul. marsz. J\u00f3zefa Pi\u0142sudskiego 14",
+            "city": "Grudzi\u0105dz",
+            "country": "Poland",
+            "capacity": 5323,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/3242.png"
+        },
+        {
+            "id": 18635,
+            "name": "Stadion Lekkoatletyczno-Pi\u0142karski im. Marsza\u0142ka J\u00f3zefa Pi\u0142sudskiego",
+            "address": "ul. Narutowicza 9",
+            "city": "Radom",
+            "country": "Poland",
+            "capacity": 5000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18635.png"
+        },
+        {
+            "id": 5053,
+            "name": "Stadion im. Czes\u0142awa Kobusa",
+            "address": "ul. Glinki 79",
+            "city": "Bydgoszcz",
+            "country": "Poland",
+            "capacity": 15000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5053.png"
+        },
+        {
+            "id": 5054,
+            "name": "Stadion OSiR",
+            "address": "Siedlecka 1",
+            "city": "Police",
+            "country": "Poland",
+            "capacity": 2795,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5054.png"
+        },
+        {
+            "id": 5055,
+            "name": "Stadion Miejski",
+            "address": "I Pu\u0142ku Szwole\u017cer\u00f3w 15a",
+            "city": "Che\u0142m",
+            "country": "Poland",
+            "capacity": 6000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5055.png"
+        },
+        {
+            "id": 5056,
+            "name": "Stadion MOSiR ul. Krakusa",
+            "address": "ul. Krakusa 25",
+            "city": "Elbl\u0105g",
+            "country": "Poland",
+            "capacity": 900,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5056.png"
+        },
+        {
+            "id": 5057,
+            "name": "Stadion Miejski im. Grzegorza Duneckiego",
+            "address": "ul. Gen. J. Bema 23/29",
+            "city": "Toru\u0144",
+            "country": "Poland",
+            "capacity": 6000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5057.png"
+        },
+        {
+            "id": 12608,
+            "name": "Stadion ul. Zielona",
+            "address": "Zielona 9",
+            "city": "S\u0142upsk",
+            "country": "Poland",
+            "capacity": 1500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12608.png"
+        },
+        {
+            "id": 5058,
+            "name": "Stadion WKS Gryf Wejherowo",
+            "address": "ul. Sportowa",
+            "city": "Wejherowo",
+            "country": "Poland",
+            "capacity": 2500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5058.png"
+        },
+        {
+            "id": 5059,
+            "name": "Stadion G\u00f3rnik",
+            "address": "Aleja Jana Paw\u0142a II 13",
+            "city": "\u0141\u0119czna",
+            "country": "Poland",
+            "capacity": 7437,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5059.png"
+        },
+        {
+            "id": 5061,
+            "name": "Miejski Stadion Sportowy",
+            "address": "ul. \u015awi\u0119tokrzyska 11",
+            "city": "Ostrowiec \u015awi\u0119tokrzyski",
+            "country": "Poland",
+            "capacity": 7430,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5061.png"
+        },
+        {
+            "id": 11952,
+            "name": "Legia Training Center",
+            "address": "ul. Legionist\u00f3w 3",
+            "city": "Urszulin",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11952.png"
+        },
+        {
+            "id": 5063,
+            "name": "Stadion Miejski",
+            "address": "ul. Agrykola 8",
+            "city": "Elbl\u0105g",
+            "country": "Poland",
+            "capacity": 7000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5063.png"
+        },
+        {
+            "id": 5064,
+            "name": "Stadion Miejski",
+            "address": "ul. Kardyna\u0142a Stefana Wyszy\u0144skiego 8",
+            "city": "Zambr\u00f3w",
+            "country": "Poland",
+            "capacity": 4000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5064.png"
+        },
+        {
+            "id": 5065,
+            "name": "Stadion ROSRRiT",
+            "address": "ul. Jana Paw\u0142a II 2a (ul. P\u00f3\u0142nocna 2a)",
+            "city": "Siedlce",
+            "country": "Poland",
+            "capacity": 8000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5065.png"
+        },
+        {
+            "id": 5066,
+            "name": "Stadion 700-lecia \u015arody Wielkopolskiej",
+            "address": "Sportowa 12",
+            "city": "\u015aroda Wielkopolska",
+            "country": "Poland",
+            "capacity": 3115,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5066.png"
+        },
+        {
+            "id": 5067,
+            "name": "Stadion MOSiR",
+            "address": "ul. Gliwicka 72",
+            "city": "Rybnik",
+            "country": "Poland",
+            "capacity": 10304,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5067.png"
+        },
+        {
+            "id": 5068,
+            "name": "Stadion BTS Rekord",
+            "address": "ul. Startowa 13",
+            "city": "Bielsko-Bia\u0142a",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5068.png"
+        },
+        {
+            "id": 5075,
+            "name": "Stadion Stal",
+            "address": "ul. Hetma\u0144ska 69",
+            "city": "Rzesz\u00f3w",
+            "country": "Poland",
+            "capacity": 12700,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5075.png"
+        },
+        {
+            "id": 19234,
+            "name": "O\u015brodek Sportowy Kolejarz",
+            "address": "ul. Alfreda 1",
+            "city": "Katowice",
+            "country": "Poland",
+            "capacity": 1500,
+            "surface": "artificial turf",
+            "image": "https://media.api-sports.io/football/venues/19234.png"
+        },
+        {
+            "id": 5071,
+            "name": "Stadion Miejski",
+            "address": "ul. Cicha 6",
+            "city": "Chorz\u00f3w",
+            "country": "Poland",
+            "capacity": 9500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5071.png"
+        },
+        {
+            "id": 5073,
+            "name": "Stadion OSiR Wis\u0142a",
+            "address": "al. Niepodleg\u0142o\u015bci 2",
+            "city": "Tarnobrzeg",
+            "country": "Poland",
+            "capacity": 3676,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5073.png"
+        },
+        {
+            "id": 5074,
+            "name": "Stadion MOSiR",
+            "address": "ul. Sportowa 1",
+            "city": "Brzeg",
+            "country": "Poland",
+            "capacity": 2100,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5074.png"
+        },
+        {
+            "id": 11362,
+            "name": "Podkarpackie Centrum Pi\u0142ki No\u017cnej",
+            "address": "ul. Hutnicza 15",
+            "city": "Stalowa Wola",
+            "country": "Poland",
+            "capacity": 3764,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11362.png"
+        },
+        {
+            "id": 5077,
+            "name": "Stadion Miejski",
+            "address": "ul. Ceglana 1",
+            "city": "Stargard Szczeci\u0144ski",
+            "country": "Poland",
+            "capacity": 6000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5077.png"
+        },
+        {
+            "id": 5078,
+            "name": "Stadion OSiR ul. Olimpijska",
+            "address": "ul. Olimpijska 1 / ul. My\u015bliborska 1",
+            "city": "Gorz\u00f3w Wielkopolski",
+            "country": "Poland",
+            "capacity": 8000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5078.png"
+        },
+        {
+            "id": 5079,
+            "name": "Stadion Miejski w Skierniewicach",
+            "address": "Pomologiczna 10",
+            "city": "Skierniewice",
+            "country": "Poland",
+            "capacity": 6000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5079.png"
+        },
+        {
+            "id": 5080,
+            "name": "Stadion Miejski Widzewa \u0141\u00f3d\u017a",
+            "address": "al. Pi\u0142sudskiego 138",
+            "city": "\u0141\u00f3d\u017a",
+            "country": "Poland",
+            "capacity": 18018,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5080.png"
+        },
+        {
+            "id": 5082,
+            "name": "Stadion Znicza (MZOS)",
+            "address": "ul. Bohater\u00f3w Warszawy 4",
+            "city": "Pruszk\u00f3w",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5082.png"
+        },
+        {
+            "id": 6319,
+            "name": "Stadion G\u00f3rnik",
+            "address": "ul. Kopalniana 4",
+            "city": "Polkowice",
+            "country": "Poland",
+            "capacity": 4635,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/6319.png"
+        },
+        {
+            "id": 6320,
+            "name": "Stadion Amiki Wronki",
+            "address": "ul. Lesna 15a",
+            "city": "Wronki",
+            "country": "Poland",
+            "capacity": 5296,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/6320.png"
+        },
+        {
+            "id": 6321,
+            "name": "Stadion Miejski w Legionowie im. ks. p\u0142k. Jana Mrugacza",
+            "address": "ul. Parkowa 27a",
+            "city": "Legionowo",
+            "country": "Poland",
+            "capacity": 1730,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/6321.png"
+        },
+        {
+            "id": 7194,
+            "name": "Stadion Wierzbica",
+            "address": null,
+            "city": null,
+            "country": "Poland",
+            "capacity": 1400,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/7194.png"
+        },
+        {
+            "id": 7195,
+            "name": "Stadion MKS-u Korsze",
+            "address": "ul. Wojska Polskiego 39",
+            "city": "Korsze",
+            "country": "Poland",
+            "capacity": 372,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/7195.png"
+        },
+        {
+            "id": 11337,
+            "name": "Stadion Miejski im. Z\u0142otej Jedenastki Kazimierza G\u00f3rskiego",
+            "address": "ul. Podwale 1",
+            "city": "Konin",
+            "country": "Poland",
+            "capacity": 15000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11337.png"
+        },
+        {
+            "id": 11350,
+            "name": "Stadion MOSiR",
+            "address": "Mickiewicza 66a, Mikulczyce",
+            "city": "Zabrze",
+            "country": "Poland",
+            "capacity": 13000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11350.png"
+        },
+        {
+            "id": 8145,
+            "name": "Stadion OSiR w Zamo\u015bciu",
+            "address": "ul. Kr\u00f3lowej Jadwigi 8",
+            "city": "Zamo\u015b\u0107",
+            "country": "Poland",
+            "capacity": 12000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8145.png"
+        },
+        {
+            "id": 8157,
+            "name": "Stadion OSRiR",
+            "address": "ul. \u0141\u00f3dzka 19-29",
+            "city": "Kalisz",
+            "country": "Poland",
+            "capacity": 6232,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8157.png"
+        },
+        {
+            "id": 8161,
+            "name": "Stadion Miejski",
+            "address": "ul. Sportowa 7",
+            "city": "Kluczbork",
+            "country": "Poland",
+            "capacity": 3306,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8161.png"
+        },
+        {
+            "id": 11351,
+            "name": "Akademii Pi\u0142karskiej Miedzi",
+            "address": "ul. \u015awierkowej",
+            "city": "Legnica",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11351.png"
+        },
+        {
+            "id": 8179,
+            "name": "Stadion Pelikan",
+            "address": "ul. Starzy\u0144skiego 6/8",
+            "city": "\u0141owicz",
+            "country": "Poland",
+            "capacity": 4000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8179.png"
+        },
+        {
+            "id": 8183,
+            "name": "Stadion Miejski im. J\u00f3zefa Pi\u0142sudskiego",
+            "address": "Tysi\u0105clecia 74",
+            "city": "Nowy Targ",
+            "country": "Poland",
+            "capacity": 700,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8183.png"
+        },
+        {
+            "id": 11352,
+            "name": "Stadion Szombierek Bytom",
+            "address": "ul. Andrzeja Frycza Modrzewskiego 3",
+            "city": "Bytom",
+            "country": "Poland",
+            "capacity": 20000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11352.png"
+        },
+        {
+            "id": 8186,
+            "name": "Gminny Stadion Sportowy",
+            "address": "Abrahama 11",
+            "city": "St\u0119\u017cyca",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8186.png"
+        },
+        {
+            "id": 8189,
+            "name": "Stadion 1 Maja",
+            "address": "ul. 1 Maja 14",
+            "city": "Wysokie Mazowieckie",
+            "country": "Poland",
+            "capacity": 958,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8189.png"
+        },
+        {
+            "id": 8190,
+            "name": "Stadion Miejski",
+            "address": "ul. Rozwadzka",
+            "city": "Zdzieszowice",
+            "country": "Poland",
+            "capacity": 3500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8190.png"
+        },
+        {
+            "id": 8202,
+            "name": "Stadion im. W\u0142odzimierza Smolarka",
+            "address": "ul. 11-go Listopada 98",
+            "city": "Aleksandr\u00f3w \u0141\u00f3dzki",
+            "country": "Poland",
+            "capacity": 2086,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8202.png"
+        },
+        {
+            "id": 8203,
+            "name": "Stadion Soko\u0142a Ostr\u00f3da",
+            "address": "3 Maja 19",
+            "city": "Ostr\u00f3da",
+            "country": "Poland",
+            "capacity": 4998,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8203.png"
+        },
+        {
+            "id": 5062,
+            "name": "Stadion Miejski",
+            "address": "ul. Sportowa 66",
+            "city": "Nowy Dw\u00f3r Mazowiecki",
+            "country": "Poland",
+            "capacity": 3400,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/5062.png"
+        },
+        {
+            "id": 8225,
+            "name": "Stadion Miejski",
+            "address": "ul. G\u0142\u00f3wna 40",
+            "city": "Janikowo",
+            "country": "Poland",
+            "capacity": 3828,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8225.png"
+        },
+        {
+            "id": 8239,
+            "name": "Stadion Miejski przy Zespole Szk\u00f3\u0142 nr 1",
+            "address": "ul. Sportowa 1",
+            "city": "Bia\u0142a Piska",
+            "country": "Poland",
+            "capacity": 500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8239.png"
+        },
+        {
+            "id": 8240,
+            "name": "Stadion Oporowska",
+            "address": "ul. Oporowska 62",
+            "city": "Wroc\u0142aw",
+            "country": "Poland",
+            "capacity": 8346,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8240.png"
+        },
+        {
+            "id": 11353,
+            "name": "Kompleks Pi\u0142karski 1KS \u015al\u0119za Wroc\u0142aw",
+            "address": "K\u0142okoczycka 5",
+            "city": "Wroc\u0142aw",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "artificial turf",
+            "image": "https://media.api-sports.io/football/venues/11353.png"
+        },
+        {
+            "id": 8242,
+            "name": "Stadion Miejski Skolwin",
+            "address": "Sto\u0142czy\u0144ska 100",
+            "city": "Szczecin",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8242.png"
+        },
+        {
+            "id": 8563,
+            "name": "Stadion im. Zdzis\u0142awa Krzyszkowiaka",
+            "address": "ul. Gda\u0144ska 163",
+            "city": "Bydgoszcz",
+            "country": "Poland",
+            "capacity": 20247,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/8563.png"
+        },
+        {
+            "id": 12727,
+            "name": "Stadion Jaguar Kokoszki",
+            "address": "Budowlanych 49/5",
+            "city": "Gda\u0144sk",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12727.png"
+        },
+        {
+            "id": 11354,
+            "name": "Stadion MOSiR",
+            "address": "ul. Urszuli 3a",
+            "city": "Zielona G\u00f3ra",
+            "country": "Poland",
+            "capacity": 11000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11354.png"
+        },
+        {
+            "id": 11363,
+            "name": "Stadion Miejski",
+            "address": "ul. Warszawska 77",
+            "city": "Radzy\u0144 Podlaski",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11363.png"
+        },
+        {
+            "id": 11355,
+            "name": "Stadion KS Polonia Nysa",
+            "address": "Sudecka 23",
+            "city": "Nysa",
+            "country": "Poland",
+            "capacity": 1500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11355.png"
+        },
+        {
+            "id": 9336,
+            "name": "Stadion MOSiR",
+            "address": "ul. Legion\u00f3w 6",
+            "city": "Krosno",
+            "country": "Poland",
+            "capacity": 2240,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/9336.png"
+        },
+        {
+            "id": 11356,
+            "name": "Stadion Pni\u00f3wek",
+            "address": "\u015awierczewskiego 16a",
+            "city": "Paw\u0142owice \u015al\u0105skie",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11356.png"
+        },
+        {
+            "id": 11992,
+            "name": "Arena Lublin",
+            "address": "ul. Krochmalna",
+            "city": "Lublin",
+            "country": "Poland",
+            "capacity": 15500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11992.png"
+        },
+        {
+            "id": 11326,
+            "name": "Stadion Miejski",
+            "address": "Aleja Mokronoskich 4",
+            "city": "Grodzisk Mazowiecki",
+            "country": "Poland",
+            "capacity": 1514,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11326.png"
+        },
+        {
+            "id": 11327,
+            "name": "Stadion B\u0142onianka",
+            "address": "Legion\u00f3w 3",
+            "city": "B\u0142onie",
+            "country": "Poland",
+            "capacity": 2500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11327.png"
+        },
+        {
+            "id": 11328,
+            "name": "Stadion Huragan",
+            "address": "\u017beromskiego 36",
+            "city": "Mor\u0105g",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11328.png"
+        },
+        {
+            "id": 12153,
+            "name": "O\u015brodek Szkoleniowy Jagiellonii Bia\u0142ystok",
+            "address": "Elewatorska 4",
+            "city": "Bia\u0142ystok",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "artificial turf",
+            "image": "https://media.api-sports.io/football/venues/12153.png"
+        },
+        {
+            "id": 11330,
+            "name": "Stadion Miejski im. Henryka Reymana",
+            "address": "ul. Ko\u015bciuszki 26",
+            "city": "Kutno",
+            "country": "Poland",
+            "capacity": 3500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11330.png"
+        },
+        {
+            "id": 11331,
+            "name": "Stadion im. Braci Gadaj\u00f3w",
+            "address": "Nowowiejska 9/27",
+            "city": "Tomasz\u00f3w Mazowiecki",
+            "country": "Poland",
+            "capacity": 8000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11331.png"
+        },
+        {
+            "id": 11332,
+            "name": "Stadion Polonii im. genera\u0142a Kazimierza Sosnkowskiego",
+            "address": "ul. Konwiktorska 6",
+            "city": "Warszawa",
+            "country": "Poland",
+            "capacity": 7150,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11332.png"
+        },
+        {
+            "id": 11333,
+            "name": "Stadion RKS",
+            "address": "ul. Brze\u017anicka 23",
+            "city": "Radomsko",
+            "country": "Poland",
+            "capacity": 8000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11333.png"
+        },
+        {
+            "id": 11334,
+            "name": "Stadion Gminny",
+            "address": "ul. Sosnkowskiego 3",
+            "city": "Warszawa",
+            "country": "Poland",
+            "capacity": 1500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11334.png"
+        },
+        {
+            "id": 11335,
+            "name": "Stadion Miejski w Wasilkowie",
+            "address": "Supra\u015blska 21",
+            "city": "Wasilk\u00f3w",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11335.png"
+        },
+        {
+            "id": 11336,
+            "name": "Stadion Wikielec",
+            "address": null,
+            "city": "Wikielec",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11336.png"
+        },
+        {
+            "id": 11338,
+            "name": "Narodowy Stadion Rugby",
+            "address": "ul. Sportowa 5/9",
+            "city": "Gdynia",
+            "country": "Poland",
+            "capacity": 3425,
+            "surface": "artificial turf",
+            "image": "https://media.api-sports.io/football/venues/11338.png"
+        },
+        {
+            "id": 11339,
+            "name": "Stadion ZOS Ba\u0142tyk Koszalin",
+            "address": "ul. Andersa 16",
+            "city": "Koszalin",
+            "country": "Poland",
+            "capacity": 4000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11339.png"
+        },
+        {
+            "id": 11340,
+            "name": "Stadion Miejski",
+            "address": "ul. Matejki 22",
+            "city": "\u015awinouj\u015bcie",
+            "country": "Poland",
+            "capacity": 3070,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11340.png"
+        },
+        {
+            "id": 11341,
+            "name": "Stadion im. Stanis\u0142awa Figasa",
+            "address": "ul. Fa\u0142ata 34",
+            "city": "Koszalin",
+            "country": "Poland",
+            "capacity": 25000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11341.png"
+        },
+        {
+            "id": 11342,
+            "name": "Stadion Miejski",
+            "address": "ul. Sportowa 6",
+            "city": "Jarocin",
+            "country": "Poland",
+            "capacity": 1984,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11342.png"
+        },
+        {
+            "id": 11343,
+            "name": "Stadion Miejski im. Sebastiana Karpiniuka",
+            "address": "\u015aliwi\u0144skiego 10",
+            "city": "Ko\u0142obrzeg",
+            "country": "Poland",
+            "capacity": 3014,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11343.png"
+        },
+        {
+            "id": 11344,
+            "name": "Stadion MKS Mieszko Gniezno",
+            "address": "Strumykowa 8",
+            "city": "Gniezno",
+            "country": "Poland",
+            "capacity": 5000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11344.png"
+        },
+        {
+            "id": 11345,
+            "name": "Stadion OSiR im. Stanis\u0142awa B\u0105ka",
+            "address": "ul. Ko\u015bciuszki 59",
+            "city": "W\u0105growiec",
+            "country": "Poland",
+            "capacity": 4460,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11345.png"
+        },
+        {
+            "id": 11346,
+            "name": "Stadion Miejski",
+            "address": "Sportowa 1",
+            "city": "Przodkowo",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11346.png"
+        },
+        {
+            "id": 11347,
+            "name": "Stadion Miejski",
+            "address": "Aleja 600-lecia 21",
+            "city": "Kleczew",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11347.png"
+        },
+        {
+            "id": 11348,
+            "name": "Stadion Miejski im. Kazimierza Deyny",
+            "address": "Olimpijczyk\u00f3w Starogardzkich 1",
+            "city": "Starogard Gda\u0144ski",
+            "country": "Poland",
+            "capacity": 5000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11348.png"
+        },
+        {
+            "id": 11349,
+            "name": "Stadion Miejski",
+            "address": "ul. \u015awi\u0119tego Marcina 1",
+            "city": "Swarz\u0119dz",
+            "country": "Poland",
+            "capacity": 1500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11349.png"
+        },
+        {
+            "id": 11357,
+            "name": "Stadion w Gaciu",
+            "address": "Ga\u0107 10",
+            "city": "Ga\u0107",
+            "country": "Poland",
+            "capacity": 600,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11357.png"
+        },
+        {
+            "id": 12619,
+            "name": "Panatoni Arena",
+            "address": "ul. Uzdrowiskowa 41",
+            "city": "Gocza\u0142kowice-Zdr\u00f3j",
+            "country": "Poland",
+            "capacity": 1500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12619.png"
+        },
+        {
+            "id": 11359,
+            "name": "Stadion Towarzystwa Sportowego Gwarek",
+            "address": "ul. Wojska Polskiego 2",
+            "city": "Tarnowskie G\u00f3ry",
+            "country": "Poland",
+            "capacity": 999,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11359.png"
+        },
+        {
+            "id": 11360,
+            "name": "Stadion OSiR",
+            "address": "ul. Sportowa",
+            "city": "\u017bmigr\u00f3d",
+            "country": "Poland",
+            "capacity": 900,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11360.png"
+        },
+        {
+            "id": 11361,
+            "name": "Stadion OSiR w \u015awidnicy",
+            "address": "\u015al\u0105ska 35",
+            "city": "\u015awidnica",
+            "country": "Poland",
+            "capacity": 4000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11361.png"
+        },
+        {
+            "id": 11364,
+            "name": "Stadion \u015awidnik",
+            "address": "Sportowa 2",
+            "city": "\u015awidnik",
+            "country": "Poland",
+            "capacity": 3000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11364.png"
+        },
+        {
+            "id": 11365,
+            "name": "Boisko przy ul. Wielickiej",
+            "address": "Wielicka 101",
+            "city": "Krak\u00f3w",
+            "country": "Poland",
+            "capacity": 3000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11365.png"
+        },
+        {
+            "id": 11366,
+            "name": "Stadion Jutrzenka Giebu\u0142t\u00f3w",
+            "address": "Sportowa 3",
+            "city": "Giebu\u0142t\u00f3w",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11366.png"
+        },
+        {
+            "id": 11367,
+            "name": "Stadion Korona",
+            "address": "ul. Szczepaniaka 29",
+            "city": "Kielce",
+            "country": "Poland",
+            "capacity": 6000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11367.png"
+        },
+        {
+            "id": 12620,
+            "name": "Stadion Miejski w Soko\u0142owie Podlaskim",
+            "address": "Lipowa 50",
+            "city": "Soko\u0142\u00f3w Podlaski",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12620.png"
+        },
+        {
+            "id": 11369,
+            "name": "Stadion Miejski",
+            "address": "ul. Sportowa 1",
+            "city": "Sieniawa",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11369.png"
+        },
+        {
+            "id": 11370,
+            "name": "Stadion MOSiR",
+            "address": "Aleja Niepodleg\u0142o\u015bci 44",
+            "city": "Kra\u015bnik",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11370.png"
+        },
+        {
+            "id": 11371,
+            "name": "Stadion MOSiR",
+            "address": "ul. gen. J\u00f3zefa Hauke-Bosaka 1",
+            "city": "Pu\u0142awy",
+            "country": "Poland",
+            "capacity": 4418,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11371.png"
+        },
+        {
+            "id": 11372,
+            "name": "Miejski Stadion Sportowy Sandomierz",
+            "address": "ul. Kose\u0142y 3a",
+            "city": "Sandomierz",
+            "country": "Poland",
+            "capacity": 2500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11372.png"
+        },
+        {
+            "id": 11373,
+            "name": "Stadion Miejski",
+            "address": "Parkowa 1",
+            "city": "D\u0119bica",
+            "country": "Poland",
+            "capacity": 3000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11373.png"
+        },
+        {
+            "id": 18851,
+            "name": "Stadion Gminny Wi\u0105zownica",
+            "address": "ul. Sportowa",
+            "city": "Wi\u0105zownica",
+            "country": "Poland",
+            "capacity": 1500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18851.png"
+        },
+        {
+            "id": 11374,
+            "name": "Stadion Miejski w W\u00f3lce Pe\u0142ki\u0144skiej",
+            "address": null,
+            "city": "W\u00f3lka Pe\u0142ki\u0144ska",
+            "country": "Poland",
+            "capacity": 800,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/11374.png"
+        },
+        {
+            "id": 12142,
+            "name": "Stadion w \u0141ag\u00f3wie",
+            "address": "ul. Zap\u0142otnia 1",
+            "city": "\u0141ag\u00f3w",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "artificial turf",
+            "image": "https://media.api-sports.io/football/venues/12142.png"
+        },
+        {
+            "id": 12019,
+            "name": "Stadion Miejski",
+            "address": "ul. Sienkiewicza 1",
+            "city": "I\u0142awa",
+            "country": "Poland",
+            "capacity": 5000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12019.png"
+        },
+        {
+            "id": 7922,
+            "name": "Stadion Miejski",
+            "address": "ul. Pu\u0142askiego 5",
+            "city": "Namys\u0142\u00f3w",
+            "country": "Poland",
+            "capacity": 2460,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/7922.png"
+        },
+        {
+            "id": 12293,
+            "name": "Stadion Miejski",
+            "address": "ul. Bogumi\u0144ska 8",
+            "city": "Wodzis\u0142aw \u015al\u0105ski",
+            "country": "Poland",
+            "capacity": 6620,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12293.png"
+        },
+        {
+            "id": 12624,
+            "name": "Stadion KS Wieczysta",
+            "address": "Kazimierza Cha\u0142upnika 16",
+            "city": "Krak\u00f3w",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12624.png"
+        },
+        {
+            "id": 12626,
+            "name": "Boisko MKS \u015al\u0105sk \u015awi\u0119toch\u0142owice",
+            "address": "\u0141agiewnicka 80",
+            "city": "\u015awi\u0119toch\u0142owice",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12626.png"
+        },
+        {
+            "id": 12155,
+            "name": "Stadion Miejski",
+            "address": "Zbylitowska 3",
+            "city": "Tarn\u00f3w",
+            "country": "Poland",
+            "capacity": 15000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12155.png"
+        },
+        {
+            "id": 12704,
+            "name": "Stadion Miejski MOSIR Gi\u017cycko",
+            "address": "Stanis\u0142awa Moniuszki 5",
+            "city": "Gi\u017cycko",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12704.png"
+        },
+        {
+            "id": 18845,
+            "name": "Stadion Miejski",
+            "address": "ul. 11 Listopada 57",
+            "city": "Bia\u0142obrzegi",
+            "country": "Poland",
+            "capacity": 5000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18845.png"
+        },
+        {
+            "id": 12154,
+            "name": "Stadion Miejski",
+            "address": "ul. Sportowa 4",
+            "city": "Szczuczyn",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12154.png"
+        },
+        {
+            "id": 18846,
+            "name": "Akademia \u0141KS \u0141\u00f3d\u017a",
+            "address": "Kra\u0144cowa 19",
+            "city": "\u0141\u00f3d\u017a",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "artificial turf",
+            "image": "https://media.api-sports.io/football/venues/18846.png"
+        },
+        {
+            "id": 12731,
+            "name": "Stadion Miejsko-Gminny w Nowych Skalmierzycach",
+            "address": "Mostowa 1a",
+            "city": "Nowe Skalmierzyce",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12731.png"
+        },
+        {
+            "id": 18706,
+            "name": "Stadion GOTiS",
+            "address": "ul. Sportowa 1",
+            "city": "Gniewino",
+            "country": "Poland",
+            "capacity": 1010,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18706.png"
+        },
+        {
+            "id": 18849,
+            "name": "Stadion Miejski Gubin",
+            "address": "Genera\u0142a Sikorskiego 89",
+            "city": "Gubin",
+            "country": "Poland",
+            "capacity": 3000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18849.png"
+        },
+        {
+            "id": 19259,
+            "name": "Stadion Miejski",
+            "address": "Z\u0142otnicza 12",
+            "city": "Jelenia G\u00f3ra",
+            "country": "Poland",
+            "capacity": 1558,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/19259.png"
+        },
+        {
+            "id": 12156,
+            "name": "Stadion MKS Czarni Po\u0142aniec",
+            "address": "Sportowa 1",
+            "city": "Po\u0142aniec",
+            "country": "Poland",
+            "capacity": 900,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12156.png"
+        },
+        {
+            "id": 12157,
+            "name": "Stadion Miejski",
+            "address": "Aleja Sportowa 8",
+            "city": "Tomasz\u00f3w Lubelski",
+            "country": "Poland",
+            "capacity": 3000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12157.png"
+        },
+        {
+            "id": 12392,
+            "name": "Stadion Kujawiaka W\u0142oc\u0142awek",
+            "address": "ul. Le\u015bna 53A",
+            "city": "W\u0142oc\u0142awek",
+            "country": "Poland",
+            "capacity": 4840,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12392.png"
+        },
+        {
+            "id": 12633,
+            "name": "Stadion GKS Glinik w Gorlicach",
+            "address": "Henryka Sienkiewicza 15",
+            "city": "Gorlice",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12633.png"
+        },
+        {
+            "id": 12732,
+            "name": "Stadion Miejski",
+            "address": "ul. J\u00f3zefa Pi\u0142sudskiego",
+            "city": "Ostr\u00f3w Wielkopolski",
+            "country": "Poland",
+            "capacity": 12000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12732.png"
+        },
+        {
+            "id": 12733,
+            "name": "Boisko Gedania 1922 Gda\u0144sk",
+            "address": "gen. J\u00f3zefa Hallera 201",
+            "city": "Gda\u0144sk",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/12733.png"
+        },
+        {
+            "id": 19263,
+            "name": "Stadion Ruch Radzionk\u00f3w",
+            "address": "Knosa\u0142y 113",
+            "city": "Radzionk\u00f3w",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/19263.png"
+        },
+        {
+            "id": 18707,
+            "name": "Stadion OSiR",
+            "address": "ul Sportowa 1",
+            "city": "Solec Kujawski",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18707.png"
+        },
+        {
+            "id": 18719,
+            "name": "Stadion Miejski",
+            "address": "K\u0142odnicka 58",
+            "city": "Ruda \u015al\u0105ska-Halemba",
+            "country": "Poland",
+            "capacity": 3000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18719.png"
+        },
+        {
+            "id": 18726,
+            "name": "Stadion Ku\u017ani Ustro\u0144",
+            "address": "Sportowa 3",
+            "city": "Ustro\u0144, Poland",
+            "country": "Poland",
+            "capacity": 680,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18726.png"
+        },
+        {
+            "id": 18847,
+            "name": "Stadion MOSiR",
+            "address": "Sportowa 1",
+            "city": "Sieradz",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18847.png"
+        },
+        {
+            "id": 18848,
+            "name": "Stadion Miejski",
+            "address": "\u015awierczewskiego 3",
+            "city": "Wolin",
+            "country": "Poland",
+            "capacity": 1000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18848.png"
+        },
+        {
+            "id": 18850,
+            "name": "MZKS G\u0142og\u00f3w Boisko pi\u0142karskie",
+            "address": "ul. Wita Stwosza 3",
+            "city": "G\u0142og\u00f3w",
+            "country": "Poland",
+            "capacity": 2000,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18850.png"
+        },
+        {
+            "id": 18902,
+            "name": "Stadion im. Jerzego Micha\u0142owicza",
+            "address": "Wroc\u0142awska 47",
+            "city": "Dzier\u017coni\u00f3w",
+            "country": "Poland",
+            "capacity": 4500,
+            "surface": "grass",
+            "image": "https://media.api-sports.io/football/venues/18902.png"
+        }
+    ]
+}
