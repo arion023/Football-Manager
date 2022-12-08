@@ -47,6 +47,7 @@ public class DatabaseController {
         if (conditions.isEmpty()) {
             query.concat(WHERE + " " + String.join(" and ", conditions));
         }
+        query.concat(" FETCH FIRST 50 ROWS ONLY");
         return query;
     }
 }

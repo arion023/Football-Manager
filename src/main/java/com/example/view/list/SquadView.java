@@ -24,8 +24,8 @@ public class SquadView extends HorizontalLayout {
     public SquadView() {
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
-        var players = getSamplePlayers();
-//        var players = Player.getAllPlayersFromDB();
+//        var players = getSamplePlayers();
+        var players = Player.getAllPlayersFromDB().subList(0,50);
         add(pitchLayout(players), playerListLayout(players));
     }
 

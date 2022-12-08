@@ -6,13 +6,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
@@ -32,11 +28,22 @@ public class Player extends Person {
         this.position = position;
     }
 
+    //    public static List<Player> getAllPlayersFromDB() {
+//        DatabaseController dbController = new DatabaseController();
+//        String query = dbController.createSelectQuery(DatabaseConfig.PLAYERS_TABLE_NAME);
+//        ResultSet resultSet = dbController.doQuery(query);
+//        return resultSetToPlayers(resultSet);
+//    }
     public static List<Player> getAllPlayersFromDB() {
         DatabaseController dbController = new DatabaseController();
         String query = dbController.createSelectQuery(DatabaseConfig.PLAYERS_TABLE_NAME);
-        ResultSet resultSet = dbController.doQuery(query);
-        return resultSetToPlayers(resultSet);
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery(query)) {
+            return resultSetToPlayers(result);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static List<Player> getAllPlayersFromClub(int clubId) {
@@ -52,25 +59,25 @@ public class Player extends Person {
         Map<Integer, Club> clubs = new HashMap<>();
         try {
             while (result.next()) {
-                var id = result.getInt("id");
+                var id = result.getInt("player_id");
                 var name = result.getString("name");
                 var surname = result.getString("surname");
                 var birthDate = result.getDate("birth_date");
-                var countryId = result.getInt("country_id");
+                var countryId = result.getString("country_id");
                 var clubId = result.getInt("club_id");
-                var statsId = result.getInt("statistics_id");
-                var position = result.getString("position");
+                var statsId = result.getInt("player_stats_id");
+                var position = result.getString("position_id");
 
-                Country country = countries.getOrDefault(countryId, Country.getCountryById(countryId));
-                Club club = clubs.getOrDefault(clubId, Club.getClubById(clubId));
-                List<Club> clubsHistory = getClubsHistory(id);
-                Statistics statistics = Statistics.getStatisticsById(statsId);
+//                Country country = countries.getOrDefault(countryId, Country.getCountryById(countryId));
+//                Club club = clubs.getOrDefault(clubId, Club.getClubById(clubId));
+//                List<Club> clubsHistory = getClubsHistory(id);
+//                Statistics statistics = Statistics.getStatisticsById(statsId);
                 Position positionEnum = getPositionEnum(position);
 
-                countries.put(countryId, country);
-                clubs.put(clubId, club);
+//                countries.put(countryId, country);
+//                clubs.put(clubId, club);
 
-                Player player = new Player(id, name, surname, birthDate.toLocalDate(), country, club, clubsHistory, statistics, positionEnum);
+                Player player = new Player(id, name, surname, birthDate.toLocalDate(), null, null, null, null, positionEnum);
                 players.add(player);
             }
         } catch (SQLException e) {
@@ -85,7 +92,9 @@ public class Player extends Person {
     }
 
     private static Position getPositionEnum(String position) {
-        return Position.GK;
+        var positions = Position.values();
+        int index = new Random().nextInt(positions.length);
+        return positions[index];
     }
 
     @Getter

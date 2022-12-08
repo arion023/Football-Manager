@@ -9,14 +9,14 @@ public class DatabaseConfig {
     public static final String FROM = "FROM";
     public static final String WHERE = "WHERE";
 
-    public static final String PLAYERS_TABLE_NAME = "players";
+    public static final String PLAYERS_TABLE_NAME = "player";
     public static final String STATISTICS_TABLE_NAME = "player_stats";
-    public static final String COACHES_TABLE_NAME = "coaches";
-    public static final String REFEREES_TABLE_NAME = "referees";
-    public static final String CLUBS_TABLE_NAME = "clubs";
+    public static final String COACHES_TABLE_NAME = "coach";
+    public static final String REFEREES_TABLE_NAME = "referee";
+    public static final String CLUBS_TABLE_NAME = "club";
     public static final String CLUB_HISTORY_TABLE_NAME = "club_history";
-    public static final String STADIUM_TABLE_NAME = "stadiums";
-    public static final String LEAGUES_TABLE_NAME = "leagues";
-    public static final String MATCHES_TABLE_NAME = "matches";
+    public static final String STADIUM_TABLE_NAME = "stadium";
+    public static final String LEAGUES_TABLE_NAME = "league";
+    public static final String MATCHES_TABLE_NAME = "match";
     public static final String MATCH_EVENTS_TABLE_NAME = "match_events";
 }
