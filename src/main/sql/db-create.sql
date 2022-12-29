@@ -3,8 +3,8 @@ DROP TABLE card;
 DROP TABLE match;
 DROP TABLE referee;
 DROP TABLE trophy;
-DROP TABLE player_club_history;
-DROP TABLE coach_club_history;
+DROP TABLE player_history;
+DROP TABLE coach_history;
 DROP TABLE coach;
 DROP TABLE player;
 DROP TABLE player_stats;
@@ -77,7 +77,7 @@ CREATE TABLE position
 
 CREATE TABLE player_stats
 (
-    player_stats_id NUMBER NOT NULL CONSTRAINT player_stats_pk PRIMARY KEY,
+    player_id       NUMBER NOT NULL CONSTRAINT player_stats_pk PRIMARY KEY,
     overall         NUMBER NOT NULL,
     pace            NUMBER NOT NULL,
     shooting        NUMBER NOT NULL,
@@ -93,7 +93,6 @@ CREATE TABLE player
     player_id       NUMBER NOT NULL CONSTRAINT player_pk PRIMARY KEY,
     name            VARCHAR2(20) NOT NULL,
     surname         VARCHAR2(40) NOT NULL,
-    player_stats_id NUMBER, -- should be NOT NULL
     birth_date      DATE,
     club_id         NUMBER,
     position_id     NUMBER,
@@ -101,18 +100,18 @@ CREATE TABLE player
 );
 
 -- join to one club history?
-CREATE TABLE player_club_history
+CREATE TABLE player_history
 (
-    club_history_id NUMBER NOT NULL CONSTRAINT club_history_pk PRIMARY KEY,
+    club_history_id NUMBER NOT NULL CONSTRAINT player_history_pk PRIMARY KEY,
     player_id       NUMBER NOT NULL,
     club_id         NUMBER NOT NULL,
     start_date      DATE NOT NULL,
     end_date        DATE
 );
 
-CREATE TABLE coach_club_history
+CREATE TABLE coach_history
 (
-    club_history_id NUMBER NOT NULL CONSTRAINT club_history_pk PRIMARY KEY,
+    coach_history_id NUMBER NOT NULL CONSTRAINT coach_history_pk PRIMARY KEY,
     coach_id        NUMBER NOT NULL,
     club_id         NUMBER NOT NULL,
     start_date      DATE NOT NULL,
@@ -200,8 +199,8 @@ ALTER TABLE coach ADD CONSTRAINT coach_club_fk FOREIGN KEY(club_id)
 
 -- PLAYER
 
-ALTER TABLE player ADD CONSTRAINT player_player_stats_fk FOREIGN KEY(player_stats_id)
-REFERENCES player_stats (player_stats_id);
+ALTER TABLE player ADD CONSTRAINT player_stats_fk FOREIGN KEY(player_id)
+REFERENCES player_stats(player_id);
 
 ALTER TABLE player ADD CONSTRAINT player_position_fk FOREIGN KEY(position_id)
 REFERENCES position (position_id);
@@ -215,18 +214,18 @@ REFERENCES country (country_id);
 
 --PLAYER CLUB HISTORY
 
-ALTER TABLE player_club_history ADD CONSTRAINT player_club_history_club_fk FOREIGN KEY(club_id)
+ALTER TABLE player_history ADD CONSTRAINT player_history_club_fk FOREIGN KEY(club_id)
 REFERENCES club (club_id);
 
-ALTER TABLE player_club_history ADD CONSTRAINT player_club_history_player_fk FOREIGN KEY(player_id)
+ALTER TABLE player_history ADD CONSTRAINT player_history_player_fk FOREIGN KEY(player_id)
     REFERENCES player (player_id);
 
 --COACH CLUB HISTORY
 
-ALTER TABLE coach_club_history ADD CONSTRAINT coach_club_history_club_fk FOREIGN KEY(club_id)
+ALTER TABLE coach_history ADD CONSTRAINT coach_history_club_fk FOREIGN KEY(club_id)
     REFERENCES club (club_id);
 
-ALTER TABLE coach_club_history ADD CONSTRAINT coach_club_history_player_fk FOREIGN KEY(coach_id)
+ALTER TABLE coach_history ADD CONSTRAINT coach_history_player_fk FOREIGN KEY(coach_id)
     REFERENCES coach (coach_id);
 
 
