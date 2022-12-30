@@ -106,7 +106,6 @@ INSERT INTO player_stats VALUES (290643, 68, 70.0, 52.0, 66.0, 58.0, 98.0, 64.0 
 INSERT INTO player VALUES ( 290643, 'Jakub', 'Jasionek', '2004-07-02', 336, 1, 'PL' );
 INSERT INTO player_stats VALUES (300955, 56, 57, 35, 70, 43, 82, 52 );
 INSERT INTO player VALUES ( 300955, 'Michal', 'Wisniewski', '1999-05-02', 350, 2, 'PL' );
-
 INSERT INTO player_stats VALUES (304052, 67, 72, 63, 48, 66, 82, 73 );
 INSERT INTO player VALUES ( 304052, 'Jakub', 'Orpik', '2003-10-26', 336, 3, 'PL' );
 INSERT INTO player_stats VALUES (323505, 55, 35, 57, 69, 40, 79, 53 );

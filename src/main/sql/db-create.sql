@@ -1,8 +1,9 @@
 /* DROPPING TABLES */
-DROP TABLE card;
+DROP TABLE event;
+DROP TABLE event_type;
+DROP TABLE trophy;
 DROP TABLE match;
 DROP TABLE referee;
-DROP TABLE trophy;
 DROP TABLE player_history;
 DROP TABLE coach_history;
 DROP TABLE coach;
@@ -13,6 +14,7 @@ DROP TABLE club;
 DROP TABLE stadium;
 DROP TABLE league;
 DROP TABLE country;
+
 
 /* DATES IN THIS FORMAT */
 
@@ -41,8 +43,7 @@ CREATE TABLE stadium
     name            VARCHAR2(60) NOT NULL,
     address         VARCHAR2(60),
     country_id      CHAR(2),
-    capacity        NUMBER,
-    build_date      DATE
+    capacity        NUMBER
 );
 
 
@@ -150,12 +151,21 @@ stadium_id          NUMBER NOT NULL,
 referee_id          NUMBER NOT NULL
 );
 
-CREATE TABLE card
+CREATE TABLE event
 (
-    card_id         NUMBER NOT NULL CONSTRAINT card_pk PRIMARY KEY,
-    match_id        NUMBER NOT NULL,
-    player_id       NUMBER NOT NULL
+    event_id        NUMBER NOT NULL CONSTRAINT event_pk PRIMARY KEY,
+    match_id        NUMBER,
+    player_id       NUMBER,
+    event_type_id   NUMBER
 );
+
+CREATE TABLE event_type
+(
+  event_type_id     NUMBER NOT NULL CONSTRAINT event_type_id PRIMARY KEY,
+  name              VARCHAR(20)
+);
+
+
 
 
 
@@ -253,14 +263,16 @@ ALTER TABLE match ADD CONSTRAINT match_referee FOREIGN KEY(referee_id)
 REFERENCES referee (referee_id);
 
 
---CARDS
+--EVENT
 
-ALTER TABLE card ADD CONSTRAINT cards_match_fk FOREIGN KEY(match_id)
+ALTER TABLE event ADD CONSTRAINT event_match_fk FOREIGN KEY(match_id)
 REFERENCES match (match_id);
 
-ALTER TABLE card ADD CONSTRAINT cards_player_fk FOREIGN KEY(player_id)
+ALTER TABLE event ADD CONSTRAINT event_player_fk FOREIGN KEY(player_id)
 REFERENCES player (player_id);
 
+ALTER TABLE event ADD CONSTRAINT event_event_type_fk FOREIGN KEY(event_type_id)
+REFERENCES event_type (event_type_id);
 
 
 
