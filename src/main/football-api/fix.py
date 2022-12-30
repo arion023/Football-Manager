@@ -72,7 +72,7 @@ def downloadPage(url):
 def sql_generate_player_positions(path):
     lines = getSqlContent(path)
 
-    with open(path, 'w') as fp:
+    with open('new_' + path, 'w') as fp:
         for line in lines:
             attrs_idx = [m.start() for m in re.finditer(',', line)]
             if line.find(' player ') != -1 and len(attrs_idx) == 6:
@@ -164,7 +164,7 @@ def sql_generate_players_stats(path):
             fp.write(line)
 
 def main():
-    path = 'sql/players.sql'
+    path = 'players.sql'
     sql_generate_player_positions(path)
     #sql_generate_players_stats(path)
 
