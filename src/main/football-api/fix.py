@@ -17,12 +17,12 @@ class Position(Enum):
     MIDFIELDER = 3
     FORWARD = 4
 
-def getSqlContent(path):
+def get_SQL_content(path):
     with open(path, 'r') as fp:
         lines = fp.readlines()
     return lines
 
-def getSqlValues(line):
+def get_SQL_values(line):
     values = []
     line = line.split(' ')
     flag_values = False
@@ -69,14 +69,14 @@ def downloadPage(url):
     soup = bs(sauce, 'html5lib')
     return soup
 
-def sql_generate_player_positions(path):
-    lines = getSqlContent(path)
+def generate_SQL_player_positions(path):
+    lines = get_SQL_content(path)
 
     with open('new_' + path, 'w') as fp:
         for line in lines:
             attrs_idx = [m.start() for m in re.finditer(',', line)]
             if line.find(' player ') != -1 and len(attrs_idx) == 6:
-                values = getSqlValues(line)
+                values = get_SQL_values(line)
                 if values[-2] == "NULL":
                     position = searchPosition(values[1], values[2])
                     if position != -1:
@@ -87,29 +87,25 @@ def sql_generate_player_positions(path):
 
 
 #poss_idx 1 = bramkarz, 2 = obronca, 3 = pomocnik, 4 = napastnik
-def sql_generate_players_stats(path):
-    lines = getSqlContent(path)
-
+def generate_SQL_players_stats(path):
+    lines = get_SQL_content(path)
 
     with open(path, 'w') as fp:
         error_lines = []
         for line in lines:
             attrs_idx = [m.start() for m in re.finditer(',', line)]
             if line.find(' player ') != -1 and len(attrs_idx) == 6:
+                stats = []
                 if line[attrs_idx[5] - 1].isdigit():
-                    stat_sql = 'INSERT INTO player_stats VALUES ( '
+                    stat_sql = 'INSERT INTO player_stats VALUES ('
                     poss_idx = int(line[attrs_idx[5] - 1])
+                    poss = Position(poss_idx)
+                    player_id = get_SQL_values(line)[0]
 
-                    player_id = line[ attrs_idx[0] - 1]
-                    i  = 2
-                    while(player_id.isdigit()):
-                        player_id = line[attrs_idx[0] - i : attrs_idx[0]]
-                        i += 1
-
-                    if poss_idx == Position.GOALKEEPER:
+                    if poss == Position.GOALKEEPER:
                         stats = np.random.normal(70, 10, 6)
 
-                    elif poss_idx == Position.DEFENDER:
+                    elif poss == Position.DEFENDER:
                         pace = np.random.normal(50, 10)
                         shooting = np.random.normal(40, 10)
                         passing = np.random.normal(70, 10)
@@ -118,7 +114,7 @@ def sql_generate_players_stats(path):
                         physical = np.random.normal(70, 10)
                         stats = [pace, shooting, passing, dribbling, defense, physical]
 
-                    elif poss_idx == Position.MIDFIELDER:
+                    elif poss == Position.MIDFIELDER:
                         pace = np.random.normal(70, 10)
                         shooting = np.random.normal(70, 10)
                         passing = np.random.normal(70, 10)
@@ -127,7 +123,7 @@ def sql_generate_players_stats(path):
                         physical = np.random.normal(70, 10)
                         stats = [pace, shooting, passing, dribbling, defense, physical]
 
-                    elif poss_idx == Position.FORWARD:
+                    elif poss == Position.FORWARD:
                         pace = np.random.normal(80, 10)
                         shooting = np.random.normal(80, 10)
                         passing = np.random.normal(70, 10)
@@ -135,6 +131,9 @@ def sql_generate_players_stats(path):
                         defense = np.random.normal(30, 10)
                         physical = np.random.normal(70, 10)
                         stats = [pace, shooting, passing, dribbling, defense, physical]
+
+                    else:
+                        raise Exception(ValueError(f'Error vlaues is: {poss_idx}'))
 
                     for i in range(len(stats)):
                         stats[i] = round(stats[i])
@@ -159,14 +158,14 @@ def sql_generate_players_stats(path):
                 if line.find(' player_stats ') == -1:
                     fp.write(line)
 
-        fp.write('\nERRORS\n')
+        fp.write('\n--ERRORS\n\n')
         for line in error_lines:
             fp.write(line)
 
 def main():
-    path = 'players.sql'
-    sql_generate_player_positions(path)
-    #sql_generate_players_stats(path)
+    path = 'sql/workspace/players.sql'
+    #generate_SQL_player_positions('sql/players.sql')
+    generate_SQL_players_stats(path)
 
 if __name__ == "__main__":
     main()
