@@ -396,7 +396,6 @@ def players():
                     p_id = element["player"]["id"]
                     name = element["player"]["firstname"]
                     surname = element["player"]["lastname"]
-                    p_stats_id = None
                     b_date = element["player"]["birth"]["date"]
                     club_id = statistics["team"]["id"]
                     position_id = None
@@ -410,7 +409,7 @@ def players():
                     club_history = None
 
 
-                    values = [p_id, name, surname, p_stats_id, b_date, club_id, position_id, country_id]
+                    values = [p_id, name, surname, b_date, club_id, position_id, country_id]
 
                     query += '( '
                     for value in values[:-1]:
