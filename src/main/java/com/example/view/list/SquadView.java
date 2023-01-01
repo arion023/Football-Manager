@@ -1,19 +1,14 @@
 package com.example.view.list;
 
-import com.example.model.Person;
 import com.example.model.Player;
 import com.example.model.Player.Position;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
-import com.vaadin.flow.component.grid.dnd.GridDropMode;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.listbox.MultiSelectListBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -25,16 +20,13 @@ import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Route(value = "squad", layout = AppLayoutBasic.class)
 @PageTitle("Squad")
 public class SquadView extends HorizontalLayout {
 
-    private List<Player> firstSquad;
-    private List<Player> substitutes; //Must be mutable list i.e ArrayList
-
-    private Player movingPlayer;
+    private ArrayList<Player> firstSquad;
+    private ArrayList<Player> substitutes; //Must be mutable list i.e ArrayList
 
     public SquadView() {
         setSizeFull();
@@ -99,42 +91,6 @@ public class SquadView extends HorizontalLayout {
         return horizontalLayout;
     }
 
-
-    //    private VerticalLayout playerListLayout(List<Player> players) {
-//        VerticalLayout vL = new VerticalLayout();
-//        vL.setWidth(100, Unit.PERCENTAGE);
-//        vL.setHeight(100, Unit.PERCENTAGE);
-//        vL.setMinWidth(300, Unit.PIXELS);
-//        vL.getStyle().set("overflow-y", "auto"); //Scroll
-//
-//        MultiSelectListBox<Player> multiSelectListBox = new MultiSelectListBox<>();
-//        multiSelectListBox.setWidth(100, Unit.PERCENTAGE);
-//        multiSelectListBox.setItems(players);
-//        multiSelectListBox.setRenderer(new ComponentRenderer<>(player -> {
-//            HorizontalLayout row = new HorizontalLayout();
-//            row.setAlignItems(Alignment.CENTER);
-//
-//            Icon icon = new Icon(VaadinIcon.USER);
-//
-//            Span name = new Span(player.getName() + " " + player.getSurname());
-//            Span position = new Span(player.getPosition().getPositionName());
-//
-//            position.getStyle()
-//                    .set("color", "var(--lumo-secondary-text-color)")
-//                    .set("font-size", "var(--lumo-font-size-s)");
-//
-//            VerticalLayout column = new VerticalLayout(name, position);
-//            column.setPadding(false);
-//            column.setSpacing(false);
-//
-//            row.add(icon, column);
-//            row.getStyle().set("line-height", "var(--lumo-line-height-m)");
-//            return row;
-//        }));
-//
-//        vL.add(multiSelectListBox);
-//        return vL;
-//    }
     private VerticalLayout playerListLayout() {
         VerticalLayout vL = new VerticalLayout();
         vL.setWidth(100, Unit.PERCENTAGE);
@@ -142,86 +98,53 @@ public class SquadView extends HorizontalLayout {
         vL.setMinWidth(300, Unit.PIXELS);
         vL.getStyle().set("overflow-y", "auto"); //Scroll
 
-        Grid<Player> firstSquadGrid = new Grid<>(Player.class, false);
-        firstSquadGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
-        Grid<Player> substitutesGrid = new Grid<>(Player.class, false);
-        substitutesGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
+        Grid<Player> firstSquadGrid = createPlayersGrid();
+        Grid<Player> substitutesGrid = createPlayersGrid();
         GridListDataView<Player> dataView1 = firstSquadGrid.setItems(firstSquad);
         GridListDataView<Player> dataView2 = substitutesGrid.setItems(substitutes);
 
-        firstSquadGrid.addSelectionListener(selectionEvent -> {
-            Player selectedPlayer = selectionEvent.getFirstSelectedItem().get();
-            dataView1.removeItem(selectedPlayer);
-            dataView2.addItem(selectedPlayer);
-        });
+        firstSquadGrid.addColumn(new NativeButtonRenderer<>("Remove player",
+                player -> {
+                    dataView1.removeItem(player);
+                    dataView2.addItem(player);
 
-        substitutesGrid.addSelectionListener(selectionEvent -> {
-            if (firstSquad.size() == 11) {
-                //TODO komunikat
-            } else {
-                Player selectedPlayer = selectionEvent.getFirstSelectedItem().get();
-                dataView2.removeItem(selectedPlayer);
-                dataView1.addItem(selectedPlayer);
-            }
-        });
+                }));
 
-        firstSquadGrid.addColumn(new ComponentRenderer<>(e -> new Icon(VaadinIcon.USER)))
-                .setAutoWidth(true)
-                .setFlexGrow(0);
-        firstSquadGrid.addColumn(Player::getName)
-                .setHeader("Imie")
-                .setAutoWidth(true)
-                .setFlexGrow(0);
-        firstSquadGrid.addColumn(Player::getSurname)
-                .setHeader("Nazwisko")
-                .setAutoWidth(true)
-                .setFlexGrow(0);
-        firstSquadGrid.addColumn(Player::getPosition)
-                .setHeader("Pozycja")
-                .setAutoWidth(true)
-                .setFlexGrow(0);
-//        firstSquadGrid.addColumn(new NativeButtonRenderer<>("Remove player",
-//                player -> {
-//                    movingPlayer = player;
-//                    dataView1.removeItem(movingPlayer);
-//                    dataView2.addItem(movingPlayer);
-//                    movingPlayer = null;
-//
-//                }));
-
-//        firstSquadGrid.addColumn(Player::getStatistics).setHeader("Statystyki")
-//                .setAutoWidth(true).setFlexGrow(0);
-
-        substitutesGrid.addColumn(new ComponentRenderer<>(e -> new Icon(VaadinIcon.USER)))
-                .setAutoWidth(true)
-                .setFlexGrow(0);
-        substitutesGrid.addColumn(Player::getName)
-                .setHeader("Imie")
-                .setAutoWidth(true)
-                .setFlexGrow(0);
-        substitutesGrid.addColumn(Player::getSurname)
-                .setHeader("Nazwisko")
-                .setAutoWidth(true)
-                .setFlexGrow(0);
-        substitutesGrid.addColumn(Player::getPosition)
-                .setHeader("Pozycja")
-                .setAutoWidth(true)
-                .setFlexGrow(0);
-//        substitutesGrid.addColumn(new NativeButtonRenderer<>("Add player",
-//                player -> {
-//                    if (firstSquad.size() == 11) {
-//                        //TODO komunikat
-//                    } else {
-//                        movingPlayer = player;
-//                        dataView2.removeItem(movingPlayer);
-//                        dataView1.addItem(movingPlayer);
-//                        movingPlayer = null;
-//                    }
-//                }));
+        substitutesGrid.addColumn(new NativeButtonRenderer<>("Add player",
+                player -> {
+                    if (firstSquad.size() == 11) {
+                        //TODO komunikat
+                    } else {
+                        dataView2.removeItem(player);
+                        dataView1.addItem(player);
+                    }
+                }));
 
 
         vL.add(firstSquadGrid, substitutesGrid);
         return vL;
+    }
+
+    private Grid<Player> createPlayersGrid() {
+        Grid<Player> grid = new Grid<>(Player.class, false);
+        grid.addColumn(new ComponentRenderer<>(e -> new Icon(VaadinIcon.USER)))
+                .setAutoWidth(true)
+                .setFlexGrow(0);
+        grid.addColumn(Player::getName)
+                .setHeader("Imie")
+                .setAutoWidth(true)
+                .setFlexGrow(0);
+        grid.addColumn(Player::getSurname)
+                .setHeader("Nazwisko")
+                .setAutoWidth(true)
+                .setFlexGrow(0);
+        grid.addColumn(Player::getPosition)
+                .setHeader("Pozycja")
+                .setAutoWidth(true)
+                .setFlexGrow(0);
+        //        firstSquadGrid.addColumn(Player::getStatistics).setHeader("Statystyki")
+        //                .setAutoWidth(true).setFlexGrow(0);
+        return grid;
     }
 
     private Renderer<Player> createRemoveButton() {
