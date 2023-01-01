@@ -21,6 +21,7 @@ import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Route(value = "squad", layout = AppLayoutBasic.class)
 @PageTitle("Squad")
@@ -28,24 +29,38 @@ import java.util.List;
 //TODO zrobić żeby się nie renderowała za każdym razem od nowa
 public class SquadView extends HorizontalLayout {
 
-    private ArrayList<Player> players;
     private ArrayList<Player> firstSquad;
     private ArrayList<Player> substitutes; //Must be mutable list i.e ArrayList
 
     private Select<Formation> selectFormation = createFormationSelect();
 
+    private GridListDataView<Player> firstSquadData;
+    private GridListDataView<Player> substitutesData;
+
     public SquadView() {
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
-//        var players = getSamplePlayers();
-        players = new ArrayList<>(Player.getAllPlayersFromDB().subList(0, 50));
-        firstSquad = new ArrayList<>(players.subList(0, 11));
-        substitutes = new ArrayList<>(players.subList(15, 25));
-
-        add(pitchLayout(players), playerListLayout());
+        ArrayList<Player> clubPlayers = new ArrayList<>(Player.getAllPlayersFromDB().subList(0, 50));//TODO pobrać zawodników z klubu
+//        firstSquad = new ArrayList<>(clubPlayers.subList(0, 11));
+        firstSquad = getFirstSquadWithFormation(clubPlayers);
+        substitutes = new ArrayList<>(clubPlayers.subList(15, 25));
+        var playersLayout = playerListLayout(); //Must be called before pitchLayout()
+        add(pitchLayout(), playersLayout);
     }
 
-    private VerticalLayout pitchLayout(List<Player> players) {
+    private ArrayList<Player> getFirstSquadWithFormation(List<Player> clubPlayers) {
+        Formation formation = selectFormation.getValue();
+        ArrayList<Player> firstSquadList = new ArrayList<>();
+
+        firstSquadList.addAll(getPlayersFromPositions(clubPlayers, List.of(Position.GK)));
+        firstSquadList.addAll(getPlayersFromPositions(clubPlayers, Position.getForwardPositions()).subList(0, formation.getForwardsNumber()));
+        firstSquadList.addAll(getPlayersFromPositions(clubPlayers, Position.getMidfieldPositions()).subList(0, formation.getMidfieldersNumber()));
+        firstSquadList.addAll(getPlayersFromPositions(clubPlayers, Position.getBackPositions()).subList(0, formation.getDefendersNumber()));
+
+        return firstSquadList;
+    }
+
+    private VerticalLayout pitchLayout() {
         VerticalLayout vL = new VerticalLayout();
         vL.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         vL.setWidth(100, Unit.PERCENTAGE);
@@ -58,24 +73,24 @@ public class SquadView extends HorizontalLayout {
 
         Formation formation = selectFormation.getValue();
 
-        vL.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.LF, Position.CF, Position.RF)), formation.getForwardsNumber()));
-        vL.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.LM, Position.CM, Position.RM)), formation.getMidfieldersNumber()));
-        vL.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.LB, Position.CB, Position.RB)), formation.getDefendersNumber()));
-        vL.add(getPlayersLineLayout(getPlayersFromPosition(players, List.of(Position.GK)), 1));
+        vL.add(getPlayersLineLayout(getPlayersFromPositions(firstSquad, Position.getForwardPositions()), formation.getForwardsNumber()));
+        vL.add(getPlayersLineLayout(getPlayersFromPositions(firstSquad, Position.getMidfieldPositions()), formation.getMidfieldersNumber()));
+        vL.add(getPlayersLineLayout(getPlayersFromPositions(firstSquad, Position.getBackPositions()), formation.getDefendersNumber()));
+        vL.add(getPlayersLineLayout(getPlayersFromPositions(firstSquad, List.of(Position.GK)), 1));
 
         return vL;
     }
 
-    private List<Player> getPlayersFromPosition(List<Player> players, List<Position> positions) {
+    private ArrayList<Player> getPlayersFromPositions(List<Player> players, List<Position> positions) {
         return players.stream() //TODO wybierać dobrych zawodników
                 .filter(p -> positions.contains(p.getPosition()))
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private VerticalLayout getPlayerImageWithSurname(Player player) {
         VerticalLayout vL = new VerticalLayout();
         vL.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        Image shirt = new Image("images/shirt.png", "shirt");
+        Image shirt = new Image("images/shirt.png", "shirt");//TODO dać bramkarzowi inną koszulkę
 
         shirt.setHeight(100, Unit.PIXELS);
         Span surname = new Span(player.getSurname());
@@ -86,13 +101,16 @@ public class SquadView extends HorizontalLayout {
         return vL;
     }
 
-    private HorizontalLayout getPlayersLineLayout(List<Player> players, int playersNo) {
+    private HorizontalLayout getPlayersLineLayout(ArrayList<Player> players, int playersNo) {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
-//        for (var player : players) {
-//            horizontalLayout.add(getPlayerImageWithSurname(player));
-//        }
-        for (int i = 0; i < playersNo; i++) {
-            horizontalLayout.add(getPlayerImageWithSurname(players.get(i)));
+        while (players.size() > playersNo) {
+            var player = players.get(0);
+            players.remove(0);
+            firstSquadData.removeItem(player);
+            substitutesData.addItem(player);
+        }
+        for (var player : players) {
+            horizontalLayout.add(getPlayerImageWithSurname(player));
         }
         horizontalLayout.getStyle().set("padding-top", "15px");
 
@@ -108,29 +126,59 @@ public class SquadView extends HorizontalLayout {
 
         Grid<Player> firstSquadGrid = createPlayersGrid();
         Grid<Player> substitutesGrid = createPlayersGrid();
-        GridListDataView<Player> dataView1 = firstSquadGrid.setItems(firstSquad);
-        GridListDataView<Player> dataView2 = substitutesGrid.setItems(substitutes);
+        firstSquadData = firstSquadGrid.setItems(firstSquad);
+        substitutesData = substitutesGrid.setItems(substitutes);
 
         firstSquadGrid.addColumn(new NativeButtonRenderer<>("Remove player",
                 player -> {
-                    dataView1.removeItem(player);
-                    dataView2.addItem(player);
-
+                    firstSquadData.removeItem(player);
+                    substitutesData.addItem(player);
+                    this.replace(this.getComponentAt(0), pitchLayout());
                 }));
 
         substitutesGrid.addColumn(new NativeButtonRenderer<>("Add player",
                 player -> {
                     if (firstSquad.size() == 11) {
                         //TODO komunikat
+                    } else if (checkPositions(player)) {
+                        //TODO komunikat
                     } else {
-                        dataView2.removeItem(player);
-                        dataView1.addItem(player);
+                        substitutesData.removeItem(player);
+                        firstSquadData.addItem(player);
+                        this.replace(this.getComponentAt(0), pitchLayout());
                     }
                 }));
 
-
+//        vL.setFlexGrow(1, firstSquadGrid); TODO rozciągnąć grid pierwszego składu
         vL.add(selectFormation, firstSquadGrid, substitutesGrid);
         return vL;
+    }
+
+    private boolean checkPositions(Player player) {
+        Formation formation = selectFormation.getValue();
+        var position = player.getPosition();
+        var goalkeeperInSquad = countPlayersInPositions(Position.getGoalkeepersPositions());
+        var backsInSquad = countPlayersInPositions(Position.getBackPositions());
+        var midfieldersInSquad = countPlayersInPositions(Position.getMidfieldPositions());
+        var forwardsInSquad = countPlayersInPositions(Position.getForwardPositions());
+        //TODO refactor
+        if (Position.GK.equals(position) && goalkeeperInSquad == 1) {
+            return true;
+        } else if (Position.getBackPositions().contains(position) && backsInSquad == formation.getDefendersNumber()) {
+            return true;
+        } else if (Position.getMidfieldPositions().contains(position) && midfieldersInSquad == formation.getMidfieldersNumber()) {
+            return true;
+        } else if (Position.getForwardPositions().contains(position) && forwardsInSquad == formation.getForwardsNumber()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private long countPlayersInPositions(List<Position> positions) {
+        return firstSquad.stream()
+                .filter(player -> positions.contains(player.getPosition()))
+                .count();
     }
 
     private Select<Formation> createFormationSelect() {
@@ -140,7 +188,7 @@ public class SquadView extends HorizontalLayout {
         select.setItems(Formation.values());
         select.setValue(Formation.F_442);
         select.addValueChangeListener(selectFormationComponentValueChangeEvent -> {
-            this.replace(this.getComponentAt(0), pitchLayout(players));
+            this.replace(this.getComponentAt(0), pitchLayout());
         });
         return select;
     }
@@ -161,38 +209,11 @@ public class SquadView extends HorizontalLayout {
         grid.addColumn(Player::getPosition)
                 .setHeader("Pozycja")
                 .setAutoWidth(true)
-                .setFlexGrow(0);
+                .setFlexGrow(0)
+                .setSortable(true);
+        //TODO dodać statystyki
         //        firstSquadGrid.addColumn(Player::getStatistics).setHeader("Statystyki")
         //                .setAutoWidth(true).setFlexGrow(0);
         return grid;
-    }
-
-
-    //FIXME Should be deleted later
-    private List<Player> getSamplePlayers() {
-        List<Player> samplePlayers = new ArrayList<>();
-        samplePlayers.add(new Player(1, "Wojciech", "Szczęsny", null, null, null, null, null, Position.GK));
-        samplePlayers.add(new Player(2, "Bartosz", "Bereszyński", null, null, null, null, null, Position.LB));
-        samplePlayers.add(new Player(3, "Kamil", "Glik", null, null, null, null, null, Position.CB));
-        samplePlayers.add(new Player(4, "Jakub", "Kiwior", null, null, null, null, null, Position.CB));
-        samplePlayers.add(new Player(5, "Matty", "Cash", null, null, null, null, null, Position.RB));
-        samplePlayers.add(new Player(6, "Przemysław", "Frankowski", null, null, null, null, null, Position.RM));
-        samplePlayers.add(new Player(7, "Krystian", "Bielik", null, null, null, null, null, Position.CM));
-        samplePlayers.add(new Player(8, "Piotr", "Zieliński", null, null, null, null, null, Position.CM));
-        samplePlayers.add(new Player(9, "Nicola", "Zalewski", null, null, null, null, null, Position.LM));
-        samplePlayers.add(new Player(10, "Arkadiusz", "Milik", null, null, null, null, null, Position.CF));
-        samplePlayers.add(new Player(11, "Robert", "Lewandowski", null, null, null, null, null, Position.CF));
-        samplePlayers.add(new Player(12, "Łukasz", "Skorupski", null, null, null, null, null, Position.GK));
-        samplePlayers.add(new Player(13, "Kamil", "Grabara", null, null, null, null, null, Position.GK));
-        samplePlayers.add(new Player(14, "Grzegorz", "Krychowiak", null, null, null, null, null, Position.CM));
-        samplePlayers.add(new Player(15, "Artur", "Jędrzejczyk", null, null, null, null, null, Position.CB));
-        samplePlayers.add(new Player(16, "Jakub", "Kamiński", null, null, null, null, null, Position.RM));
-        samplePlayers.add(new Player(17, "Michał", "Skóraś", null, null, null, null, null, Position.LM));
-        samplePlayers.add(new Player(18, "Kamil", "Grosicki", null, null, null, null, null, Position.LM));
-        samplePlayers.add(new Player(19, "Krzysztof", "Piątek", null, null, null, null, null, Position.CF));
-        samplePlayers.add(new Player(20, "Karol", "Świderski", null, null, null, null, null, Position.CF));
-        samplePlayers.add(new Player(21, "Kamil", "Wieteska", null, null, null, null, null, Position.CB));
-        samplePlayers.add(new Player(22, "Sebastian", "Szymański", null, null, null, null, null, Position.CM));
-        return samplePlayers;
     }
 }

@@ -97,7 +97,6 @@ public class Player extends Person {
     }
 
 
-
     @Getter
     @RequiredArgsConstructor
     public enum Position {
@@ -113,5 +112,20 @@ public class Player extends Person {
         RF("Right Forward");
 
         private final String positionName;
+
+        public static List<Position> getGoalkeepersPositions() {
+            return List.of(GK);
+        }
+        public static List<Position> getBackPositions() {
+            return List.of(LB, CB, RB);
+        }
+
+        public static List<Position> getMidfieldPositions() {
+            return List.of(LM, CM, RM);
+        }
+
+        public static List<Position> getForwardPositions() {
+            return List.of(LF, CF, RF);
+        }
     }
 }
