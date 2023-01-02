@@ -65,7 +65,6 @@ public class Player extends Person {
                 var birthDate = result.getDate("birth_date");
                 var countryId = result.getString("country_id");
                 var clubId = result.getInt("club_id");
-                var statsId = result.getInt("player_stats_id");
                 var position = result.getString("position_id");
 
 //                Country country = countries.getOrDefault(countryId, Country.getCountryById(countryId));
@@ -97,6 +96,7 @@ public class Player extends Person {
         return positions[index];
     }
 
+
     @Getter
     @RequiredArgsConstructor
     public enum Position {
@@ -112,5 +112,20 @@ public class Player extends Person {
         RF("Right Forward");
 
         private final String positionName;
+
+        public static List<Position> getGoalkeepersPositions() {
+            return List.of(GK);
+        }
+        public static List<Position> getBackPositions() {
+            return List.of(LB, CB, RB);
+        }
+
+        public static List<Position> getMidfieldPositions() {
+            return List.of(LM, CM, RM);
+        }
+
+        public static List<Position> getForwardPositions() {
+            return List.of(LF, CF, RF);
+        }
     }
 }
