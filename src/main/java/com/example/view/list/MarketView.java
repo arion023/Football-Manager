@@ -27,9 +27,11 @@ import javax.annotation.security.PermitAll;
 public class MarketView extends HorizontalLayout {
     Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
     FormLayout sellForm = new FormLayout();
+    HorizontalLayout sellContent = new HorizontalLayout();
     VerticalLayout operationSpace;
 
-    VerticalLayout buttonSpace;
+    VerticalLayout buttonSpace = new VerticalLayout();
+    VerticalLayout sideBar = new VerticalLayout();
     HorizontalLayout operationBar;
     Button operationButton;
     Tabs operationTabs;
@@ -39,14 +41,14 @@ public class MarketView extends HorizontalLayout {
         addClassName("Market");
         setSizeFull();
 
-        configureButtonSpace();
+        configureSideBar();
         configureOperationSpace();
         configureOffersGrid();
         configureSellForm();
 
         add(
                 operationSpace,
-                buttonSpace
+                sideBar
         );
         operationSpace.setSizeFull();
         setFlexGrow(1, operationSpace);
@@ -69,26 +71,27 @@ public class MarketView extends HorizontalLayout {
         sellTab = new Tab("Sell");
         operationTabs = new Tabs(buyTab, sellTab);
         operationTabs.addThemeVariants(TabsVariant.LUMO_EQUAL_WIDTH_TABS);
-        operationTabs.setWidth("40em");
         operationTabs.addSelectedChangeListener(
                 event -> setOperation(event.getSelectedTab())
         );
-        Component budgetInfo = getBudgetInfo();
-        operationBar = new HorizontalLayout(operationTabs, budgetInfo);
-        operationBar.setFlexGrow(2, operationTabs);
-        operationBar.setFlexGrow(1, budgetInfo);
+        operationBar = new HorizontalLayout(operationTabs);
+        operationBar.setWidthFull();
 
     }
 
-    private void configureButtonSpace() {
+    private void configureSideBar() {
         operationButton = new Button();
         operationButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonSpace = new VerticalLayout();
-        Component budgetInfo = getBudgetInfo();
-        buttonSpace.add(budgetInfo, operationButton);
+
+        buttonSpace.add(operationButton);
         buttonSpace.setJustifyContentMode(JustifyContentMode.CENTER);
         buttonSpace.setAlignItems(Alignment.CENTER);
-        buttonSpace.setWidth("25em");
+        buttonSpace.setSizeFull();
+
+        Component budgetInfo = getBudgetInfo();
+
+        sideBar.setWidth("25em");
+        sideBar.add(budgetInfo, buttonSpace);
     }
     private void configureOffersGrid() {
         offersGrid.setSizeFull();
@@ -113,6 +116,10 @@ public class MarketView extends HorizontalLayout {
 
         sellForm.add(playerForm, price);
 
+        sellContent.setSizeFull();
+        sellContent.setAlignItems(Alignment.CENTER);
+        sellContent.setJustifyContentMode(JustifyContentMode.CENTER);
+        sellContent.add(sellForm);
 
     }
 
@@ -120,7 +127,7 @@ public class MarketView extends HorizontalLayout {
 
     private void setOperation(Tab selectedTab) {
         if(selectedTab.equals(buyTab)){
-            operationSpace.remove(sellForm);
+            operationSpace.remove(sellContent);
             operationButton.removeThemeVariants(ButtonVariant.LUMO_SUCCESS);
             setBuying();
         } else {
@@ -135,7 +142,7 @@ public class MarketView extends HorizontalLayout {
     private void setSelling() {
         operationButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
         operationButton.setText("Sell");
-        operationSpace.add(sellForm);
+        operationSpace.add(sellContent);
         //operationContent.setFlexGrow(2, sellingForm);
     }
 
@@ -147,14 +154,17 @@ public class MarketView extends HorizontalLayout {
     }
 
 
-    private Component getBudgetInfo() {
-        Span label = new Span("Budget");
+    static public Component getBudgetInfo() {
         //TODO HOW TO ADD BUDGET?
-        Span budgetValue = new Span(String.valueOf(1000));
-        budgetValue.getElement().getThemeList().add("badge primary");
+        Button label = new Button("Budget");
+        Button budgetValue = new Button(String.valueOf(1000));
+        label.addThemeVariants(ButtonVariant.LUMO_LARGE, ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_CONTRAST);
+        budgetValue.addThemeVariants(ButtonVariant.LUMO_LARGE);
+
         VerticalLayout budgetInfo = new VerticalLayout(label, budgetValue);
         budgetInfo.setAlignItems(Alignment.CENTER);
-        budgetInfo.setWidth("20em");
+        budgetInfo.setPadding(false);
+        budgetInfo.setSpacing(false);
         return budgetInfo;
     }
 
