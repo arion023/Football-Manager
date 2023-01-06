@@ -47,12 +47,12 @@ public class AppLayoutBasic extends AppLayout {
         }
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
-        Tab club = new Tab(VaadinIcon.LIGHTBULB.create(), new RouterLink("Club", MyClub.class));
+        Tab club = new Tab(VaadinIcon.LIGHTBULB.create(), new RouterLink("Club", ClubView.class));
         Tab squad = new Tab(VaadinIcon.SHIELD.create(), new RouterLink("Squad", SquadView.class));
-        Tab market = new Tab(VaadinIcon.CART.create(), new RouterLink("Market", Market.class));
-        Tab statistic = new Tab(VaadinIcon.BAR_CHART_H.create(), new RouterLink("Statistics", Statistics.class));
-        Tab profile = new Tab(VaadinIcon.USER.create(), new RouterLink("Profile", MyCoach.class));
-        Tab settings = new Tab(VaadinIcon.COG.create(), new RouterLink("Settings", Settings.class));
+        Tab market = new Tab(VaadinIcon.CART.create(), new RouterLink("Market", MarketView.class));
+        Tab statistic = new Tab(VaadinIcon.BAR_CHART_H.create(), new RouterLink("Statistics", StatisticsView.class));
+        Tab profile = new Tab(VaadinIcon.USER.create(), new RouterLink("Profile", CoachView.class));
+        Tab settings = new Tab(VaadinIcon.COG.create(), new RouterLink("Settings", SettingsView.class));
 
         Tabs tabs = new Tabs(club, squad, market, statistic, profile, settings);
         tabs.setOrientation(Tabs.Orientation.VERTICAL);

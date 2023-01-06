@@ -19,14 +19,16 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 
+import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Route(value = "squad", layout = AppLayoutBasic.class)
+@Route(value = "/squad", layout = AppLayoutBasic.class)
 @PageTitle("Squad")
 @PreserveOnRefresh //Czy to będzie git?
 //TODO zrobić żeby się nie renderowała za każdym razem od nowa
+@PermitAll
 public class SquadView extends HorizontalLayout {
 
     private ArrayList<Player> firstSquad;

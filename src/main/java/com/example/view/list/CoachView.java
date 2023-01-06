@@ -3,7 +3,6 @@ package com.example.view.list;
 import com.example.model.Club;
 import com.example.model.Coach;
 import com.example.model.Country;
-import com.example.model.Player;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -15,24 +14,24 @@ import com.vaadin.flow.component.listbox.MultiSelectListBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.data.renderer.LocalDateRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import javax.annotation.security.PermitAll;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route(value = "coach-profile", layout = AppLayoutBasic.class)
+@Route(value = "/coach-profile", layout = AppLayoutBasic.class)
 @PageTitle("Profile")
-
-public class MyCoach extends VerticalLayout {
+@PermitAll
+public class CoachView extends VerticalLayout {
     Club club = new Club(1, "Radomiak", null, null, 0, null,
             null, null, null, null, new Image("images/radomiak.png", "radomiak"));
     Coach coach  =  new Coach(1, "Dariusz", "Banasik", LocalDate.of(1970, 1,1),
             new Country(1, "Poland", "POL"), club, getSampleClubs()); //TODO link to player
 
-    public MyCoach() {
+    public CoachView() {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         add(new H2(coach.getName() + " " + coach.getSurname()));
         add(new Paragraph("Club: " + club.getName()));
