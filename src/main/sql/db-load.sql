@@ -23,6 +23,9 @@
 
 ALTER SESSION SET nls_date_format='yyyy-mm-dd';
 
+/* USER */
+INSERT INTO users VALUES(0, 'Root', 'Root', 'root@gmail.com', 4248, 1000000);
+
 
 /*  COUNTRY */
 

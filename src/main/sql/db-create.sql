@@ -1,4 +1,6 @@
 /* DROPPING TABLES */
+DROP TABLE users;
+
 DROP TABLE event;
 DROP TABLE event_type;
 DROP TABLE trophy;
@@ -16,11 +18,23 @@ DROP TABLE league;
 DROP TABLE country;
 
 
+
 /* DATES IN THIS FORMAT */
 
 ALTER SESSION SET nls_date_format='yyyy-mm-dd';
 
 /* CREATING TABLES */
+CREATE TABLE users
+(
+    id          NUMBER NOT NULL CONSTRAINT user_pk PRIMARY KEY,
+    login       VARCHAR2(20),
+    password    VARCHAR2(20),
+    mail        VARCHAR2(50),
+    club_id     NUMBER,
+    budget      NUMBER
+);
+
+
 
 CREATE TABLE country
 (
@@ -173,6 +187,11 @@ CREATE TABLE event_type
 
 
 /* CONSTRAINTS (FOREIGN KEY - REFERENCES) */
+
+--USERS
+ALTER TABLE users ADD CONSTRAINT users_club_id_fk FOREIGN KEY(club_id)
+    REFERENCES club (club_id);
+
 
 --LEAGUE
 
