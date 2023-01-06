@@ -18,12 +18,13 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import javax.annotation.security.PermitAll;
 
 
-@Route(value = "market", layout = AppLayoutBasic.class)
-@PageTitle("Transfer market")
-
-public class Market extends HorizontalLayout {
+@Route(value = "/market", layout = AppLayoutBasic.class)
+@PageTitle("Market")
+@PermitAll
+public class MarketView extends HorizontalLayout {
     Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
     FormLayout sellForm = new FormLayout();
     VerticalLayout operationSpace;
@@ -34,7 +35,7 @@ public class Market extends HorizontalLayout {
     Tabs operationTabs;
     Tab buyTab;
     Tab sellTab;
-    public Market(){
+    public MarketView(){
         addClassName("Market");
         setSizeFull();
 

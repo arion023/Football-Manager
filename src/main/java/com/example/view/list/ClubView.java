@@ -3,33 +3,30 @@ package com.example.view.list;
 import com.example.model.*;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.details.Details;
-import com.vaadin.flow.component.details.DetailsVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.hibernate.mapping.Table;
 
+import javax.annotation.security.PermitAll;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route(value = "club", layout = AppLayoutBasic.class)
+@Route(value = "/club", layout = AppLayoutBasic.class)
 @PageTitle("Your Club")
-
-public class MyClub extends HorizontalLayout {
+@PermitAll
+public class ClubView extends HorizontalLayout {
     Stadium stadium = new Stadium(1,"Stadion Radomiaka", new Address(1, "Struga", 63, "Radom", new Country(1, "Polska", "POL")), 15000, LocalDate.of(1930, 8, 9));
     Club club = new Club(1, "RKS Radomiak Radom", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak"));
 
-    public MyClub() {
+    public ClubView() {
         setDefaultVerticalComponentAlignment(Alignment.AUTO);
         add(clubInformation());
         add(matchTable());
