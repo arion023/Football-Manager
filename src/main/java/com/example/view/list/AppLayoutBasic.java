@@ -3,6 +3,7 @@ package com.example.view.list;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -10,16 +11,11 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
-@Route("/")
-@PageTitle("Welcome")
-@AnonymousAllowed
+@CssImport(value = "themes/footballmanager/styles.css", themeFor = "vaadin-app-layout")
 public class AppLayoutBasic extends AppLayout {
 
     private final transient AuthenticationContext authContext;
@@ -47,6 +43,7 @@ public class AppLayoutBasic extends AppLayout {
         }
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
+        Tab welcome = new Tab(VaadinIcon.INFO_CIRCLE_O.create(), new RouterLink("Welcome", WelcomeView.class));
         Tab club = new Tab(VaadinIcon.LIGHTBULB.create(), new RouterLink("Club", ClubView.class));
         Tab squad = new Tab(VaadinIcon.SHIELD.create(), new RouterLink("Squad", SquadView.class));
         Tab market = new Tab(VaadinIcon.CART.create(), new RouterLink("Market", MarketView.class));
@@ -54,7 +51,7 @@ public class AppLayoutBasic extends AppLayout {
         Tab profile = new Tab(VaadinIcon.USER.create(), new RouterLink("Profile", CoachView.class));
         Tab settings = new Tab(VaadinIcon.COG.create(), new RouterLink("Settings", SettingsView.class));
 
-        Tabs tabs = new Tabs(club, squad, market, statistic, profile, settings);
+        Tabs tabs = new Tabs(welcome, club, squad, market, statistic, profile, settings);
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
 
         addToDrawer(tabs);

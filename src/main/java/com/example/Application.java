@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-@Theme(value = "flowcrmtutorial")
+@Theme(value = "footballmanager")
 @PWA(name = "Football Manager", shortName = "FM", offlineResources = {})
 @NpmPackage(value = "line-awesome", version = "1.3.0")
 public class Application implements AppShellConfigurator {

@@ -1,0 +1,7 @@
+@import url('line-awesome/dist/line-awesome/css/line-awesome.min.css');
+
+/*Docs - https://vaadin.com/docs/latest/styling/lumo/design-tokens/color*/
+html {
+    --lumo-primary-color: #55336c;
+    --lumo-primary-text-color: #55336c;
+}
