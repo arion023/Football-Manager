@@ -1,4 +1,4 @@
-package com.example.view.list;
+package com.example.views;
 
 import com.example.model.*;
 import com.vaadin.flow.component.Unit;

@@ -1,4 +1,4 @@
-package com.example.view.list;
+package com.example.views;
 
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.html.H1;
