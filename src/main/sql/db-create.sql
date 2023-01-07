@@ -16,8 +16,7 @@ DROP TABLE stadium;
 DROP TABLE league;
 DROP TABLE country;
 
-SELECT * FROM users WHERE budget = 1000000;
-commit;
+
 /* DATES IN THIS FORMAT */
 
 ALTER SESSION SET nls_date_format='yyyy-mm-dd';
@@ -27,8 +26,9 @@ ALTER SESSION SET nls_date_format='yyyy-mm-dd';
 CREATE TABLE users
 (
     mail        VARCHAR2(30) NOT NULL CONSTRAINT user_pk PRIMARY KEY,
-    budget      NUMBER NOT NULL,
-    club_id     NUMBER NOT NULL
+    manager_name VARCHAR2(20),
+    budget      NUMBER DEFAULT 1000000,
+    club_id     NUMBER NOT NULL --TODO TRIGGER FOR AUTOMATIC CLUB ID
 );
 
 
