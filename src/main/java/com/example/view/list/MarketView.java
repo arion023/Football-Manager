@@ -2,6 +2,7 @@ package com.example.view.list;
 
 import com.example.model.MarketOffer;
 import com.example.model.Player;
+import com.example.model.User;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -16,15 +17,19 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
 
 
 @Route(value = "/market", layout = AppLayoutBasic.class)
 @PageTitle("Market")
+@PreserveOnRefresh
 @PermitAll
 public class MarketView extends HorizontalLayout {
+    User loggedUser;
     Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
     FormLayout sellForm = new FormLayout();
     HorizontalLayout sellContent = new HorizontalLayout();
@@ -37,9 +42,15 @@ public class MarketView extends HorizontalLayout {
     Tabs operationTabs;
     Tab buyTab;
     Tab sellTab;
-    public MarketView(){
+    @Autowired
+    public MarketView(User loggedUser){
         addClassName("Market");
         setSizeFull();
+
+        this.loggedUser = loggedUser;
+        //this.loggedUser.setUserInfo("masikow200@gmail.com");
+        //User.getUserInfoFromDB("");
+        Player.getAllPlayersFromDB();
 
         configureSideBar();
         configureOperationSpace();
@@ -88,7 +99,7 @@ public class MarketView extends HorizontalLayout {
         buttonSpace.setAlignItems(Alignment.CENTER);
         buttonSpace.setSizeFull();
 
-        Component budgetInfo = getBudgetInfo();
+        Component budgetInfo = getBudgetInfo(this.loggedUser);
 
         sideBar.setWidth("25em");
         sideBar.add(budgetInfo, buttonSpace);
@@ -154,10 +165,10 @@ public class MarketView extends HorizontalLayout {
     }
 
 
-    static public Component getBudgetInfo() {
+    static public Component getBudgetInfo(User loggedUser) {
         //TODO HOW TO ADD BUDGET?
         Button label = new Button("Budget");
-        Button budgetValue = new Button(String.valueOf(1000));
+        Button budgetValue = new Button(String.valueOf(loggedUser.getBudget()));
         label.addThemeVariants(ButtonVariant.LUMO_LARGE, ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_CONTRAST);
         budgetValue.addThemeVariants(ButtonVariant.LUMO_LARGE);
 
@@ -167,7 +178,6 @@ public class MarketView extends HorizontalLayout {
         budgetInfo.setSpacing(false);
         return budgetInfo;
     }
-
 
 
 }

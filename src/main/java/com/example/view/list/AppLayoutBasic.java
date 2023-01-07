@@ -1,5 +1,6 @@
 package com.example.view.list;
 
+import com.example.model.User;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -15,16 +16,19 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.spring.security.AuthenticationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
 @Route("/")
 @PageTitle("Welcome")
 @AnonymousAllowed
+
 public class AppLayoutBasic extends AppLayout {
 
     private final transient AuthenticationContext authContext;
 
-    public AppLayoutBasic(AuthenticationContext authContext) {
+    @Autowired
+    public AppLayoutBasic(AuthenticationContext authContext, User logged_user) {
         this.authContext = authContext;
 
         HorizontalLayout header;
