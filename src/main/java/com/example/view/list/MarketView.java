@@ -2,6 +2,7 @@ package com.example.view.list;
 
 import com.example.model.MarketOffer;
 import com.example.model.Player;
+import com.example.model.User;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -16,15 +17,20 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
+import java.util.List;
 
 
 @Route(value = "/market", layout = AppLayoutBasic.class)
 @PageTitle("Market")
+@PreserveOnRefresh
 @PermitAll
 public class MarketView extends HorizontalLayout {
+    User user;
     Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
     FormLayout sellForm = new FormLayout();
     HorizontalLayout sellContent = new HorizontalLayout();
@@ -37,9 +43,12 @@ public class MarketView extends HorizontalLayout {
     Tabs operationTabs;
     Tab buyTab;
     Tab sellTab;
-    public MarketView(){
+    @Autowired
+    public MarketView(User user){
         addClassName("Market");
         setSizeFull();
+
+        this.user = user;
 
         configureSideBar();
         configureOperationSpace();
@@ -88,7 +97,7 @@ public class MarketView extends HorizontalLayout {
         buttonSpace.setAlignItems(Alignment.CENTER);
         buttonSpace.setSizeFull();
 
-        Component budgetInfo = getBudgetInfo();
+        Component budgetInfo = getBudgetInfo(this.user);
 
         sideBar.setWidth("25em");
         sideBar.add(budgetInfo, buttonSpace);
@@ -102,16 +111,25 @@ public class MarketView extends HorizontalLayout {
         offersGrid.addColumn(MarketOffer::getSeller).setHeader("Seller");
         offersGrid.addColumn(MarketOffer::getPosition).setHeader("Position");
         offersGrid.addColumn(MarketOffer::getOverall).setHeader("Overall");
-        offersGrid.addColumn("price");
+        offersGrid.addColumn(MarketOffer::getPrice).setHeader("Price");
+
+        List<MarketOffer> offers = MarketOffer.getOffers();
+
+        offersGrid.setItems(offers);
+
     }
 
 
     private void configureSellForm() {
         ComboBox<Player> playerForm = new ComboBox<>("Player");
+        playerForm.setItems(Player.getAllPlayersFromClub(this.user.getClubID()));
+        playerForm.setItemLabelGenerator(Player::getFullName);
+
         Div plnSuffix = new Div();
         plnSuffix.setText("PLN");
         NumberField price = new NumberField("Price");
         price.setSuffixComponent(plnSuffix);
+
         price.setLabel("Price");
 
         sellForm.add(playerForm, price);
@@ -154,10 +172,9 @@ public class MarketView extends HorizontalLayout {
     }
 
 
-    static public Component getBudgetInfo() {
-        //TODO HOW TO ADD BUDGET?
+    static public Component getBudgetInfo(User user) {
         Button label = new Button("Budget");
-        Button budgetValue = new Button(String.valueOf(1000));
+        Button budgetValue = new Button(String.valueOf(user.getBudget()));
         label.addThemeVariants(ButtonVariant.LUMO_LARGE, ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_CONTRAST);
         budgetValue.addThemeVariants(ButtonVariant.LUMO_LARGE);
 
@@ -167,7 +184,6 @@ public class MarketView extends HorizontalLayout {
         budgetInfo.setSpacing(false);
         return budgetInfo;
     }
-
 
 
 }
