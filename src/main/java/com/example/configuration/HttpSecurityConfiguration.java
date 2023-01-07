@@ -12,7 +12,11 @@ public class HttpSecurityConfiguration extends VaadinWebSecurity {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.oauth2Login();
+        http.authorizeRequests()
+                .antMatchers("/images/**")
+                .permitAll()
+                .and()
+                .oauth2Login();
 
         super.configure(http);
 
