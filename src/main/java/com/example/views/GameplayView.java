@@ -1,5 +1,8 @@
 package com.example.views;
 
+import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
@@ -10,11 +13,20 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import static java.lang.Math.min;
 
 @Route(value = "/gameplay", layout = AppLayoutBasic.class)
 @PageTitle("Gameplay")
 @PermitAll
 public class GameplayView extends VerticalLayout {
+
+    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(0);
+
+    private int minutes = 0;
 
     public GameplayView() {
         setSizeFull();
@@ -46,12 +58,10 @@ public class GameplayView extends VerticalLayout {
 
         VerticalLayout matchInfoLayout = new VerticalLayout();
         matchInfoLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        Span time = new Span("47:56");
-//        time.getStyle().set("font-weight", "bold");
+        Span time = new Span(String.format("%02d:%02d", minutes, 0));
         time.getStyle().set("font-size", "1.5rem");
         time.getStyle().set("color", "white");
         Span result = new Span("1-2");
-//        result.getStyle().set("font-weight", "bold");
         result.getStyle().set("font-size", "1.5rem");
         result.getStyle().set("color", "white");
 
@@ -76,7 +86,6 @@ public class GameplayView extends VerticalLayout {
         HorizontalLayout hL = new HorizontalLayout();
 
         hL.setDefaultVerticalComponentAlignment(Alignment.CENTER);
-//        hL.setMinHeight(200, Unit.PIXELS);
         hL.getStyle().set("background-image", "url(images/pitch.png)");
         hL.getStyle().set("background-size", "contain");
         hL.getStyle().set("background-repeat", "no-repeat");
@@ -94,7 +103,6 @@ public class GameplayView extends VerticalLayout {
         hL.setDefaultVerticalComponentAlignment(Alignment.CENTER);
         hL.setWidth(80, Unit.PERCENTAGE);
         hL.setHeight(10, Unit.PERCENTAGE);
-//        hL.setMinHeight(200,Unit.PIXELS);
 
         hL.getStyle().set("background-color", "#4DB87B");//#286B45
         hL.getStyle().set("border-radius", "25px");
@@ -108,16 +116,34 @@ public class GameplayView extends VerticalLayout {
         hL.setWidth(80, Unit.PERCENTAGE);
 
         ProgressBar minutesBar = new ProgressBar();
-//        minutesBar.setWidth(80, Unit.PERCENTAGE);
         minutesBar.setHeight(25, Unit.PIXELS);
 
         minutesBar.setMin(0);
         minutesBar.setMax(90);
-        minutesBar.setValue(37);
+        minutesBar.setValue(min(minutes, 90));
 
         hL.add(minutesBar);
 
         return hL;
     }
 
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        executorService.scheduleAtFixedRate(() -> updateTime(attachEvent.getUI(), this), 1, 1, TimeUnit.SECONDS);
+        executorService.schedule(executorService::shutdown, 95, TimeUnit.SECONDS);
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        executorService.shutdown();
+    }
+
+    private void updateTime(UI ui, GameplayView gameplayView) {
+        gameplayView.minutes++;
+
+        ui.access(() -> {
+            gameplayView.replace(gameplayView.getComponentAt(0), gameplayView.clubsInfoLayout());
+            gameplayView.replace(gameplayView.getComponentAt(3), gameplayView.progressBarLayout());
+        });
+    }
 }
