@@ -2,6 +2,8 @@ package com.example.model;
 
 import com.example.controller.database.DatabaseConfig;
 import com.example.controller.database.DatabaseController;
+import com.example.model.entities.Club;
+import com.example.model.entities.Player;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;

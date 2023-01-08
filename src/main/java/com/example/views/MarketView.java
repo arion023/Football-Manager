@@ -2,7 +2,7 @@ package com.example.views;
 
 import com.example.controller.database.DatabaseController;
 import com.example.model.MarketOffer;
-import com.example.model.Player;
+import com.example.model.entities.Player;
 import com.example.model.User;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;

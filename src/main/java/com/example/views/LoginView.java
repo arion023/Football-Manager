@@ -6,7 +6,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-import static com.example.utils.CssValues.CSS_FONT_SIZE;
+import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
 
 @Route("/login")
 @PageTitle("Login")

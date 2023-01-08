@@ -1,5 +1,6 @@
-package com.example.model;
+package com.example.model.entities;
 
+import com.example.model.entities.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

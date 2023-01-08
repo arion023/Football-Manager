@@ -1,6 +1,7 @@
 package com.example.model;
 
 import com.example.controller.database.DatabaseController;
+import com.example.model.entities.Player;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -37,9 +38,6 @@ public class MarketOffer {
         return offers;
     }
 
-    public int getPrice(){
-        return this.price;
-    }
     public String getName(){
         return player.getName();
     }

@@ -1,9 +1,8 @@
 package com.example.views;
 
-import com.example.controller.database.DatabaseController;
-import com.example.model.Formation;
-import com.example.model.Player;
-import com.example.model.Player.Position;
+import com.example.model.enums.Formation;
+import com.example.model.entities.Player;
+import com.example.model.enums.Position;
 import com.example.model.User;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.grid.Grid;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.utils.CssValues.CSS_FONT_SIZE;
+import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
 
 @Route(value = "/squad", layout = AppLayoutBasic.class)
 @PageTitle("Squad")

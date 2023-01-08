@@ -2,7 +2,9 @@ package com.example.views;
 
 import com.example.controller.database.DatabaseController;
 import com.example.model.*;
-import com.example.utils.CssValues;
+import com.example.model.entities.Player;
+import com.example.model.enums.ClubLogo;
+import com.example.model.enums.GameplayEvents;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
@@ -29,7 +31,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.utils.CssValues.*;
+import static com.example.model.utils.CssValues.*;
 import static java.lang.Math.min;
 
 @Route(value = "/gameplay", layout = AppLayoutBasic.class)

@@ -1,7 +1,7 @@
 package com.example.views;
 
-import com.example.model.Club;
-import com.example.model.ClubLogo;
+import com.example.model.entities.Club;
+import com.example.model.enums.ClubLogo;
 import com.example.model.Fixtures;
 import com.example.model.User;
 import com.vaadin.flow.component.Unit;
@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
 
-import static com.example.utils.CssValues.CSS_FONT_SIZE;
+import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
 
 @Route(value = "/club", layout = AppLayoutBasic.class)
 @PageTitle("Club")

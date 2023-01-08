@@ -1,7 +1,7 @@
 package com.example.views;
 
 import com.example.controller.database.DatabaseController;
-import com.example.model.Player;
+import com.example.model.entities.Player;
 import com.example.model.User;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -28,12 +28,11 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
 import java.util.ArrayList;
 
-import static com.example.utils.CssValues.CSS_FONT_SIZE;
+import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
 
 @Route("/")
 @PageTitle("Welcome")
 @AnonymousAllowed
-
 @CssImport(value = "themes/footballmanager/styles.css", themeFor = "vaadin-app-layout")
 public class AppLayoutBasic extends AppLayout {
 
