@@ -2,6 +2,7 @@ package com.example.views;
 
 import com.example.model.MarketOffer;
 import com.example.model.Player;
+import com.example.model.User;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -16,37 +17,47 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
+import java.util.List;
 
 
 @Route(value = "/market", layout = AppLayoutBasic.class)
 @PageTitle("Market")
+@PreserveOnRefresh
 @PermitAll
 public class MarketView extends HorizontalLayout {
+    User user;
     Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
     FormLayout sellForm = new FormLayout();
+    HorizontalLayout sellContent = new HorizontalLayout();
     VerticalLayout operationSpace;
 
-    VerticalLayout buttonSpace;
+    VerticalLayout buttonSpace = new VerticalLayout();
+    VerticalLayout sideBar = new VerticalLayout();
     HorizontalLayout operationBar;
     Button operationButton;
     Tabs operationTabs;
     Tab buyTab;
     Tab sellTab;
-    public MarketView(){
+    @Autowired
+    public MarketView(User user){
         addClassName("Market");
         setSizeFull();
 
-        configureButtonSpace();
+        this.user = user;
+
+        configureSideBar();
         configureOperationSpace();
         configureOffersGrid();
         configureSellForm();
 
         add(
                 operationSpace,
-                buttonSpace
+                sideBar
         );
         operationSpace.setSizeFull();
         setFlexGrow(1, operationSpace);
@@ -69,26 +80,27 @@ public class MarketView extends HorizontalLayout {
         sellTab = new Tab("Sell");
         operationTabs = new Tabs(buyTab, sellTab);
         operationTabs.addThemeVariants(TabsVariant.LUMO_EQUAL_WIDTH_TABS);
-        operationTabs.setWidth("40em");
         operationTabs.addSelectedChangeListener(
                 event -> setOperation(event.getSelectedTab())
         );
-        Component budgetInfo = getBudgetInfo();
-        operationBar = new HorizontalLayout(operationTabs, budgetInfo);
-        operationBar.setFlexGrow(2, operationTabs);
-        operationBar.setFlexGrow(1, budgetInfo);
+        operationBar = new HorizontalLayout(operationTabs);
+        operationBar.setWidthFull();
 
     }
 
-    private void configureButtonSpace() {
+    private void configureSideBar() {
         operationButton = new Button();
         operationButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonSpace = new VerticalLayout();
-        Component budgetInfo = getBudgetInfo();
-        buttonSpace.add(budgetInfo, operationButton);
+
+        buttonSpace.add(operationButton);
         buttonSpace.setJustifyContentMode(JustifyContentMode.CENTER);
         buttonSpace.setAlignItems(Alignment.CENTER);
-        buttonSpace.setWidth("25em");
+        buttonSpace.setSizeFull();
+
+        Component budgetInfo = getBudgetInfo(this.user);
+
+        sideBar.setWidth("25em");
+        sideBar.add(budgetInfo, buttonSpace);
     }
     private void configureOffersGrid() {
         offersGrid.setSizeFull();
@@ -99,20 +111,33 @@ public class MarketView extends HorizontalLayout {
         offersGrid.addColumn(MarketOffer::getSeller).setHeader("Seller");
         offersGrid.addColumn(MarketOffer::getPosition).setHeader("Position");
         offersGrid.addColumn(MarketOffer::getOverall).setHeader("Overall");
-        offersGrid.addColumn("price");
+        offersGrid.addColumn(MarketOffer::getPrice).setHeader("Price");
+
+        List<MarketOffer> offers = MarketOffer.getOffers();
+
+        offersGrid.setItems(offers);
+
     }
 
 
     private void configureSellForm() {
         ComboBox<Player> playerForm = new ComboBox<>("Player");
+        playerForm.setItems(Player.getAllPlayersFromClub(this.user.getClubID()));
+        playerForm.setItemLabelGenerator(Player::getFullName);
+
         Div plnSuffix = new Div();
         plnSuffix.setText("PLN");
         NumberField price = new NumberField("Price");
         price.setSuffixComponent(plnSuffix);
+
         price.setLabel("Price");
 
         sellForm.add(playerForm, price);
 
+        sellContent.setSizeFull();
+        sellContent.setAlignItems(Alignment.CENTER);
+        sellContent.setJustifyContentMode(JustifyContentMode.CENTER);
+        sellContent.add(sellForm);
 
     }
 
@@ -120,7 +145,7 @@ public class MarketView extends HorizontalLayout {
 
     private void setOperation(Tab selectedTab) {
         if(selectedTab.equals(buyTab)){
-            operationSpace.remove(sellForm);
+            operationSpace.remove(sellContent);
             operationButton.removeThemeVariants(ButtonVariant.LUMO_SUCCESS);
             setBuying();
         } else {
@@ -135,7 +160,7 @@ public class MarketView extends HorizontalLayout {
     private void setSelling() {
         operationButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
         operationButton.setText("Sell");
-        operationSpace.add(sellForm);
+        operationSpace.add(sellContent);
         //operationContent.setFlexGrow(2, sellingForm);
     }
 
@@ -147,17 +172,18 @@ public class MarketView extends HorizontalLayout {
     }
 
 
-    private Component getBudgetInfo() {
-        Span label = new Span("Budget");
-        //TODO HOW TO ADD BUDGET?
-        Span budgetValue = new Span(String.valueOf(1000));
-        budgetValue.getElement().getThemeList().add("badge primary");
+    static public Component getBudgetInfo(User user) {
+        Button label = new Button("Budget");
+        Button budgetValue = new Button(String.valueOf(user.getBudget()));
+        label.addThemeVariants(ButtonVariant.LUMO_LARGE, ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_CONTRAST);
+        budgetValue.addThemeVariants(ButtonVariant.LUMO_LARGE);
+
         VerticalLayout budgetInfo = new VerticalLayout(label, budgetValue);
         budgetInfo.setAlignItems(Alignment.CENTER);
-        budgetInfo.setWidth("20em");
+        budgetInfo.setPadding(false);
+        budgetInfo.setSpacing(false);
         return budgetInfo;
     }
-
 
 
 }

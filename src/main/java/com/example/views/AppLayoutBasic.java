@@ -1,26 +1,42 @@
 package com.example.views;
 
+import com.example.model.User;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.spring.security.AuthenticationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+
+@Route("/")
+@PageTitle("Welcome")
+@AnonymousAllowed
 
 @CssImport(value = "themes/footballmanager/styles.css", themeFor = "vaadin-app-layout")
 public class AppLayoutBasic extends AppLayout {
 
     private final transient AuthenticationContext authContext;
+    Dialog addNewUserDialog;
 
-    public AppLayoutBasic(AuthenticationContext authContext) {
+
+    @Autowired
+    public AppLayoutBasic(AuthenticationContext authContext, User logUser) {
         this.authContext = authContext;
 
         HorizontalLayout header;
@@ -32,6 +48,13 @@ public class AppLayoutBasic extends AppLayout {
         if (authContext.isAuthenticated()) {
             Button logout = new Button("Logout", click -> this.authContext.logout());
             String userFullName = authContext.getAuthenticatedUser(DefaultOidcUser.class).get().getFullName(); //TODO optional check
+            String usrMail = authContext.getAuthenticatedUser(DefaultOidcUser.class).get().getEmail();
+
+            if (!User.setUserInfoFromDB(logUser, usrMail))
+            {
+                this.configAddNewUserDialog();
+                this.addNewUserDialog.open();
+            }
 
             Span loggedUser = new Span("Welcome " + userFullName);
             loggedUser.getStyle()
@@ -57,5 +80,34 @@ public class AppLayoutBasic extends AppLayout {
         addToDrawer(tabs);
         addToNavbar(header);
         setPrimarySection(Section.DRAWER);
+    }
+
+    private void configAddNewUserDialog() {
+        this.addNewUserDialog = new Dialog();
+        this.addNewUserDialog.setHeaderTitle("New User");
+
+        VerticalLayout dialogLayout = createAddNewUserLayout();
+        this.addNewUserDialog.add(dialogLayout);
+        Button addButton = new Button("Create", e -> this.addNewUser());
+        addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addNewUserDialog.getFooter().add(addButton);
+    }
+
+    private void addNewUser() {
+        //TODO
+        this.addNewUserDialog.close();
+    }
+
+    private VerticalLayout createAddNewUserLayout()
+    {
+        TextField clubName = new TextField("Club name");
+        TextField managerNickname = new TextField("Manager nickname");
+
+        VerticalLayout addNewUserLayout = new VerticalLayout(clubName, managerNickname);
+        addNewUserLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
+        addNewUserLayout.setPadding(false);
+        addNewUserLayout.getStyle().set("max-width", "100%").set("width", "20em");
+
+        return addNewUserLayout;
     }
 }

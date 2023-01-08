@@ -10,6 +10,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 
+import static java.lang.Math.pow;
+
 @Getter
 @Setter
 public class Player extends Person {
@@ -34,6 +36,23 @@ public class Player extends Person {
 //        ResultSet resultSet = dbController.doQuery(query);
 //        return resultSetToPlayers(resultSet);
 //    }
+
+
+    public String getFullName() {
+        String allName = super.getName() + " " + super.getSurname();
+        return allName;
+    }
+
+    public int estimatePrice() {
+        //TODO IT CAN BE BETTER...
+        if (this.statistics != null) {
+            int overall = this.statistics.getOverall();
+            int estimatedPrice = (int) pow(overall/10, 2) * 1000;
+            return estimatedPrice;
+        }
+        else return 0;
+    }
+
     public static List<Player> getAllPlayersFromDB() {
         DatabaseController dbController = new DatabaseController();
         String query = dbController.createSelectQuery(DatabaseConfig.PLAYERS_TABLE_NAME);
@@ -47,10 +66,15 @@ public class Player extends Person {
     }
 
     public static List<Player> getAllPlayersFromClub(int clubId) {
-        DatabaseController dbController = new DatabaseController();
-        String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.PLAYERS_TABLE_NAME), List.of("club_id = " + clubId));
-        ResultSet resultSet = dbController.doQuery(query);
-        return resultSetToPlayers(resultSet);
+        String query = "SELECT * FROM player WHERE club_id =?";
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             PreparedStatement pstatement = connection.prepareStatement(query)) {
+            pstatement.setInt(1, clubId);
+            ResultSet result = pstatement.executeQuery();
+            return resultSetToPlayers(result);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static List<Player> resultSetToPlayers(ResultSet result) {
@@ -95,6 +119,8 @@ public class Player extends Person {
         int index = new Random().nextInt(positions.length);
         return positions[index];
     }
+
+
 
 
     @Getter

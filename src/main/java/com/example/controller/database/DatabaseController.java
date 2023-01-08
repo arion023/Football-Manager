@@ -20,6 +20,7 @@ public class DatabaseController {
 //    }
 
     public ResultSet doQuery(String query) {
+        //TODO NOT WORKING - DONT USE
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
              ResultSet result = statement.executeQuery(query)) {
@@ -50,4 +51,5 @@ public class DatabaseController {
         query.concat(" FETCH FIRST 50 ROWS ONLY");
         return query;
     }
+
 }
