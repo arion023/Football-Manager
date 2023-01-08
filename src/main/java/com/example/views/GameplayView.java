@@ -6,17 +6,21 @@ import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 
 import javax.annotation.security.PermitAll;
 import java.util.concurrent.Executors;
@@ -36,14 +40,40 @@ public class GameplayView extends VerticalLayout {
     private int homeTeamGoals = 0;
     private int awayTeamGoals = 0;
 
+    private final Dialog dialog = new Dialog();
+
 
     public GameplayView() {
         setSizeFull();
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
-        add(clubsInfoLayout(), pitchLayout(), gameplayInfoLayout("The match will begin soon"), progressBarLayout());
+        dialog.setHeaderTitle("Math finished");
+        dialog.add(dialogLayout());
+        dialog.setCloseOnOutsideClick(false);
+        dialog.setCloseOnEsc(false);
+
+        RouterLink clubLink = new RouterLink(ClubView.class);
+        Button button = new Button("Go back to club");
+        clubLink.add(button);
+        dialog.getFooter().add(clubLink);
+
+        add(clubsInfoLayout(), pitchLayout(), gameplayInfoLayout("The match will begin soon"), progressBarLayout(), dialog);
     }
 
+    private VerticalLayout dialogLayout() {
+        VerticalLayout dialogLayout = new VerticalLayout();
+        dialogLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        dialogLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
+        dialogLayout.getStyle().set("width", "18rem").set("max-width", "100%");
+
+        Span teams = new Span("Home Team - Away Team");
+        teams.getStyle().set("font-size", "1.5rem");
+        Span result = new Span(homeTeamGoals + " - " + awayTeamGoals);
+        result.getStyle().set("font-size", "1.5rem");
+        dialogLayout.add(teams, result);
+
+        return dialogLayout;
+    }
 
     private HorizontalLayout clubsInfoLayout() {
         HorizontalLayout hL = new HorizontalLayout();
@@ -185,7 +215,7 @@ public class GameplayView extends VerticalLayout {
     protected void onAttach(AttachEvent attachEvent) {
         executorService.scheduleAtFixedRate(() -> updateTime(attachEvent.getUI(), this), 1, 1, TimeUnit.SECONDS);
         executorService.scheduleAtFixedRate(() -> updateInfo(attachEvent.getUI(), this), 2, 3, TimeUnit.SECONDS);
-        executorService.schedule(executorService::shutdown, 90, TimeUnit.SECONDS);
+        executorService.schedule(() -> endGameplay(attachEvent.getUI(), this), 90, TimeUnit.SECONDS);
     }
 
     @Override
@@ -219,5 +249,10 @@ public class GameplayView extends VerticalLayout {
                 message = event.getDescription();
         }
         ui.access(() -> gameplayView.replace(gameplayView.getComponentAt(2), gameplayView.gameplayInfoLayout(message)));
+    }
+
+    private void endGameplay(UI ui, GameplayView gameplayView) {
+        executorService.shutdown();
+        ui.access(gameplayView.dialog::open);
     }
 }
