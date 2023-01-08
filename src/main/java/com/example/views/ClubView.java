@@ -24,7 +24,7 @@ import java.util.List;
 @PageTitle("Your Club")
 @PermitAll
 public class ClubView extends HorizontalLayout {
-    Stadium stadium = new Stadium(1, "Stadion Radomiaka", new Address(1, "Struga", 63, "Radom", new Country(1, "Polska", "POL")), 15000, LocalDate.of(1930, 8, 9));
+    Stadium stadium = new Stadium(1,"Stadion Radomiaka", new Address(1, "Struga", 63, "Radom", new Country("PL", "Polska")), 15000, LocalDate.of(1930, 8, 9));
     Club club = new Club(1, "RKS Radomiak Radom", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak"));
 
     public ClubView() {

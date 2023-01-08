@@ -18,6 +18,6 @@ public class DatabaseConfig {
     public static final String STADIUM_TABLE_NAME = "stadium";
     public static final String LEAGUES_TABLE_NAME = "league";
     public static final String MATCHES_TABLE_NAME = "match";
-    public static final String MATCH_EVENTS_TABLE_NAME = "match_events";
-    public static final String USERS_TABLE_NAME = "users";
+    public static final String EVENTS_TABLE_NAME = "event";
+    public static final String USERS_TABLE_NAME = "user";
 }

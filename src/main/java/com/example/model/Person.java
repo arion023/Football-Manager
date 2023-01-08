@@ -16,6 +16,6 @@ public abstract class Person {
     protected String name;
     protected String surname;
     protected LocalDate birthDate;
-    protected Country country;
+    protected String countryId;
 
 }

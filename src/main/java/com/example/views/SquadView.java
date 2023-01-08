@@ -1,5 +1,6 @@
 package com.example.views;
 
+import com.example.controller.database.DatabaseController;
 import com.example.model.Formation;
 import com.example.model.Player;
 import com.example.model.Player.Position;
@@ -38,11 +39,13 @@ public class SquadView extends HorizontalLayout {
 
     private GridListDataView<Player> firstSquadData;
     private GridListDataView<Player> substitutesData;
+    private DatabaseController dbController;
 
-    public SquadView() {
+    public SquadView(DatabaseController dbController) {
+        this.dbController = dbController;
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
-        ArrayList<Player> clubPlayers = new ArrayList<>(Player.getAllPlayersFromDB().subList(0, 50));//TODO pobrać zawodników z klubu
+        ArrayList<Player> clubPlayers = new ArrayList<>(Player.getPlayersByClub(4248, this.dbController));//TODO pobrać zawodników z user.club
 //        firstSquad = new ArrayList<>(clubPlayers.subList(0, 11));
         firstSquad = getFirstSquadWithFormation(clubPlayers);
         substitutes = new ArrayList<>(clubPlayers.subList(15, 25));
