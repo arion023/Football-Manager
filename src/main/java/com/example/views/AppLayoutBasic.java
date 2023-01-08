@@ -1,9 +1,10 @@
-package com.example.view.list;
+package com.example.views;
 
 import com.example.model.User;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
@@ -27,6 +28,7 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 @PageTitle("Welcome")
 @AnonymousAllowed
 
+@CssImport(value = "themes/footballmanager/styles.css", themeFor = "vaadin-app-layout")
 public class AppLayoutBasic extends AppLayout {
 
     private final transient AuthenticationContext authContext;
@@ -64,6 +66,7 @@ public class AppLayoutBasic extends AppLayout {
         }
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
+        Tab welcome = new Tab(VaadinIcon.INFO_CIRCLE_O.create(), new RouterLink("Welcome", WelcomeView.class));
         Tab club = new Tab(VaadinIcon.LIGHTBULB.create(), new RouterLink("Club", ClubView.class));
         Tab squad = new Tab(VaadinIcon.SHIELD.create(), new RouterLink("Squad", SquadView.class));
         Tab market = new Tab(VaadinIcon.CART.create(), new RouterLink("Market", MarketView.class));
@@ -71,7 +74,7 @@ public class AppLayoutBasic extends AppLayout {
         Tab profile = new Tab(VaadinIcon.USER.create(), new RouterLink("Profile", CoachView.class));
         Tab settings = new Tab(VaadinIcon.COG.create(), new RouterLink("Settings", SettingsView.class));
 
-        Tabs tabs = new Tabs(club, squad, market, statistic, profile, settings);
+        Tabs tabs = new Tabs(welcome, club, squad, market, statistic, profile, settings);
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
 
         addToDrawer(tabs);
