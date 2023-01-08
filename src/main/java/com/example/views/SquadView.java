@@ -1,4 +1,4 @@
-package com.example.view.list;
+package com.example.views;
 
 import com.example.controller.database.DatabaseController;
 import com.example.model.Formation;
@@ -71,7 +71,7 @@ public class SquadView extends HorizontalLayout {
         vL.setWidth(100, Unit.PERCENTAGE);
         vL.setHeight(90, Unit.PERCENTAGE);
         vL.setMinWidth(200, Unit.PIXELS);
-        vL.getStyle().set("background-image", "url(images/pitch.png)");
+        vL.getStyle().set("background-image", "url(images/pitch_vertical.png)");
         vL.getStyle().set("background-size", "contain");
         vL.getStyle().set("background-repeat", "no-repeat");
         vL.getStyle().set("background-position", "center");

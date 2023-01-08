@@ -1,4 +1,4 @@
-package com.example.view.list;
+package com.example.views;
 
 import com.example.model.*;
 import com.vaadin.flow.component.Unit;
@@ -13,6 +13,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 
 import javax.annotation.security.PermitAll;
 import java.time.LocalDate;
@@ -83,8 +84,11 @@ public class ClubView extends HorizontalLayout {
         info.getStyle().set("font-size", "18px");
         info.getStyle().set("font-weight", "bold");
 
+        RouterLink gameplayLink = new RouterLink(GameplayView.class);
         Button playButton = new Button("Play match");
-        verticalLayout.add(info, playButton);
+        gameplayLink.add(playButton);
+
+        verticalLayout.add(info, gameplayLink);
         verticalLayout.setAlignItems(Alignment.CENTER);
         horizontalLayout.add(clubLogo, verticalLayout, rakow);
         return horizontalLayout;
@@ -92,7 +96,7 @@ public class ClubView extends HorizontalLayout {
 
     private Details detailsLayout() {
         Span stadium = new Span("Stadium: " + club.getStadium().getName() + ", " + club.getStadium().getAddress().getAddressString());
-        Span capacity = new Span( "Capacity: " + club.getStadium().getCapacity());
+        Span capacity = new Span("Capacity: " + club.getStadium().getCapacity());
         // TODO trophies list
         VerticalLayout content = new VerticalLayout();
         content.add(stadium);

@@ -1,4 +1,4 @@
-package com.example.view.list;
+package com.example.views;
 
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
