@@ -12,6 +12,7 @@ DROP TABLE player;
 DROP TABLE player_stats;
 DROP TABLE position;
 DROP TABLE club;
+DROP TABLE user_club;
 DROP TABLE stadium;
 DROP TABLE league;
 DROP TABLE country;
@@ -68,6 +69,15 @@ CREATE TABLE club
     stadium_id      NUMBER
 );
 
+CREATE TABLE user_club
+(
+    club_id         NUMBER NOT NULL CONSTRAINT user_club_pk PRIMARY KEY,
+    name            VARCHAR2(30) NOT NULL,
+    country_id      CHAR(2),
+    league_id       NUMBER NOT NULL,
+    stadium_id      NUMBER
+);
+
 
 CREATE TABLE coach
 (
@@ -95,7 +105,7 @@ CREATE TABLE player_stats
     shooting        NUMBER NOT NULL,
     passing         NUMBER NOT NULL,
     dribbling       NUMBER NOT NULL,
-    defense         NUMBER NOT NULL,
+    defence         NUMBER NOT NULL,
     physical        NUMBER NOT NULL
 );
 
@@ -180,9 +190,6 @@ CREATE TABLE event_type
 
 
 
-
-
-
 /* CONSTRAINTS (FOREIGN KEY - REFERENCES) */
 
 --USER
@@ -212,6 +219,18 @@ ALTER TABLE club ADD CONSTRAINT club_league_fk FOREIGN KEY(league_id)
 
 ALTER TABLE club ADD CONSTRAINT club_stadium_fk FOREIGN KEY(stadium_id)
     REFERENCES stadium (stadium_id);
+
+-- USER CLUB
+
+ALTER TABLE user_club ADD CONSTRAINT user_club_country_fk FOREIGN KEY(country_id)
+    REFERENCES country (country_id);
+
+ALTER TABLE user_club ADD CONSTRAINT user_club_league_fk FOREIGN KEY(league_id)
+    REFERENCES league (league_id);
+
+ALTER TABLE user_club ADD CONSTRAINT user_club_stadium_fk FOREIGN KEY(stadium_id)
+    REFERENCES stadium (stadium_id);
+
 
 
 --COACH

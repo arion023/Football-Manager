@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.example.controller.database.DatabaseController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -13,21 +14,19 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 public class MarketOffer {
-    public static int OffersLimit = 50;
+    public static int OffersLimit = 10;
     private Player player;
     private int price;
-
-
     public MarketOffer(Player player, int price){
         this.player = player;
         this.price = price;
 
     }
 
-    public static List<MarketOffer> getOffers() {
+    public static List<MarketOffer> getOffers(DatabaseController dbController) {
         //TODO DO MORE REALISTIC  MAYBE??? (DONT ADD PLAYERS FROM USER CLUB)
         List<MarketOffer> offers = new ArrayList<>();
-        List<Player> allPlayers = Player.getAllPlayersFromDB();
+        List<Player> allPlayers = Player.getAllPlayersFromDB(dbController);
         Collections.shuffle(allPlayers);
 
         List<Player> playersForSell = allPlayers.subList(0, MarketOffer.OffersLimit);
@@ -50,8 +49,8 @@ public class MarketOffer {
     }
 
     public String getNationality(){
-        if (player.getCountry() != null)
-            return player.getCountry().getShortName();
+        if (player.getCountryId() != null)
+            return player.getCountryId();
         else return "EMPTY";
     }
 
@@ -67,10 +66,8 @@ public class MarketOffer {
         else return 0;
     }
 
-    public String getSeller(){
-        if (player.getCurrentClub() != null)
-            return player.getCurrentClub().getName();
-        else return "EMPTY";
+    public int getSellerId(){
+        return player.getCurrentClubId();
     }
 
 }

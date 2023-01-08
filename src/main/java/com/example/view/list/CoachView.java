@@ -2,7 +2,6 @@ package com.example.view.list;
 
 import com.example.model.Club;
 import com.example.model.Coach;
-import com.example.model.Country;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -29,7 +28,7 @@ public class CoachView extends VerticalLayout {
     Club club = new Club(1, "Radomiak", null, null, 0, null,
             null, null, null, null, new Image("images/radomiak.png", "radomiak"));
     Coach coach  =  new Coach(1, "Dariusz", "Banasik", LocalDate.of(1970, 1,1),
-            new Country(1, "Poland", "POL"), club, getSampleClubs()); //TODO link to player
+            "PL", club, getSampleClubs()); //TODO link to player
 
     public CoachView() {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
@@ -42,7 +41,7 @@ public class CoachView extends VerticalLayout {
 
     private Details detailsLayout() {
         Span birth_date = new Span("Date of birth: " + coach.getBirthDate());
-        Span country = new Span("Country: " + coach.getCountry().getName());
+        Span country = new Span("Country: " + coach.getCountryId());
         VerticalLayout content = new VerticalLayout(country, birth_date);
         content.setPadding(false);
         content.setSpacing(false);

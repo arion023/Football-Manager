@@ -1,5 +1,6 @@
 package com.example.view.list;
 
+import com.example.controller.database.DatabaseController;
 import com.example.model.MarketOffer;
 import com.example.model.Player;
 import com.example.model.User;
@@ -30,24 +31,26 @@ import java.util.List;
 @PreserveOnRefresh
 @PermitAll
 public class MarketView extends HorizontalLayout {
-    User user;
-    Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
-    FormLayout sellForm = new FormLayout();
-    HorizontalLayout sellContent = new HorizontalLayout();
-    VerticalLayout operationSpace;
+    private User user;
+    private Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
+    private FormLayout sellForm = new FormLayout();
+    private HorizontalLayout sellContent = new HorizontalLayout();
+    private VerticalLayout operationSpace;
+    private VerticalLayout buttonSpace = new VerticalLayout();
+    private VerticalLayout sideBar = new VerticalLayout();
+    private HorizontalLayout operationBar;
+    private Button operationButton;
+    private Tabs operationTabs;
+    private Tab buyTab;
+    private Tab sellTab;
+    private DatabaseController dbController;
 
-    VerticalLayout buttonSpace = new VerticalLayout();
-    VerticalLayout sideBar = new VerticalLayout();
-    HorizontalLayout operationBar;
-    Button operationButton;
-    Tabs operationTabs;
-    Tab buyTab;
-    Tab sellTab;
     @Autowired
-    public MarketView(User user){
+    public MarketView(User user, DatabaseController dbController){
         addClassName("Market");
         setSizeFull();
 
+        this.dbController = dbController;
         this.user = user;
 
         configureSideBar();
@@ -108,12 +111,12 @@ public class MarketView extends HorizontalLayout {
         offersGrid.addColumn(MarketOffer::getName).setHeader("Name");
         offersGrid.addColumn(MarketOffer::getSurname).setHeader("Surname");
         offersGrid.addColumn(MarketOffer::getNationality).setHeader("Nationality");
-        offersGrid.addColumn(MarketOffer::getSeller).setHeader("Seller");
+        offersGrid.addColumn(MarketOffer::getSellerId).setHeader("Seller");
         offersGrid.addColumn(MarketOffer::getPosition).setHeader("Position");
         offersGrid.addColumn(MarketOffer::getOverall).setHeader("Overall");
         offersGrid.addColumn(MarketOffer::getPrice).setHeader("Price");
 
-        List<MarketOffer> offers = MarketOffer.getOffers();
+        List<MarketOffer> offers = MarketOffer.getOffers(this.dbController);
 
         offersGrid.setItems(offers);
 
@@ -122,7 +125,7 @@ public class MarketView extends HorizontalLayout {
 
     private void configureSellForm() {
         ComboBox<Player> playerForm = new ComboBox<>("Player");
-        playerForm.setItems(Player.getAllPlayersFromClub(this.user.getClubID()));
+        playerForm.setItems(Player.getPlayersByClub(this.user.getClubID(), this.dbController));
         playerForm.setItemLabelGenerator(Player::getFullName);
 
         Div plnSuffix = new Div();

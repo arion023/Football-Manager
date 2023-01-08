@@ -30,6 +30,8 @@ INSERT INTO users VALUES ('xarigamesx@gmail.com', 'arigames', 200, 4248 );
 
 commit;
 
+SELECT player_id FROM player WHERE player_id NOT IN (SELECT player_id FROM PLAYER_STATS) ;
+
 /*  COUNTRY */
 
 INSERT INTO country VALUES ( 'AL', 'Albania' );
