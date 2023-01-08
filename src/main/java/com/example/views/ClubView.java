@@ -1,8 +1,12 @@
 package com.example.views;
 
-import com.example.model.*;
+import com.example.model.Club;
+import com.example.model.ClubLogo;
+import com.example.model.Fixtures;
+import com.example.model.User;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
@@ -17,8 +21,6 @@ import com.vaadin.flow.router.RouterLink;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
-import java.time.LocalDate;
-import java.util.List;
 
 @Route(value = "/club", layout = AppLayoutBasic.class)
 @PageTitle("Club")
@@ -28,9 +30,6 @@ public class ClubView extends HorizontalLayout {
     private final transient User user;
     private final transient Fixtures fixtures;
 
-    private final List<Club> leagueClubs = Club.getAllClubsFromDB();
-
-    Stadium stadium = new Stadium(1, "Stadion Radomiaka", new Address(1, "Struga", 63, "Radom", new Country(1, "Polska", "POL")), 15000, LocalDate.of(1930, 8, 9));
 
     @Autowired
     public ClubView(User user, Fixtures fixtures) {
@@ -62,15 +61,18 @@ public class ClubView extends HorizontalLayout {
     private HorizontalLayout nextMatch() {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
 
-        int opponentId = fixtures.getMatchweekToFixtures().get(1).get(user.getClub().getId());
+        int opponentId = fixtures.getMatchweekToFixtures().get(fixtures.getCurrentMatchweek()).get(user.getClub().getId());
         user.setNextOpponentClubId(opponentId);
-        String opponentTeamName = leagueClubs.stream().filter(club -> club.getId() == opponentId).findFirst().get().getName();
+        String opponentTeamName = fixtures.getLeagueClubs().stream().filter(club -> club.getId() == opponentId).findFirst().get().getName();
         user.setNextOpponentClubName(opponentTeamName);
 
         Image homeTeamLogo = new Image("images/user_club_logo.png", "user_club_logo");
         homeTeamLogo.setHeight(150, Unit.PIXELS);
-        homeTeamLogo.setWidth(150, Unit.PIXELS);
+//        homeTeamLogo.setWidth(150, Unit.PIXELS);
 
+        Span matchweekText = new Span("Matchweek " + fixtures.getCurrentMatchweek());
+        matchweekText.getStyle().set("font-size", "1.5rem");
+        matchweekText.getStyle().set("font-weight", "bold");
 
         Span info = new Span(user.getClub().getName() + " - " + opponentTeamName); // TODO link opposition club
         info.setHeight(50, Unit.PIXELS);
@@ -78,16 +80,17 @@ public class ClubView extends HorizontalLayout {
         info.getStyle().set("font-weight", "bold");
 
         // TODO link opposition club
-        Image awayTeamLogo = new Image("images/rakow.png", "raków");
+        Image awayTeamLogo = new Image(ClubLogo.getClubLogo(opponentTeamName), "opponent_club_logo");
         awayTeamLogo.setHeight(150, Unit.PIXELS);
-        awayTeamLogo.setWidth(150, Unit.PIXELS);
+//        awayTeamLogo.setWidth(150, Unit.PIXELS);
 
         RouterLink gameplayLink = new RouterLink(GameplayView.class);
         Button playButton = new Button("Play match");
+        playButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         gameplayLink.add(playButton);
 
         VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.add(info, gameplayLink);
+        verticalLayout.add(matchweekText, info, gameplayLink);
         verticalLayout.setAlignItems(Alignment.CENTER);
 
         horizontalLayout.add(homeTeamLogo, verticalLayout, awayTeamLogo);
@@ -99,8 +102,7 @@ public class ClubView extends HorizontalLayout {
         grid.addColumn(Club::getName).setHeader("Club:");
         grid.addColumn(c -> c.getPoints()).setHeader("Points:").setSortable(true);
 
-        leagueClubs.add(user.getClub());
-        grid.setItems(leagueClubs);
+        grid.setItems(fixtures.getLeagueClubs());
         grid.setHeight(710, Unit.PIXELS);
         return grid;
     }

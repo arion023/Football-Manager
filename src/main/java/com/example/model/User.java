@@ -18,7 +18,7 @@ public class User {
     private String mail;
     private int budget;
     private int clubID;
-    private Club club = new Club(101, "Korona Kielce", null, 250, null, 1, null, null, new Image("images/radomiak.png", "radomiak"));
+    private Club club = new Club(101, "Korona Kielce", null, 250, null, 1, null, null);
 
     private int nextOpponentClubId;
     private String nextOpponentClubName;

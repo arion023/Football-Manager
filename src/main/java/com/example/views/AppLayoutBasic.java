@@ -33,9 +33,9 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 public class AppLayoutBasic extends AppLayout {
 
     private final transient AuthenticationContext authContext;
+    private final transient User user;
     private Dialog addNewUserDialog;
 
-    private final User user;
 
     @Autowired
     public AppLayoutBasic(AuthenticationContext authContext, User logUser) {
@@ -59,7 +59,7 @@ public class AppLayoutBasic extends AppLayout {
             }
             getUserDataFromDB();
 
-            Span loggedUser = new Span("Welcome " + userFullName);
+            Span loggedUser = new Span("Welcome " + userFullName + " " + user.getClub().getName() + "'s manager");
             loggedUser.getStyle()
                     .set("font-size", "var(--lumo-font-size-m)");
 
@@ -113,7 +113,7 @@ public class AppLayoutBasic extends AppLayout {
         return addNewUserLayout;
     }
 
-    private void getUserDataFromDB(){
+    private void getUserDataFromDB() {
         user.setSubstitutes(Player.getAllPlayersFromClub(347)); //347 - Lech Poznań
     }
 }

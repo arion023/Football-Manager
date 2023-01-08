@@ -1,6 +1,7 @@
 package com.example.model;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,17 +12,25 @@ import java.util.stream.IntStream;
 public class Fixtures {
 
     private static final int CLUBS_NO = 18;
+
     private final User user;
     private final Random random = new Random();
     @Getter
+    @Setter
+    private int currentMatchweek = 1;
+    @Getter
     private Map<Integer, Map<Integer, Integer>> matchweekToFixtures;
+
+    @Getter
+    private final List<Club> leagueClubs = Club.getAllClubsFromDB();
 
     @Autowired
     public Fixtures(User user) {
         this.user = user;
+
         matchweekToFixtures = new HashMap<>();
-        List<Club> leagueClubs = Club.getAllClubsFromDB();
         drawMatchweeks(leagueClubs);
+        leagueClubs.add(user.getClub());
     }
 
     private void drawMatchweeks(List<Club> clubs) {

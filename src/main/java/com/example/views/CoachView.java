@@ -27,7 +27,7 @@
 //@PermitAll
 //public class CoachView extends VerticalLayout {
 ////    Club club = new Club(1, "Radomiak", null, null, 0, null,
-////            null, null, null, null, new Image("images/radomiak.png", "radomiak"));
+////            null, null, null, null, new Image("images/radomiak_radom.png", "radomiak"));
 ////    Coach coach  =  new Coach(1, "Dariusz", "Banasik", LocalDate.of(1970, 1,1),
 ////            new Country(1, "Poland", "POL"), club, getSampleClubs()); //TODO link to player
 //

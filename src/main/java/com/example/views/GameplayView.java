@@ -1,9 +1,6 @@
 package com.example.views;
 
-import com.example.model.Club;
-import com.example.model.GameplayEvents;
-import com.example.model.Player;
-import com.example.model.User;
+import com.example.model.*;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
@@ -11,11 +8,11 @@ import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
@@ -37,26 +34,28 @@ import static java.lang.Math.min;
 @PermitAll
 public class GameplayView extends VerticalLayout {
 
-    private static final int MATCH_DURATION = 30;//In real seconds
+    private static final int MATCH_DURATION = 15;//In real seconds
     private final transient ScheduledExecutorService executorService = Executors.newScheduledThreadPool(0);
+    private final transient User user;
+    private final transient Fixtures fixtures;
     private final Dialog dialog = new Dialog();
-
-    private final User user;
 
     private int minutes = 0;
     private int homeTeamGoals = 0;
     private int awayTeamGoals = 0;
+    private GridListDataView<Player> players;
 
 
     @Autowired
-    public GameplayView(User user) {
+    public GameplayView(User user, Fixtures fixtures) {
         this.user = user;
+        this.fixtures = fixtures;
 
         setSizeFull();
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         dialog.setHeaderTitle("Match finished");
-        dialog.add(dialogLayout());
+        dialog.add(dialogLayout()); //TODO dialog nie wyświetla poprawnej wartości
         dialog.setCloseOnOutsideClick(false);
         dialog.setCloseOnEsc(false);
 
@@ -76,11 +75,9 @@ public class GameplayView extends VerticalLayout {
 
         Image homeTeamLogo = new Image("images/user_club_logo.png", "user_club_logo");
         homeTeamLogo.setHeight(50, Unit.PIXELS);
-        homeTeamLogo.setWidth(50, Unit.PIXELS);
 
-        Image awayTeamLogo = new Image("images/rakow.png", "raków");
+        Image awayTeamLogo = new Image(ClubLogo.getClubLogo(user.getNextOpponentClubName()), "opponent_club_logo");
         awayTeamLogo.setHeight(50, Unit.PIXELS);
-        awayTeamLogo.setWidth(50, Unit.PIXELS);
 
         HorizontalLayout clubLogos = new HorizontalLayout(homeTeamLogo, awayTeamLogo);
 
@@ -94,6 +91,29 @@ public class GameplayView extends VerticalLayout {
     }
 
     private void saveMatch() {
+        fixtures.setCurrentMatchweek(fixtures.getCurrentMatchweek() + 1);
+//   SELECT MAX(CLUB_ID) FROM CLUB
+//        int maxId = 0;
+//        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+//             Statement statement = connection.createStatement();
+//             ResultSet result = statement.executeQuery("SELECT MAX(MATCH_ID) FROM MATCH")) {
+//            while (result.next()) {
+//                maxId = result.getInt(1);
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        Match match = new Match(maxId + 1, user.getClubID(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals, fixtures.getCurrentMatchweek());
+//        String query = "INSERT INTO MATCH VALUES(" + match.getId() + ", " + match.getHomeTeamId() + ", " + match.getAwayTeamId() + ", " + match.getHomeTeamGoals() + ", " + match.getAwayTeamGoals() + ", " + match.getMatchweek() + ")";
+//
+//
+//        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+//             Statement statement = connection.createStatement();
+//             ResultSet result = statement.executeQuery(query)) {
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
 
     }
 
@@ -111,7 +131,6 @@ public class GameplayView extends VerticalLayout {
         homeTeamLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         Image homeTeamLogo = new Image("images/user_club_logo.png", "user_club_logo");
         homeTeamLogo.setHeight(75, Unit.PIXELS);
-        homeTeamLogo.setWidth(75, Unit.PIXELS);
 
         Span homeTeamName = new Span(user.getClub().getName());
         homeTeamName.getStyle().set("color", "white");
@@ -131,9 +150,9 @@ public class GameplayView extends VerticalLayout {
 
         VerticalLayout awayTeamLayout = new VerticalLayout();
         awayTeamLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        Image awayTeamLogo = new Image("images/radomiak.png", "radomiak");
+        Image awayTeamLogo = new Image(ClubLogo.getClubLogo(user.getNextOpponentClubName()), "opponent_club_logo");
         awayTeamLogo.setHeight(75, Unit.PIXELS);
-        awayTeamLogo.setWidth(75, Unit.PIXELS);
+
         Span awayTeamName = new Span(user.getNextOpponentClubName());
         awayTeamName.getStyle().set("color", "white");
         awayTeamName.getStyle().set("font-size", "1.5rem");
@@ -160,8 +179,8 @@ public class GameplayView extends VerticalLayout {
         Grid<Player> homeTeamGrid = createPlayersGrid();
         Grid<Player> awayTeamGrid = createPlayersGrid();
 
-        homeTeamGrid.setItems(user.getFirstSquad());
-        awayTeamGrid.setItems(Player.getAllPlayersFromClub(user.getNextOpponentClubId()).subList(0,11));//TODO wybrać dobre pozycje
+        players = homeTeamGrid.setItems(user.getFirstSquad());
+        awayTeamGrid.setItems(Player.getAllPlayersFromClub(user.getNextOpponentClubId()).subList(0, 11));//TODO wybrać dobre pozycje
 
         homeTeamGrid.setMaxWidth(500, Unit.PIXELS);
         awayTeamGrid.setMaxWidth(500, Unit.PIXELS);
@@ -257,19 +276,26 @@ public class GameplayView extends VerticalLayout {
 
     private void updateInfo(UI ui, GameplayView gameplayView) {
         GameplayEvents event = GameplayEvents.getRandomEvent();
+        int playerIndex = GameplayEvents.getPlayerIndex();
+        if (playerIndex == 0) {
+            playerIndex++;
+        }
         String message;
-        String teamName = GameplayEvents.getTeam() == 0 ? "Home Team" : "Away Team";
+        String teamName = GameplayEvents.getTeam() == 0 ? user.getClub().getName() : user.getNextOpponentClubName();
         switch (event) {
-            case GOAL:
+            case GOAL -> {
                 message = String.format(event.getDescription(), teamName);
-                if ("Home Team".equals(teamName)) {
+                if (user.getClub().getName().equals(teamName)) {
                     homeTeamGoals++;
                 } else {
                     awayTeamGoals++;
                 }
-                break;
-            default:
-                message = event.getDescription();
+            }
+            case INDIRECT_FREE_KICK, DIRECT_FREE_KICK -> message = String.format(event.getDescription(), teamName);
+            case PASS ->
+                    message = String.format(event.getDescription(), players.getItem(playerIndex).getSurname(), players.getItem(playerIndex - 1).getSurname());
+            case PENALTY -> message = event.getDescription();
+            default -> message = String.format(event.getDescription(), players.getItem(playerIndex).getSurname());
         }
         ui.access(() -> gameplayView.replace(gameplayView.getComponentAt(2), gameplayView.gameplayInfoLayout(message)));
     }

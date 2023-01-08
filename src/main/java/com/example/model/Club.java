@@ -28,7 +28,6 @@ public class Club {
     private Stadium stadium;
 //    private List<Match> matchesPlayed;
     private List<Trophy> trophies;
-    private Image logo;
 
     public static Club getClubById(int clubId) {
         DatabaseController dbController = new DatabaseController();
@@ -59,12 +58,12 @@ public class Club {
         List<Club> clubs = new ArrayList<>();
         try {
             while (result.next()) {
-                var club_id = result.getInt("club_id");
+                var clubId = result.getInt("club_id");
                 var name = result.getString("name");
                 var budget = result.getInt("budget");
 
-                Club club = new Club(club_id, name, null, budget,
-                         null, 0,null, null, null); //TODO sql
+                Club club = new Club(clubId, name, null, budget,
+                         null, 0,null, null); //TODO sql
                 clubs.add(club);
             }
         } catch (SQLException e) {
