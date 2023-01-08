@@ -65,7 +65,7 @@ public class Player extends Person {
         }
     }
 
-    public static List<Player> getAllPlayersFromClub(int clubId) {
+    public static ArrayList<Player> getAllPlayersFromClub(int clubId) {
         String query = "SELECT * FROM player WHERE club_id =?";
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              PreparedStatement pstatement = connection.prepareStatement(query)) {
@@ -77,8 +77,8 @@ public class Player extends Person {
         }
     }
 
-    private static List<Player> resultSetToPlayers(ResultSet result) {
-        List<Player> players = new ArrayList<>();
+    private static ArrayList<Player> resultSetToPlayers(ResultSet result) {
+        ArrayList<Player> players = new ArrayList<>();
         Map<Integer, Country> countries = new HashMap<>();
         Map<Integer, Club> clubs = new HashMap<>();
         try {

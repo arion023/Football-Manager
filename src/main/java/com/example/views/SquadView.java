@@ -3,6 +3,7 @@ package com.example.views;
 import com.example.model.Formation;
 import com.example.model.Player;
 import com.example.model.Player.Position;
+import com.example.model.User;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
@@ -18,6 +19,9 @@ import com.vaadin.flow.data.renderer.NativeButtonRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.ApplicationScope;
 
 import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
@@ -26,26 +30,32 @@ import java.util.stream.Collectors;
 
 @Route(value = "/squad", layout = AppLayoutBasic.class)
 @PageTitle("Squad")
-@PreserveOnRefresh //Czy to będzie git?
+//@PreserveOnRefresh //Czy to będzie git?
 //TODO zrobić żeby się nie renderowała za każdym razem od nowa
 @PermitAll
 public class SquadView extends HorizontalLayout {
 
-    private ArrayList<Player> firstSquad;
-    private ArrayList<Player> substitutes; //Must be mutable list i.e ArrayList
+    private final User user;
+//    private ArrayList<Player> firstSquad;
+//    private ArrayList<Player> substitutes; //Must be mutable list i.e ArrayList
 
     private Select<Formation> selectFormation = createFormationSelect();
 
     private GridListDataView<Player> firstSquadData;
     private GridListDataView<Player> substitutesData;
 
-    public SquadView() {
+    @Autowired
+    public SquadView(User user) {
+        this.user = user;
+
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
-        ArrayList<Player> clubPlayers = new ArrayList<>(Player.getAllPlayersFromDB().subList(0, 50));//TODO pobrać zawodników z klubu
+        ArrayList<Player> clubPlayers = user.getSubstitutes();
 //        firstSquad = new ArrayList<>(clubPlayers.subList(0, 11));
-        firstSquad = getFirstSquadWithFormation(clubPlayers);
-        substitutes = new ArrayList<>(clubPlayers.subList(15, 25));
+        if (user.getFirstSquad().isEmpty()) {
+            user.setFirstSquad(getFirstSquadWithFormation(clubPlayers));
+            user.getSubstitutes().removeAll(user.getFirstSquad()); //TODO czy zadziała?
+        }
         var playersLayout = playerListLayout(); //Must be called before pitchLayout()
         add(pitchLayout(), playersLayout);
     }
@@ -75,10 +85,10 @@ public class SquadView extends HorizontalLayout {
 
         Formation formation = selectFormation.getValue();
 
-        vL.add(getPlayersLineLayout(getPlayersFromPositions(firstSquad, Position.getForwardPositions()), formation.getForwardsNumber()));
-        vL.add(getPlayersLineLayout(getPlayersFromPositions(firstSquad, Position.getMidfieldPositions()), formation.getMidfieldersNumber()));
-        vL.add(getPlayersLineLayout(getPlayersFromPositions(firstSquad, Position.getBackPositions()), formation.getDefendersNumber()));
-        vL.add(getPlayersLineLayout(getPlayersFromPositions(firstSquad, List.of(Position.GK)), 1));
+        vL.add(getPlayersLineLayout(getPlayersFromPositions(user.getFirstSquad(), Position.getForwardPositions()), formation.getForwardsNumber()));
+        vL.add(getPlayersLineLayout(getPlayersFromPositions(user.getFirstSquad(), Position.getMidfieldPositions()), formation.getMidfieldersNumber()));
+        vL.add(getPlayersLineLayout(getPlayersFromPositions(user.getFirstSquad(), Position.getBackPositions()), formation.getDefendersNumber()));
+        vL.add(getPlayersLineLayout(getPlayersFromPositions(user.getFirstSquad(), List.of(Position.GK)), 1));
 
         return vL;
     }
@@ -128,8 +138,8 @@ public class SquadView extends HorizontalLayout {
 
         Grid<Player> firstSquadGrid = createPlayersGrid();
         Grid<Player> substitutesGrid = createPlayersGrid();
-        firstSquadData = firstSquadGrid.setItems(firstSquad);
-        substitutesData = substitutesGrid.setItems(substitutes);
+        firstSquadData = firstSquadGrid.setItems(user.getFirstSquad());
+        substitutesData = substitutesGrid.setItems(user.getSubstitutes());
 
         firstSquadGrid.addColumn(new NativeButtonRenderer<>("Remove player",
                 player -> {
@@ -140,7 +150,7 @@ public class SquadView extends HorizontalLayout {
 
         substitutesGrid.addColumn(new NativeButtonRenderer<>("Add player",
                 player -> {
-                    if (firstSquad.size() == 11) {
+                    if (user.getFirstSquad().size() == 11) {
                         //TODO komunikat
                     } else if (checkPositions(player)) {
                         //TODO komunikat
@@ -178,7 +188,7 @@ public class SquadView extends HorizontalLayout {
     }
 
     private long countPlayersInPositions(List<Position> positions) {
-        return firstSquad.stream()
+        return user.getFirstSquad().stream()
                 .filter(player -> positions.contains(player.getPosition()))
                 .count();
     }

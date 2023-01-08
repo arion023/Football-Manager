@@ -2,16 +2,28 @@ package com.example.model;
 
 import com.example.controller.database.DatabaseConfig;
 import com.example.controller.database.DatabaseController;
+import com.vaadin.flow.component.html.Image;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
+import java.util.ArrayList;
+
 @Component
+@Getter
+@Setter
 public class User {
 
     private String mail;
     private int budget;
     private int clubID;
-    private Club club;
+    private Club club = new Club(101, "Korona Kielce", null, 250, null, 1, null, null, new Image("images/radomiak.png", "radomiak"));
+
+    private int nextOpponentClubId;
+    private String nextOpponentClubName;
+    private ArrayList<Player> firstSquad = new ArrayList<>();
+    private ArrayList<Player> substitutes = new ArrayList<>();//Must be mutable list i.e ArrayList
 
     public User() {
         //TODO
@@ -55,37 +67,33 @@ public class User {
                 this.setClubByID(club_id);
                 size += 1;
             }
-            if (size == 1) return true;
-            else return false;
+            return size == 1;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    static public boolean addNewUser(int id, String login, String password, String mail, int budget, int club_id) {
+    public static boolean addNewUser(int id, String login, String password, String mail, int budget, int club_id) {
         DatabaseController dbController = new DatabaseController();
 
         //TODO checking if operation complete
         return true;
     }
 
-    static public boolean setUserInfoFromDB(User usr, String mail) {
+    public static boolean setUserInfoFromDB(User usr, String mail) {
         String query = "SELECT * FROM users WHERE mail = ?";
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              PreparedStatement pstatement = connection.prepareStatement(query);
-             ) {
+        ) {
             pstatement.setString(1, mail);
             ResultSet result = pstatement.executeQuery();
-            if (usr.setUserInfo(result, mail)) {
-                return true;
-            }
-            else return false;
+
+            return usr.setUserInfo(result, mail);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 
 
 //    public static boolean userExist(String usrMail) {

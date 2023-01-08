@@ -1,7 +1,9 @@
 package com.example.views;
 
+import com.example.model.Club;
 import com.example.model.GameplayEvents;
 import com.example.model.Player;
+import com.example.model.User;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
@@ -21,6 +23,7 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
 import java.util.concurrent.Executors;
@@ -34,26 +37,32 @@ import static java.lang.Math.min;
 @PermitAll
 public class GameplayView extends VerticalLayout {
 
-    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(0);
+    private static final int MATCH_DURATION = 30;//In real seconds
+    private final transient ScheduledExecutorService executorService = Executors.newScheduledThreadPool(0);
+    private final Dialog dialog = new Dialog();
+
+    private final User user;
 
     private int minutes = 0;
     private int homeTeamGoals = 0;
     private int awayTeamGoals = 0;
 
-    private final Dialog dialog = new Dialog();
 
+    @Autowired
+    public GameplayView(User user) {
+        this.user = user;
 
-    public GameplayView() {
         setSizeFull();
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
-        dialog.setHeaderTitle("Math finished");
+        dialog.setHeaderTitle("Match finished");
         dialog.add(dialogLayout());
         dialog.setCloseOnOutsideClick(false);
         dialog.setCloseOnEsc(false);
 
         RouterLink clubLink = new RouterLink(ClubView.class);
         Button button = new Button("Go back to club");
+        button.addClickListener(event -> saveMatch());
         clubLink.add(button);
         dialog.getFooter().add(clubLink);
 
@@ -63,16 +72,29 @@ public class GameplayView extends VerticalLayout {
     private VerticalLayout dialogLayout() {
         VerticalLayout dialogLayout = new VerticalLayout();
         dialogLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        dialogLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
         dialogLayout.getStyle().set("width", "18rem").set("max-width", "100%");
 
-        Span teams = new Span("Home Team - Away Team");
-        teams.getStyle().set("font-size", "1.5rem");
+        Image homeTeamLogo = new Image("images/user_club_logo.png", "user_club_logo");
+        homeTeamLogo.setHeight(50, Unit.PIXELS);
+        homeTeamLogo.setWidth(50, Unit.PIXELS);
+
+        Image awayTeamLogo = new Image("images/rakow.png", "raków");
+        awayTeamLogo.setHeight(50, Unit.PIXELS);
+        awayTeamLogo.setWidth(50, Unit.PIXELS);
+
+        HorizontalLayout clubLogos = new HorizontalLayout(homeTeamLogo, awayTeamLogo);
+
+        Span teams = new Span(user.getClub().getName() + " - " + user.getNextOpponentClubName());
+        teams.getStyle().set("font-size", "1.2rem");
         Span result = new Span(homeTeamGoals + " - " + awayTeamGoals);
         result.getStyle().set("font-size", "1.5rem");
-        dialogLayout.add(teams, result);
+        dialogLayout.add(clubLogos, teams, result);
 
         return dialogLayout;
+    }
+
+    private void saveMatch() {
+
     }
 
     private HorizontalLayout clubsInfoLayout() {
@@ -87,10 +109,11 @@ public class GameplayView extends VerticalLayout {
 
         VerticalLayout homeTeamLayout = new VerticalLayout();
         homeTeamLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        Image homeTeamLogo = new Image("images/rakow.png", "rakow");
+        Image homeTeamLogo = new Image("images/user_club_logo.png", "user_club_logo");
         homeTeamLogo.setHeight(75, Unit.PIXELS);
         homeTeamLogo.setWidth(75, Unit.PIXELS);
-        Span homeTeamName = new Span("Raków Częstochowa");
+
+        Span homeTeamName = new Span(user.getClub().getName());
         homeTeamName.getStyle().set("color", "white");
         homeTeamName.getStyle().set("font-size", "1.5rem");
         homeTeamLayout.add(homeTeamLogo, homeTeamName);
@@ -111,7 +134,7 @@ public class GameplayView extends VerticalLayout {
         Image awayTeamLogo = new Image("images/radomiak.png", "radomiak");
         awayTeamLogo.setHeight(75, Unit.PIXELS);
         awayTeamLogo.setWidth(75, Unit.PIXELS);
-        Span awayTeamName = new Span("Radomiak Radom");
+        Span awayTeamName = new Span(user.getNextOpponentClubName());
         awayTeamName.getStyle().set("color", "white");
         awayTeamName.getStyle().set("font-size", "1.5rem");
         awayTeamLayout.add(awayTeamLogo, awayTeamName);
@@ -137,11 +160,11 @@ public class GameplayView extends VerticalLayout {
         Grid<Player> homeTeamGrid = createPlayersGrid();
         Grid<Player> awayTeamGrid = createPlayersGrid();
 
-        homeTeamGrid.setItems();
-        awayTeamGrid.setItems();
+        homeTeamGrid.setItems(user.getFirstSquad());
+        awayTeamGrid.setItems(Player.getAllPlayersFromClub(user.getNextOpponentClubId()).subList(0,11));//TODO wybrać dobre pozycje
 
-        homeTeamGrid.setMaxWidth(400, Unit.PIXELS);
-        awayTeamGrid.setMaxWidth(400, Unit.PIXELS);
+        homeTeamGrid.setMaxWidth(500, Unit.PIXELS);
+        awayTeamGrid.setMaxWidth(500, Unit.PIXELS);
 
         hL.add(homeTeamGrid, awayTeamGrid);
 
@@ -215,7 +238,7 @@ public class GameplayView extends VerticalLayout {
     protected void onAttach(AttachEvent attachEvent) {
         executorService.scheduleAtFixedRate(() -> updateTime(attachEvent.getUI(), this), 1, 1, TimeUnit.SECONDS);
         executorService.scheduleAtFixedRate(() -> updateInfo(attachEvent.getUI(), this), 2, 3, TimeUnit.SECONDS);
-        executorService.schedule(() -> endGameplay(attachEvent.getUI(), this), 90, TimeUnit.SECONDS);
+        executorService.schedule(() -> endGameplay(attachEvent.getUI(), this), MATCH_DURATION, TimeUnit.SECONDS);
     }
 
     @Override
@@ -224,7 +247,7 @@ public class GameplayView extends VerticalLayout {
     }
 
     private void updateTime(UI ui, GameplayView gameplayView) {
-        gameplayView.minutes++;
+        gameplayView.minutes = gameplayView.minutes + 90 / MATCH_DURATION;
 
         ui.access(() -> {
             gameplayView.replace(gameplayView.getComponentAt(0), gameplayView.clubsInfoLayout());
