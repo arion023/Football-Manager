@@ -30,6 +30,7 @@ INSERT INTO users VALUES ('xarigamesx@gmail.com', 'arigames', 200, 4248 );
 
 commit;
 
+SELECT * FROM player INNER JOIN player_stats USING (player_id);
 /*  COUNTRY */
 
 INSERT INTO country VALUES ( 'AL', 'Albania' );

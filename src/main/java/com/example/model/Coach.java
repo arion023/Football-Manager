@@ -14,9 +14,9 @@ public class Coach extends Person {
     private Club currentClub;
     private List<Club> clubsHistory;
 
-    public Coach(int id, String name, String surname, LocalDate birthDate, Country country,
+    public Coach(int id, String name, String surname, LocalDate birthDate, String countryId,
                  Club currentClub, List<Club> clubsHistory) {
-        super(id, name, surname, birthDate, country);
+        super(id, name, surname, birthDate, countryId);
         this.currentClub = currentClub;
         this.clubsHistory = clubsHistory;
     }

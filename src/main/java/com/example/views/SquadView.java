@@ -1,5 +1,6 @@
 package com.example.views;
 
+import com.example.controller.database.DatabaseController;
 import com.example.model.Formation;
 import com.example.model.Player;
 import com.example.model.Player.Position;
@@ -43,11 +44,12 @@ public class SquadView extends HorizontalLayout {
 
     private GridListDataView<Player> firstSquadData;
     private GridListDataView<Player> substitutesData;
+    private DatabaseController dbController;
 
     @Autowired
-    public SquadView(User user) {
+    public SquadView(User user,DatabaseController dbController) {
         this.user = user;
-
+        this.dbController = dbController;
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
         ArrayList<Player> clubPlayers = user.getSubstitutes();

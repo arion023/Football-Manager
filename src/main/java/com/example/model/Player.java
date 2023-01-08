@@ -16,16 +16,13 @@ import static java.lang.Math.pow;
 @Setter
 public class Player extends Person {
 
-    private Club currentClub;
-    private List<Club> clubsHistory;
+    private int currentClubId;
     private Statistics statistics;
     private Position position;
-
-    public Player(int id, String name, String surname, LocalDate birthDate, Country country,
-                  Club currentClub, List<Club> clubsHistory, Statistics statistics, Position position) {
-        super(id, name, surname, birthDate, country);
-        this.currentClub = currentClub;
-        this.clubsHistory = clubsHistory;
+    public Player(int id, String name, String surname, LocalDate birthDate, String countryId,
+                  int currentClubId, Statistics statistics, Position position) {
+        super(id, name, surname, birthDate, countryId);
+        this.currentClubId = currentClubId;
         this.statistics = statistics;
         this.position = position;
     }
@@ -52,16 +49,13 @@ public class Player extends Person {
         }
         else return 0;
     }
-
-    public static List<Player> getAllPlayersFromDB() {
-        DatabaseController dbController = new DatabaseController();
-        String query = dbController.createSelectQuery(DatabaseConfig.PLAYERS_TABLE_NAME);
-        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-             Statement statement = connection.createStatement();
-             ResultSet result = statement.executeQuery(query)) {
-            return resultSetToPlayers(result);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public static List<Player> getAllPlayersFromDB(DatabaseController dbController) {
+        //String query = dbController.createSelectQuery(List.of(DatabaseConfig.PLAYERS_TABLE_NAME));
+        String query = "SELECT * FROM " + DatabaseConfig.PLAYERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id)";
+        try {
+            return dbController.getPlayersFromDB(query);
+        } catch (Exception e) {
+            return null; //TODO
         }
     }
 
@@ -71,14 +65,22 @@ public class Player extends Person {
              PreparedStatement pstatement = connection.prepareStatement(query)) {
             pstatement.setInt(1, clubId);
             ResultSet result = pstatement.executeQuery();
-            return resultSetToPlayers(result);
+            return resultSetToType(result);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+    public static List<Player> getPlayersByClub(int clubId, DatabaseController dbController) {
+        String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.PLAYERS_TABLE_NAME), List.of("club_id = " + clubId));
+        try {
+            return dbController.getPlayersFromDB(query);
+        } catch (Exception e) {
+            return null; //TODO
+        }
+    }
 
-    private static ArrayList<Player> resultSetToPlayers(ResultSet result) {
-        ArrayList<Player> players = new ArrayList<>();
+    public static ArrayList<Player> resultSetToType(ResultSet result) {
+        List<Player> players = new ArrayList<>();
         Map<Integer, Country> countries = new HashMap<>();
         Map<Integer, Club> clubs = new HashMap<>();
         try {
@@ -99,8 +101,13 @@ public class Player extends Person {
 
 //                countries.put(countryId, country);
 //                clubs.put(clubId, club);
-
-                Player player = new Player(id, name, surname, birthDate.toLocalDate(), null, null, null, null, positionEnum);
+                Player player;
+                try {
+                    result.findColumn("overall");
+                     player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, Statistics.resultSetToType(result), positionEnum);
+                } catch (SQLException e) {
+                    player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, null, positionEnum);;
+                }
                 players.add(player);
             }
         } catch (SQLException e) {
