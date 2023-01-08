@@ -46,10 +46,69 @@ RETURN INTEGER
 AS
 total_points INTEGER;
 BEGIN
-    get_points(340, total_points);
+    get_points(club_id, total_points);
 RETURN total_points;
 END;
 /
 
 
+
+CREATE or REPLACE PROCEDURE get_scored_goals (club_id IN INTEGER, output_goals OUT INTEGER)
+AS
+goals integer := 0;
+BEGIN
+for i in (select home_club, away_club, home_goals, away_goals from match) loop
+    IF i.away_club = club_id THEN
+        goals := goals + i.away_goals;
+    ELSIF i.home_club = club_id THEN
+        goals := goals + i.home_goals;
+END IF;
+end loop;
+    output_goals := goals;
+END;
+/
+
+CREATE or REPLACE FUNCTION total_goals_scored (club_id INTEGER)
+RETURN INTEGER
+AS
+total_goals INTEGER;
+BEGIN
+    get_scored_goals(club_id, total_goals);
+RETURN total_goals;
+END;
+/
+
+
+
+CREATE or REPLACE PROCEDURE get_conceded_goals (club_id IN INTEGER, output_goals OUT INTEGER)
+AS
+goals integer := 0;
+BEGIN
+for i in (select home_club, away_club, home_goals, away_goals from match) loop
+    IF i.away_club = club_id THEN
+        goals := goals + i.home_goals;
+    ELSIF i.home_club = club_id THEN
+        goals := goals + i.away_goals;
+END IF;
+end loop;
+    output_goals := goals;
+END;
+/
+
+CREATE or REPLACE FUNCTION total_goals_conceded (club_id INTEGER)
+RETURN INTEGER
+AS
+total_goals INTEGER;
+BEGIN
+    get_conceded_goals(club_id, total_goals);
+RETURN total_goals;
+END;
+/
+
+
+
 select unique total_points(340) from match;
+
+select unique total_goals_scored(340) from match;
+
+select unique total_goals_conceded(340) from match;
