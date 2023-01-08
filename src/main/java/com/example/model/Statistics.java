@@ -30,7 +30,6 @@ public class Statistics {
     }
 
     public static Statistics resultSetToType(ResultSet rs) {
-        List<Statistics> stats = new ArrayList<>();
         try {
                 var overall = rs.getInt("overall");
                 var pace = rs.getInt("pace");

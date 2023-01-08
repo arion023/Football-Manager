@@ -1,7 +1,6 @@
 package com.example.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -15,4 +14,5 @@ public class Referee extends Person {
     //    private YellowCard yellowCardsGiven;
     //    private RedCard redCardsGiven;
     //  private int penaltiesGiven;
+    //TODO może usunąć całkowicie
 }

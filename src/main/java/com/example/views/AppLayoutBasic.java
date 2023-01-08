@@ -28,6 +28,8 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
 import java.util.ArrayList;
 
+import static com.example.utils.CssValues.CSS_FONT_SIZE;
+
 @Route("/")
 @PageTitle("Welcome")
 @AnonymousAllowed
@@ -37,7 +39,7 @@ public class AppLayoutBasic extends AppLayout {
 
     private final transient AuthenticationContext authContext;
     private final transient User user;
-    private final DatabaseController dbController;
+    private final transient DatabaseController dbController;
     private Dialog addNewUserDialog;
 
 
@@ -51,7 +53,7 @@ public class AppLayoutBasic extends AppLayout {
         DrawerToggle toggle = new DrawerToggle();
 
         H1 title = new H1("Football Manager");
-        title.getStyle().set("font-size", "var(--lumo-font-size-l)").set("margin", "0");
+        title.getStyle().set(CSS_FONT_SIZE, "var(--lumo-font-size-l)").set("margin", "0");
 
         if (authContext.isAuthenticated()) {
             Button logout = new Button("Logout", click -> this.authContext.logout());
@@ -66,7 +68,7 @@ public class AppLayoutBasic extends AppLayout {
 
             Span loggedUser = new Span("Welcome " + userFullName + " " + user.getClub().getName() + "'s manager");
             loggedUser.getStyle()
-                    .set("font-size", "var(--lumo-font-size-m)");
+                    .set(CSS_FONT_SIZE, "var(--lumo-font-size-m)");
 
             header = new HorizontalLayout(toggle, title, loggedUser, logout);
         } else {
@@ -79,7 +81,6 @@ public class AppLayoutBasic extends AppLayout {
         Tab squad = new Tab(VaadinIcon.SHIELD.create(), new RouterLink("Squad", SquadView.class));
         Tab market = new Tab(VaadinIcon.CART.create(), new RouterLink("Market", MarketView.class));
         Tab statistic = new Tab(VaadinIcon.BAR_CHART_H.create(), new RouterLink("Statistics", StatisticsView.class));
-//        Tab profile = new Tab(VaadinIcon.USER.create(), new RouterLink("Profile", CoachView.class));
         Tab settings = new Tab(VaadinIcon.COG.create(), new RouterLink("Settings", SettingsView.class));
 
         Tabs tabs = new Tabs(welcome, club, squad, market, statistic, settings);

@@ -31,7 +31,8 @@ import java.util.List;
 @PreserveOnRefresh
 @PermitAll
 public class MarketView extends HorizontalLayout {
-    private User user;
+    private final transient User user;
+    private final transient DatabaseController dbController;
     private Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
     private FormLayout sellForm = new FormLayout();
     private HorizontalLayout sellContent = new HorizontalLayout();
@@ -43,7 +44,6 @@ public class MarketView extends HorizontalLayout {
     private Tabs operationTabs;
     private Tab buyTab;
     private Tab sellTab;
-    private DatabaseController dbController;
 
     @Autowired
     public MarketView(User user, DatabaseController dbController){
@@ -175,7 +175,7 @@ public class MarketView extends HorizontalLayout {
     }
 
 
-    static public Component getBudgetInfo(User user) {
+    public static Component getBudgetInfo(User user) {
         Button label = new Button("Budget");
         Button budgetValue = new Button(String.valueOf(user.getBudget()));
         label.addThemeVariants(ButtonVariant.LUMO_LARGE, ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_CONTRAST);

@@ -27,11 +27,13 @@ public class DatabaseController {
         return createSelectQuery(fields, tables, Collections.emptyList());
     }
 
-    public String createInstertQuery(String table, List<String> values) {
+    public String createInsertQuery(String table, List<String> values) {
         String query = "INSERT INTO " + table + " VALUES ( ";
+        StringBuilder builder = new StringBuilder();
         for (String v : values) {
-            query += v + ", ";
+            builder.append(v).append(", ");
         }
+        query += builder.toString();
         query += ")";
         return query;
     }
@@ -40,7 +42,7 @@ public class DatabaseController {
         String query = SELECT + " " + String.join(", ", fields) + " " +
                 FROM + " " + String.join(", ", tables) + " ";
         if (!conditions.isEmpty()) {
-            query.concat(WHERE + " " + String.join(" and ", conditions));
+            query = query.concat(WHERE + " " + String.join(" and ", conditions));
         }
         return query;
     }

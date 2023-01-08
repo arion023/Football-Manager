@@ -29,7 +29,7 @@ public class WelcomeView extends HorizontalLayout {
 
         Image logo = new Image("images/fm_logo.png", "logo");
         logo.setHeight(200, Unit.PIXELS);
-//        logo.getStyle().set("margin", "50px 0px 0px 50px");
+        logo.getStyle().set("margin", "50px 0px 0px 0px");
         H1 heading = new H1("Welcome to the Football Manager");
         heading.getStyle().set("text-align", "center");
         Span description = new Span("Do you have what it takes to lead your football club to greatness? " +

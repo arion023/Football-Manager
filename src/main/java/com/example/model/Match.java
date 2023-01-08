@@ -15,15 +15,5 @@ public class Match {
     private int homeTeamGoals;
     private int awayTeamGoals;
     private int matchweek;
-//    private LocalDate date;
-//    private List<MatchEvent> events;
-//    private MatchResult result;
-//    private Stadium stadium;
-//    private Referee referee;
 
-    enum MatchResult {
-        HOME_TEAM_WON,
-        AWAY_TEAM_WON,
-        DRAW
-    }
 }

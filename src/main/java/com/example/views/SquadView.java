@@ -26,34 +26,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.utils.CssValues.CSS_FONT_SIZE;
+
 @Route(value = "/squad", layout = AppLayoutBasic.class)
 @PageTitle("Squad")
-//@PreserveOnRefresh //Czy to będzie git?
-//TODO zrobić żeby się nie renderowała za każdym razem od nowa
 @PermitAll
 public class SquadView extends HorizontalLayout {
 
-    private final User user;
-    private final DatabaseController dbController;
-//    private ArrayList<Player> firstSquad;
-//    private ArrayList<Player> substitutes; //Must be mutable list i.e ArrayList
-
-    private Select<Formation> selectFormation = createFormationSelect();
+    private final transient User user;
+    private final Select<Formation> selectFormation = createFormationSelect();
 
     private GridListDataView<Player> firstSquadData;
     private GridListDataView<Player> substitutesData;
 
     @Autowired
-    public SquadView(User user, DatabaseController dbController) {
+    public SquadView(User user) {
         this.user = user;
-        this.dbController = dbController;
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
         ArrayList<Player> clubPlayers = user.getSubstitutes();
-//        firstSquad = new ArrayList<>(clubPlayers.subList(0, 11));
         if (user.getFirstSquad().isEmpty()) {
             user.setFirstSquad(getFirstSquadWithFormation(clubPlayers));
-            user.getSubstitutes().removeAll(user.getFirstSquad()); //TODO czy zadziała?
+            user.getSubstitutes().removeAll(user.getFirstSquad());
         }
         var playersLayout = playerListLayout(); //Must be called before pitchLayout()
         add(pitchLayout(), playersLayout);
@@ -93,7 +87,7 @@ public class SquadView extends HorizontalLayout {
     }
 
     private ArrayList<Player> getPlayersFromPositions(List<Player> players, List<Position> positions) {
-        return players.stream() //TODO wybierać dobrych zawodników
+        return players.stream()
                 .filter(p -> positions.contains(p.getPosition()))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
@@ -106,7 +100,7 @@ public class SquadView extends HorizontalLayout {
         shirt.setHeight(100, Unit.PIXELS);
         Span surname = new Span(player.getSurname());
         surname.getStyle().set("font-weight", "bold");
-        surname.getStyle().set("font-size", "1.1rem");
+        surname.getStyle().set(CSS_FONT_SIZE, "1.1rem");
 
         vL.add(shirt, surname);
         return vL;
@@ -172,14 +166,11 @@ public class SquadView extends HorizontalLayout {
         var backsInSquad = countPlayersInPositions(Position.getBackPositions());
         var midfieldersInSquad = countPlayersInPositions(Position.getMidfieldPositions());
         var forwardsInSquad = countPlayersInPositions(Position.getForwardPositions());
-        //TODO refactor
-        if (Position.GK.equals(position) && goalkeeperInSquad == 1) {
-            return true;
-        } else if (Position.getBackPositions().contains(position) && backsInSquad == formation.getDefendersNumber()) {
-            return true;
-        } else if (Position.getMidfieldPositions().contains(position) && midfieldersInSquad == formation.getMidfieldersNumber()) {
-            return true;
-        } else if (Position.getForwardPositions().contains(position) && forwardsInSquad == formation.getForwardsNumber()) {
+
+        if ((Position.GK.equals(position) && goalkeeperInSquad == 1)
+                || (Position.getBackPositions().contains(position) && backsInSquad == formation.getDefendersNumber())
+                || (Position.getMidfieldPositions().contains(position) && midfieldersInSquad == formation.getMidfieldersNumber())
+                || (Position.getForwardPositions().contains(position) && forwardsInSquad == formation.getForwardsNumber())) {
             return true;
         }
 
@@ -198,9 +189,7 @@ public class SquadView extends HorizontalLayout {
         select.setItemLabelGenerator(Formation::getName);
         select.setItems(Formation.values());
         select.setValue(Formation.F_442);
-        select.addValueChangeListener(selectFormationComponentValueChangeEvent -> {
-            this.replace(this.getComponentAt(0), pitchLayout());
-        });
+        select.addValueChangeListener(selectFormationComponentValueChangeEvent -> this.replace(this.getComponentAt(0), pitchLayout()));
         return select;
     }
 

@@ -17,14 +17,11 @@ import java.util.List;
 public class Club {
     private int id;
     private String name;
-    //private List<Player> players;
     private Statistics overallStatistics;
     private int budget;
-//    private Coach coach;
     private List<League> leagues;
     private int currentPosition;
     private Stadium stadium;
-//    private List<Match> matchesPlayed;
     private List<Trophy> trophies;
 
 
@@ -42,9 +39,8 @@ public class Club {
     }
 
     public static int getPoints() {
-//        int points = ;
-        int points = 0; //TODO point counter
-        return points;
+        //TODO point counter
+        return 0;
     }
 
     public static List<Club> getAllClubsFromDB() {
@@ -63,12 +59,12 @@ public class Club {
         List<Club> clubs = new ArrayList<>();
         try {
             while (result.next()) {
+                var clubId = result.getInt("club_id");
                 var name = result.getString("name");
-                var id = result.getInt("club_id");
                 var budget = result.getInt("budget");
 
-                Club club = new Club(id, name, null , budget,
-                        null, 0, null, null); //TODO sql
+                Club club = new Club(clubId, name, null, budget,
+                        null, 0, null, null);//TODO get proper data
                 clubs.add(club);
             }
         } catch (SQLException e) {

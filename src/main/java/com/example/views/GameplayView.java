@@ -2,6 +2,7 @@ package com.example.views;
 
 import com.example.controller.database.DatabaseController;
 import com.example.model.*;
+import com.example.utils.CssValues;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
@@ -28,6 +29,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static com.example.utils.CssValues.*;
 import static java.lang.Math.min;
 
 @Route(value = "/gameplay", layout = AppLayoutBasic.class)
@@ -85,9 +87,9 @@ public class GameplayView extends VerticalLayout {
         HorizontalLayout clubLogos = new HorizontalLayout(homeTeamLogo, awayTeamLogo);
 
         Span teams = new Span(user.getClub().getName() + " - " + user.getNextOpponentClubName());
-        teams.getStyle().set("font-size", "1.2rem");
+        teams.getStyle().set(CSS_FONT_SIZE, "1.2rem");
         Span result = new Span(homeTeamGoals + " - " + awayTeamGoals);
-        result.getStyle().set("font-size", "1.5rem");
+        result.getStyle().set(CSS_FONT_SIZE, "1.5rem");
         dialogLayout.add(clubLogos, teams, result);
 
         return dialogLayout;
@@ -136,18 +138,18 @@ public class GameplayView extends VerticalLayout {
         homeTeamLogo.setHeight(75, Unit.PIXELS);
 
         Span homeTeamName = new Span(user.getClub().getName());
-        homeTeamName.getStyle().set("color", "white");
-        homeTeamName.getStyle().set("font-size", "1.5rem");
+        homeTeamName.getStyle().set(CSS_COLOR, CSS_WHITE);
+        homeTeamName.getStyle().set(CSS_FONT_SIZE, "1.5rem");
         homeTeamLayout.add(homeTeamLogo, homeTeamName);
 
         VerticalLayout matchInfoLayout = new VerticalLayout();
         matchInfoLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         Span time = new Span(String.format("%02d:%02d", minutes, 0));
-        time.getStyle().set("font-size", "2rem");
-        time.getStyle().set("color", "white");
+        time.getStyle().set(CSS_FONT_SIZE, "2rem");
+        time.getStyle().set(CSS_COLOR, CSS_WHITE);
         Span result = new Span(homeTeamGoals + " - " + awayTeamGoals);
-        result.getStyle().set("font-size", "2rem");
-        result.getStyle().set("color", "white");
+        result.getStyle().set(CSS_FONT_SIZE, "2rem");
+        result.getStyle().set(CSS_COLOR, CSS_WHITE);
 
         matchInfoLayout.add(time, result);
 
@@ -157,8 +159,8 @@ public class GameplayView extends VerticalLayout {
         awayTeamLogo.setHeight(75, Unit.PIXELS);
 
         Span awayTeamName = new Span(user.getNextOpponentClubName());
-        awayTeamName.getStyle().set("color", "white");
-        awayTeamName.getStyle().set("font-size", "1.5rem");
+        awayTeamName.getStyle().set(CSS_COLOR, CSS_WHITE);
+        awayTeamName.getStyle().set(CSS_FONT_SIZE, "1.5rem");
         awayTeamLayout.add(awayTeamLogo, awayTeamName);
 
         hL.add(homeTeamLayout, matchInfoLayout, awayTeamLayout);
@@ -232,8 +234,8 @@ public class GameplayView extends VerticalLayout {
         vL.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         Span spanMessage = new Span(message);
-        spanMessage.getStyle().set("font-size", "1.75rem");
-        spanMessage.getStyle().set("color", "white");
+        spanMessage.getStyle().set(CSS_FONT_SIZE, "1.75rem");
+        spanMessage.getStyle().set(CSS_COLOR, CSS_WHITE);
         spanMessage.getStyle().set("text-align", "center");
 
         vL.add(spanMessage);
