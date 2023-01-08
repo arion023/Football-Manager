@@ -1,8 +1,12 @@
 package com.example.views;
 
-import com.example.model.*;
+import com.example.model.Club;
+import com.example.model.ClubLogo;
+import com.example.model.Fixtures;
+import com.example.model.User;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
@@ -14,89 +18,98 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Route(value = "/club", layout = AppLayoutBasic.class)
-@PageTitle("Your Club")
+@PageTitle("Club")
 @PermitAll
 public class ClubView extends HorizontalLayout {
-    Stadium stadium = new Stadium(1,"Stadion Radomiaka", new Address(1, "Struga", 63, "Radom", new Country("PL", "Polska")), 15000, LocalDate.of(1930, 8, 9));
-    Club club = new Club(1, "RKS Radomiak Radom", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak"));
 
-    public ClubView() {
+    private final transient User user;
+    private final transient Fixtures fixtures;
+
+
+    @Autowired
+    public ClubView(User user, Fixtures fixtures) {
+        this.user = user;
+        this.fixtures = fixtures;
         setDefaultVerticalComponentAlignment(Alignment.AUTO);
-        add(clubInformation());
-        add(matchTable());
+        add(clubInformation(), matchTable());
 
     }
 
     private VerticalLayout clubInformation() {
         VerticalLayout infoLayout = new VerticalLayout();
         infoLayout.setAlignItems(Alignment.CENTER);
-        infoLayout.add(new H2(club.getName()));
-        infoLayout.add(new Paragraph("Budget: " + club.getBudget() + " zl"));
+        infoLayout.add(new H2(user.getClub().getName()));
+        infoLayout.add(new Paragraph("Budget: " + user.getClub().getBudget() + " zl"));
         infoLayout.add(detailsLayout());
         return infoLayout;
     }
 
     private VerticalLayout matchTable() {
         VerticalLayout matchLayout = new VerticalLayout();
-
-        matchLayout.add(nextMatch());
-        matchLayout.add(leagueTable());
         matchLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        return matchLayout;
-    }
 
-    private Grid leagueTable() {
-        Grid<Club> grid = new Grid<>(Club.class, false);
-        grid.addColumn(Club::getName).setHeader("Club:");
-        grid.addColumn(club -> club.getPoints()).setHeader("Points:").setSortable(true);
-        List<Club> clubs = getSampleClubs();
-        grid.setItems(getSampleClubs());
-        grid.setItems(clubs);
-        grid.setHeight(710, Unit.PIXELS);
-        return grid;
+        matchLayout.add(nextMatch(), leagueTable());
+        return matchLayout;
     }
 
 
     private HorizontalLayout nextMatch() {
-
-        VerticalLayout verticalLayout = new VerticalLayout();
         HorizontalLayout horizontalLayout = new HorizontalLayout();
 
-        Image clubLogo = club.getLogo();
-        clubLogo.setHeight(150, Unit.PIXELS);
-        clubLogo.setWidth(150, Unit.PIXELS);
+        int opponentId = fixtures.getMatchweekToFixtures().get(fixtures.getCurrentMatchweek()).get(user.getClub().getId());
+        user.setNextOpponentClubId(opponentId);
+        String opponentTeamName = fixtures.getLeagueClubs().stream().filter(club -> club.getId() == opponentId).findFirst().get().getName();
+        user.setNextOpponentClubName(opponentTeamName);
+
+        Image homeTeamLogo = new Image("images/user_club_logo.png", "user_club_logo");
+        homeTeamLogo.setHeight(150, Unit.PIXELS);
+//        homeTeamLogo.setWidth(150, Unit.PIXELS);
+
+        Span matchweekText = new Span("Matchweek " + fixtures.getCurrentMatchweek());
+        matchweekText.getStyle().set("font-size", "1.5rem");
+        matchweekText.getStyle().set("font-weight", "bold");
+
+        Span info = new Span(user.getClub().getName() + " - " + opponentTeamName); // TODO link opposition club
+        info.setHeight(50, Unit.PIXELS);
+        info.getStyle().set("font-size", "1.5rem");
+        info.getStyle().set("font-weight", "bold");
 
         // TODO link opposition club
-        Image rakow = new Image("images/rakow.png", "raków");
-        rakow.setHeight(150, Unit.PIXELS);
-        rakow.setWidth(150, Unit.PIXELS);
-
-        Span info = new Span(club.getName() + " - " + "RKS Rakow Czestochowa"); // TODO link opposition club
-
-        info.setHeight(50, Unit.PIXELS);
-        info.getStyle().set("font-size", "18px");
-        info.getStyle().set("font-weight", "bold");
+        Image awayTeamLogo = new Image(ClubLogo.getClubLogo(opponentTeamName), "opponent_club_logo");
+        awayTeamLogo.setHeight(150, Unit.PIXELS);
+//        awayTeamLogo.setWidth(150, Unit.PIXELS);
 
         RouterLink gameplayLink = new RouterLink(GameplayView.class);
         Button playButton = new Button("Play match");
+        playButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         gameplayLink.add(playButton);
 
-        verticalLayout.add(info, gameplayLink);
+        VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.add(matchweekText, info, gameplayLink);
         verticalLayout.setAlignItems(Alignment.CENTER);
-        horizontalLayout.add(clubLogo, verticalLayout, rakow);
+
+        horizontalLayout.add(homeTeamLogo, verticalLayout, awayTeamLogo);
         return horizontalLayout;
     }
 
+    private Grid<Club> leagueTable() {
+        Grid<Club> grid = new Grid<>(Club.class, false);
+        grid.addColumn(Club::getName).setHeader("Club:");
+        grid.addColumn(c -> c.getPoints()).setHeader("Points:").setSortable(true);
+
+        grid.setItems(fixtures.getLeagueClubs());
+        grid.setHeight(710, Unit.PIXELS);
+        return grid;
+    }
+
     private Details detailsLayout() {
-        Span stadium = new Span("Stadium: " + club.getStadium().getName() + ", " + club.getStadium().getAddress().getAddressString());
-        Span capacity = new Span("Capacity: " + club.getStadium().getCapacity());
+        Span stadium = new Span("Stadium: " + "Suzuki Arena " + ", " + "Ściegiennego 8, Kielce");
+        Span capacity = new Span("Capacity: " + 15000);
         // TODO trophies list
         VerticalLayout content = new VerticalLayout();
         content.add(stadium);
@@ -105,29 +118,6 @@ public class ClubView extends HorizontalLayout {
         details.setOpened(false);
 
         return details;
-    }
-
-    private List<Club> getSampleClubs() {
-        List<Club> clubs = new ArrayList<>();
-        clubs.add(new Club(1, "RKS Radomiak Radom", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(2, "Lech Poznań", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(3, "Raków Częstochowa", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(4, "Pogoń Szczecin", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(5, "Lechia Gdańsk", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(6, "Piast Gliwice", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(7, "Wisła Płock", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(8, "Górnik Zabrze", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(9, "Cracovia", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(10, "Legia Warszawa", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(11, "Warta Poznań", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(12, "Jagiellonia Białystok", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(13, "Zagłębie Lubin", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(14, "Stal Mielec", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(15, "Śląsk Wrocław", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(16, "Bruk-Bet Termalica", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(17, "Wisła Kraków", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        clubs.add(new Club(18, "Górnik Łęczna", null, null, 100000000, null, null, stadium, null, null, new Image("images/radomiak.png", "radomiak")));
-        return clubs;
     }
 
 }

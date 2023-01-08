@@ -7,8 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +17,14 @@ import java.util.List;
 public class Club {
     private int id;
     private String name;
-    private List<Player> players;
+    //private List<Player> players;
     private Statistics overallStatistics;
     private int budget;
-    private Coach coach;
+//    private Coach coach;
     private List<League> leagues;
+    private int currentPosition;
     private Stadium stadium;
-    private List<Match> matchesPlayed;
+//    private List<Match> matchesPlayed;
     private List<Trophy> trophies;
     private Image logo;
 
@@ -48,6 +48,18 @@ public class Club {
         return points;
     }
 
+    public static List<Club> getAllClubsFromDB() {
+        DatabaseController dbController = new DatabaseController();
+        String query = dbController.createSelectQuery(DatabaseConfig.CLUBS_TABLE_NAME);
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery(query)) {
+            return resultSetToType(result);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static List<Club> resultSetToType(ResultSet result) {
         List<Club> clubs = new ArrayList<>();
         try {
@@ -56,8 +68,8 @@ public class Club {
                 var id = result.getInt("club_id");
                 var budget = result.getInt("budget");
 
-                Club club = new Club(id, name, null, null, budget,
-                        null, null, null, null, null, null); //TODO sql
+                Club club = new Club(id, name, null , budget,
+                        null, 0, null, null, null); //TODO sql
                 clubs.add(club);
             }
         } catch (SQLException e) {
@@ -66,5 +78,4 @@ public class Club {
 
         return clubs;
     }
-
 }

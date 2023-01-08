@@ -14,7 +14,7 @@ import static java.lang.Math.pow;
 
 @Getter
 @Setter
-public class Player extends Person{
+public class Player extends Person {
 
     private int currentClubId;
     private Statistics statistics;
@@ -59,6 +59,17 @@ public class Player extends Person{
         }
     }
 
+    public static ArrayList<Player> getAllPlayersFromClub(int clubId) {
+        String query = "SELECT * FROM player WHERE club_id =?";
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             PreparedStatement pstatement = connection.prepareStatement(query)) {
+            pstatement.setInt(1, clubId);
+            ResultSet result = pstatement.executeQuery();
+            return resultSetToType(result);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static List<Player> getPlayersByClub(int clubId, DatabaseController dbController) {
         String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.PLAYERS_TABLE_NAME), List.of("club_id = " + clubId));
         try {
@@ -68,7 +79,7 @@ public class Player extends Person{
         }
     }
 
-    public static List<Player> resultSetToType(ResultSet result) {
+    public static ArrayList<Player> resultSetToType(ResultSet result) {
         List<Player> players = new ArrayList<>();
         Map<Integer, Country> countries = new HashMap<>();
         Map<Integer, Club> clubs = new HashMap<>();

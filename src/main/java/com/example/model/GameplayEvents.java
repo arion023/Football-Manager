@@ -45,7 +45,11 @@ public enum GameplayEvents {
         return allValues.get(random.nextInt(allValues.size()));
     }
 
-    public static int getTeam(){
+    public static int getTeam() {
         return random.nextInt(2);
+    }
+
+    public static int getPlayerIndex() {
+        return random.nextInt(11);
     }
 }
