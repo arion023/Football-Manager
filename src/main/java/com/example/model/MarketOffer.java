@@ -37,6 +37,7 @@ public class MarketOffer {
         return offers;
     }
 
+
     public int getPrice(){
         return this.price;
     }

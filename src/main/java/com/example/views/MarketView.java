@@ -5,6 +5,7 @@ import com.example.model.MarketOffer;
 import com.example.model.Player;
 import com.example.model.User;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -17,13 +18,13 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.data.selection.SingleSelect;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
-import java.util.List;
 
 
 @Route(value = "/market", layout = AppLayoutBasic.class)
@@ -34,6 +35,8 @@ public class MarketView extends HorizontalLayout {
     private User user;
     private Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
     private FormLayout sellForm = new FormLayout();
+    ComboBox<Player> playerField;
+    NumberField price;
     private HorizontalLayout sellContent = new HorizontalLayout();
     private VerticalLayout operationSpace;
     private VerticalLayout buttonSpace = new VerticalLayout();
@@ -43,6 +46,7 @@ public class MarketView extends HorizontalLayout {
     private Tabs operationTabs;
     private Tab buyTab;
     private Tab sellTab;
+    private Button budgetValue;
     private DatabaseController dbController;
 
     @Autowired
@@ -91,51 +95,61 @@ public class MarketView extends HorizontalLayout {
 
     }
 
-    private void configureSideBar() {
-        operationButton = new Button();
-        operationButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        buttonSpace.add(operationButton);
-        buttonSpace.setJustifyContentMode(JustifyContentMode.CENTER);
-        buttonSpace.setAlignItems(Alignment.CENTER);
-        buttonSpace.setSizeFull();
+    private void resetOperationButton(){
+        this.buttonSpace.remove(this.operationButton);
+        this.operationButton = new Button();
+        this.buttonSpace.add(this.operationButton);
+        this.operationButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+    }
+
+    private void configureSideBar() {
+        this.operationButton = new Button();
+        this.operationButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        this.buttonSpace.add(operationButton);
+        this.buttonSpace.setJustifyContentMode(JustifyContentMode.CENTER);
+        this.buttonSpace.setAlignItems(Alignment.CENTER);
+        this.buttonSpace.setSizeFull();
 
         Component budgetInfo = getBudgetInfo(this.user);
 
-        sideBar.setWidth("25em");
-        sideBar.add(budgetInfo, buttonSpace);
+        this.sideBar.setWidth("25em");
+        this.sideBar.add(budgetInfo, buttonSpace);
     }
     private void configureOffersGrid() {
-        offersGrid.setSizeFull();
-        offersGrid.setColumns();
-        offersGrid.addColumn(MarketOffer::getName).setHeader("Name");
-        offersGrid.addColumn(MarketOffer::getSurname).setHeader("Surname");
-        offersGrid.addColumn(MarketOffer::getNationality).setHeader("Nationality");
-        offersGrid.addColumn(MarketOffer::getSellerId).setHeader("Seller");
-        offersGrid.addColumn(MarketOffer::getPosition).setHeader("Position");
-        offersGrid.addColumn(MarketOffer::getOverall).setHeader("Overall");
-        offersGrid.addColumn(MarketOffer::getPrice).setHeader("Price");
+        this.offersGrid.setSizeFull();
+        this.offersGrid.removeAllColumns();
+        this.offersGrid.setColumns();
+        this.offersGrid.addColumn(MarketOffer::getName).setHeader("Name");
+        this.offersGrid.addColumn(MarketOffer::getSurname).setHeader("Surname");
+        this.offersGrid.addColumn(MarketOffer::getNationality).setHeader("Nationality");
+        this.offersGrid.addColumn(MarketOffer::getSellerId).setHeader("Seller");
+        this.offersGrid.addColumn(MarketOffer::getPosition).setHeader("Position");
+        this.offersGrid.addColumn(MarketOffer::getOverall).setHeader("Overall");
+        this.offersGrid.addColumn(MarketOffer::getPrice).setHeader("Price");
 
-        List<MarketOffer> offers = MarketOffer.getOffers(this.dbController);
+        this.offersGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        offersGrid.setItems(offers);
+        this.offersGrid.setItems(this.user.getAllOffers());
 
     }
 
 
     private void configureSellForm() {
-        ComboBox<Player> playerForm = new ComboBox<>("Player");
-        playerForm.setItems(Player.getPlayersByClub(this.user.getClubID(), this.dbController));
-        playerForm.setItemLabelGenerator(Player::getFullName);
+        playerField = new ComboBox<>("Player");
+        playerField.setItems(this.user.getAllPlayers());
+        playerField.setItemLabelGenerator(Player::getFullName);
 
         Div plnSuffix = new Div();
         plnSuffix.setText("PLN");
-        NumberField price = new NumberField("Price");
+        price = new NumberField("Price");
         price.setSuffixComponent(plnSuffix);
 
         price.setLabel("Price");
 
-        sellForm.add(playerForm, price);
+        sellForm.removeAll();
+        sellForm.add(playerField, price);
 
         sellContent.setSizeFull();
         sellContent.setAlignItems(Alignment.CENTER);
@@ -148,23 +162,49 @@ public class MarketView extends HorizontalLayout {
 
     private void setOperation(Tab selectedTab) {
         if(selectedTab.equals(buyTab)){
+            resetOperationButton();
+            operationButton.addClickListener(buttonClickEvent -> this.buyOperation());
             operationSpace.remove(sellContent);
-            operationButton.removeThemeVariants(ButtonVariant.LUMO_SUCCESS);
             setBuying();
         } else {
+            resetOperationButton();
             operationSpace.remove(offersGrid);
-            operationButton.removeThemeVariants(ButtonVariant.LUMO_ERROR);
             setSelling();
         }
 
     }
 
+    private void buyOperation() {
+        SingleSelect<Grid<MarketOffer>, MarketOffer> playerSelect = this.offersGrid.asSingleSelect();
+        if (!playerSelect.isEmpty()) {
+            user.buyPlayer(playerSelect.getValue());
+            refreshData();
+        }
+    }
+
+    private void refreshData() {
+        this.offersGrid.setItems(this.user.getAllOffers());
+        playerField.setItems(this.user.getAllPlayers());
+        budgetValue.setText(String.valueOf(user.getBudget()));
+    }
+
 
     private void setSelling() {
         operationButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+        operationButton.addClickListener(buttonClickEvent -> this.sellOperation());
         operationButton.setText("Sell");
         operationSpace.add(sellContent);
         //operationContent.setFlexGrow(2, sellingForm);
+    }
+
+    private void sellOperation() {
+        //setOperation(this.sellTab);
+        if (!(playerField.isEmpty() || price.isEmpty())) {
+            user.sellPlayer(this.playerField.getValue());
+            playerField.clear();
+            price.clear();
+            refreshData();
+        }
     }
 
 
@@ -175,9 +215,9 @@ public class MarketView extends HorizontalLayout {
     }
 
 
-    static public Component getBudgetInfo(User user) {
+    public Component getBudgetInfo(User user) {
         Button label = new Button("Budget");
-        Button budgetValue = new Button(String.valueOf(user.getBudget()));
+        budgetValue = new Button(String.valueOf(user.getBudget()));
         label.addThemeVariants(ButtonVariant.LUMO_LARGE, ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_CONTRAST);
         budgetValue.addThemeVariants(ButtonVariant.LUMO_LARGE);
 

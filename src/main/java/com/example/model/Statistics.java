@@ -25,7 +25,7 @@ public class Statistics {
 
 
     public static Statistics getStatisticsById(int playerId, DatabaseController dbController) {
-        String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.STATISTICS_TABLE_NAME), List.of("player_id = " + playerId));
+        String query = "SELECT " + DatabaseConfig.STATISTICS_TABLE_NAME +" WHERE player_id = " + playerId;
         return dbController.getStatisticsFromDB(query);
     }
 
