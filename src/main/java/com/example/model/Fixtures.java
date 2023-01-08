@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.example.model.entities.Club;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;

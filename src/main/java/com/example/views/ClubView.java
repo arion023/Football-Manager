@@ -1,7 +1,7 @@
 package com.example.views;
 
-import com.example.model.Club;
-import com.example.model.ClubLogo;
+import com.example.model.entities.Club;
+import com.example.model.enums.ClubLogo;
 import com.example.model.Fixtures;
 import com.example.model.User;
 import com.vaadin.flow.component.Unit;
@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
 
+import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
+
 @Route(value = "/club", layout = AppLayoutBasic.class)
 @PageTitle("Club")
 @PermitAll
@@ -35,6 +37,8 @@ public class ClubView extends HorizontalLayout {
     public ClubView(User user, Fixtures fixtures) {
         this.user = user;
         this.fixtures = fixtures;
+
+        setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.AUTO);
         add(clubInformation(), matchTable());
 
@@ -43,9 +47,9 @@ public class ClubView extends HorizontalLayout {
     private VerticalLayout clubInformation() {
         VerticalLayout infoLayout = new VerticalLayout();
         infoLayout.setAlignItems(Alignment.CENTER);
-        infoLayout.add(new H2(user.getClub().getName()));
-        infoLayout.add(new Paragraph("Budget: " + user.getClub().getBudget() + " zl"));
-        infoLayout.add(detailsLayout());
+        H2 header = new H2(user.getClub().getName());
+        Paragraph paragraph = new Paragraph("Budget: " + user.getClub().getBudget() + " zl");
+        infoLayout.add(nextMatch(), header, paragraph, detailsLayout());
         return infoLayout;
     }
 
@@ -53,7 +57,7 @@ public class ClubView extends HorizontalLayout {
         VerticalLayout matchLayout = new VerticalLayout();
         matchLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
-        matchLayout.add(nextMatch(), leagueTable());
+        matchLayout.add(leagueTable());
         return matchLayout;
     }
 
@@ -68,21 +72,18 @@ public class ClubView extends HorizontalLayout {
 
         Image homeTeamLogo = new Image("images/user_club_logo.png", "user_club_logo");
         homeTeamLogo.setHeight(150, Unit.PIXELS);
-//        homeTeamLogo.setWidth(150, Unit.PIXELS);
 
         Span matchweekText = new Span("Matchweek " + fixtures.getCurrentMatchweek());
-        matchweekText.getStyle().set("font-size", "1.5rem");
+        matchweekText.getStyle().set(CSS_FONT_SIZE, "1.5rem");
         matchweekText.getStyle().set("font-weight", "bold");
 
-        Span info = new Span(user.getClub().getName() + " - " + opponentTeamName); // TODO link opposition club
+        Span info = new Span(user.getClub().getName() + " - " + opponentTeamName);
         info.setHeight(50, Unit.PIXELS);
-        info.getStyle().set("font-size", "1.5rem");
+        info.getStyle().set(CSS_FONT_SIZE, "1.5rem");
         info.getStyle().set("font-weight", "bold");
 
-        // TODO link opposition club
         Image awayTeamLogo = new Image(ClubLogo.getClubLogo(opponentTeamName), "opponent_club_logo");
         awayTeamLogo.setHeight(150, Unit.PIXELS);
-//        awayTeamLogo.setWidth(150, Unit.PIXELS);
 
         RouterLink gameplayLink = new RouterLink(GameplayView.class);
         Button playButton = new Button("Play match");
@@ -100,10 +101,10 @@ public class ClubView extends HorizontalLayout {
     private Grid<Club> leagueTable() {
         Grid<Club> grid = new Grid<>(Club.class, false);
         grid.addColumn(Club::getName).setHeader("Club:");
-        grid.addColumn(c -> c.getPoints()).setHeader("Points:").setSortable(true);
+        grid.addColumn(c -> c.getPoints()).setHeader("Points:").setSortable(true); //TODO getPoints shouldnt be static
 
         grid.setItems(fixtures.getLeagueClubs());
-        grid.setHeight(710, Unit.PIXELS);
+        grid.setHeight(100, Unit.PERCENTAGE);
         return grid;
     }
 

@@ -1,6 +1,11 @@
 package com.example.controller.database;
 
 public class DatabaseConfig {
+
+    private DatabaseConfig() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static final String URL = "jdbc:oracle:thin:@//ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";
     public static final String USER = "z07";
     public static final String PASSWORD = "kiycvj";

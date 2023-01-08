@@ -6,6 +6,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
+
 @Route("/login")
 @PageTitle("Login")
 @AnonymousAllowed
@@ -16,13 +18,13 @@ public class LoginView extends VerticalLayout {
 
         H1 heading = new H1("You have to log in to access this page");
         heading.getStyle()
-                .set("font-size", "var(--lumo-font-size-l)")
+                .set(CSS_FONT_SIZE, "var(--lumo-font-size-l)")
                 .set("margin", "100");
 
         Anchor googleLoginLink = new Anchor("/oauth2/authorization/google", "Login with google");
         googleLoginLink.getElement().setAttribute("router-ignore", true);
         googleLoginLink.getStyle()
-                .set("font-size", "var(--lumo-font-size-l)");
+                .set(CSS_FONT_SIZE, "var(--lumo-font-size-l)");
         add(heading, googleLoginLink);
     }
 }

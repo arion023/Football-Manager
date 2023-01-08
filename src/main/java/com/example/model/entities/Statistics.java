@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.model.entities;
 
 import com.example.controller.database.DatabaseConfig;
 import com.example.controller.database.DatabaseController;
@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,7 +29,6 @@ public class Statistics {
     }
 
     public static Statistics resultSetToType(ResultSet rs) {
-        List<Statistics> stats = new ArrayList<>();
         try {
                 var overall = rs.getInt("overall");
                 var pace = rs.getInt("pace");

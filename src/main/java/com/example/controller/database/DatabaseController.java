@@ -1,8 +1,8 @@
 package com.example.controller.database;
 
-import com.example.model.Club;
-import com.example.model.Player;
-import com.example.model.Statistics;
+import com.example.model.entities.Club;
+import com.example.model.entities.Player;
+import com.example.model.entities.Statistics;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -27,11 +27,13 @@ public class DatabaseController {
         return createSelectQuery(fields, tables, Collections.emptyList());
     }
 
-    public String createInstertQuery(String table, List<String> values) {
+    public String createInsertQuery(String table, List<String> values) {
         String query = "INSERT INTO " + table + " VALUES ( ";
+        StringBuilder builder = new StringBuilder();
         for (String v : values) {
-            query += v + ", ";
+            builder.append(v).append(", ");
         }
+        query += builder.toString();
         query += ")";
         return query;
     }
@@ -40,7 +42,7 @@ public class DatabaseController {
         String query = SELECT + " " + String.join(", ", fields) + " " +
                 FROM + " " + String.join(", ", tables) + " ";
         if (!conditions.isEmpty()) {
-            query.concat(WHERE + " " + String.join(" and ", conditions));
+            query = query.concat(WHERE + " " + String.join(" and ", conditions));
         }
         return query;
     }
@@ -61,7 +63,7 @@ public class DatabaseController {
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {
-            return Club.resultSetToType(rs);
+            return Club.resultSetToClubs(rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

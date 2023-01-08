@@ -2,7 +2,8 @@ package com.example.model;
 
 import com.example.controller.database.DatabaseConfig;
 import com.example.controller.database.DatabaseController;
-import com.vaadin.flow.component.html.Image;
+import com.example.model.entities.Club;
+import com.example.model.entities.Player;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -63,8 +64,8 @@ public class User {
             while (userInfo.next()) {
                 this.mail = userInfo.getString("mail");
                 this.budget = userInfo.getInt("budget");
-                var club_id = userInfo.getInt("club_id");
-                this.setClubByID(club_id);
+                var clubId = userInfo.getInt("club_id");
+                this.setClubByID(clubId);
                 size += 1;
             }
             return size == 1;
@@ -74,7 +75,7 @@ public class User {
         }
     }
 
-    public static boolean addNewUser(int id, String login, String password, String mail, int budget, int club_id) {
+    public static boolean addNewUser(int id, String login, String password, String mail, int budget, int clubId) {
         DatabaseController dbController = new DatabaseController();
 
         //TODO checking if operation complete

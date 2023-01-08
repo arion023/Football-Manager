@@ -1,7 +1,8 @@
-package com.example.model;
+package com.example.model.entities;
 
+import com.example.model.entities.Match;
+import com.example.model.entities.Person;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -15,4 +16,5 @@ public class Referee extends Person {
     //    private YellowCard yellowCardsGiven;
     //    private RedCard redCardsGiven;
     //  private int penaltiesGiven;
+    //TODO może usunąć całkowicie
 }

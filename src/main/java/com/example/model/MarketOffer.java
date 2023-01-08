@@ -1,6 +1,7 @@
 package com.example.model;
 
 import com.example.controller.database.DatabaseController;
+import com.example.model.entities.Player;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 public class MarketOffer {
-    public static int OffersLimit = 40;
+    public static final int OFFERS_LIMIT = 40;
     private Player player;
     private int price;
     public MarketOffer(Player player, int price){
@@ -29,7 +30,7 @@ public class MarketOffer {
         List<Player> allPlayers = Player.getAllPlayersFromDB(dbController);
         Collections.shuffle(allPlayers);
 
-        List<Player> playersForSell = allPlayers.subList(0, MarketOffer.OffersLimit);
+        List<Player> playersForSell = allPlayers.subList(0, MarketOffer.OFFERS_LIMIT);
         for (Player player : playersForSell ){
             offers.add(new MarketOffer(player, player.estimatePrice()));
         }
@@ -37,9 +38,6 @@ public class MarketOffer {
         return offers;
     }
 
-    public int getPrice(){
-        return this.price;
-    }
     public String getName(){
         return player.getName();
     }
