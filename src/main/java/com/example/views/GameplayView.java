@@ -1,5 +1,6 @@
 package com.example.views;
 
+import com.example.controller.database.DatabaseController;
 import com.example.model.*;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
@@ -38,6 +39,7 @@ public class GameplayView extends VerticalLayout {
     private final transient ScheduledExecutorService executorService = Executors.newScheduledThreadPool(0);
     private final transient User user;
     private final transient Fixtures fixtures;
+    private final transient DatabaseController dbController;
     private final Dialog dialog = new Dialog();
 
     private int minutes = 0;
@@ -47,9 +49,10 @@ public class GameplayView extends VerticalLayout {
 
 
     @Autowired
-    public GameplayView(User user, Fixtures fixtures) {
+    public GameplayView(User user, Fixtures fixtures, DatabaseController databaseController) {
         this.user = user;
         this.fixtures = fixtures;
+        this.dbController = databaseController;
 
         setSizeFull();
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
@@ -180,7 +183,7 @@ public class GameplayView extends VerticalLayout {
         Grid<Player> awayTeamGrid = createPlayersGrid();
 
         players = homeTeamGrid.setItems(user.getFirstSquad());
-        awayTeamGrid.setItems(Player.getAllPlayersFromClub(user.getNextOpponentClubId()).subList(0, 11));//TODO wybrać dobre pozycje
+        awayTeamGrid.setItems(Player.getAllPlayersFromClubWithStats(user.getNextOpponentClubId(), dbController).subList(0, 11));//TODO wybrać dobre pozycje
 
         homeTeamGrid.setMaxWidth(500, Unit.PIXELS);
         awayTeamGrid.setMaxWidth(500, Unit.PIXELS);
@@ -207,6 +210,10 @@ public class GameplayView extends VerticalLayout {
                 .setHeader("Pozycja")
                 .setAutoWidth(true)
                 .setFlexGrow(3)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getOverall())
+                .setHeader("Overall")
+                .setAutoWidth(true)
                 .setSortable(true);
         return grid;
     }

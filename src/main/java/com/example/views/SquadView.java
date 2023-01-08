@@ -18,11 +18,8 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.renderer.NativeButtonRenderer;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.ApplicationScope;
 
 import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
@@ -37,6 +34,7 @@ import java.util.stream.Collectors;
 public class SquadView extends HorizontalLayout {
 
     private final User user;
+    private final DatabaseController dbController;
 //    private ArrayList<Player> firstSquad;
 //    private ArrayList<Player> substitutes; //Must be mutable list i.e ArrayList
 
@@ -44,10 +42,9 @@ public class SquadView extends HorizontalLayout {
 
     private GridListDataView<Player> firstSquadData;
     private GridListDataView<Player> substitutesData;
-    private DatabaseController dbController;
 
     @Autowired
-    public SquadView(User user,DatabaseController dbController) {
+    public SquadView(User user, DatabaseController dbController) {
         this.user = user;
         this.dbController = dbController;
         setSizeFull();
@@ -225,9 +222,34 @@ public class SquadView extends HorizontalLayout {
                 .setAutoWidth(true)
                 .setFlexGrow(0)
                 .setSortable(true);
-        //TODO dodać statystyki
-        //        firstSquadGrid.addColumn(Player::getStatistics).setHeader("Statystyki")
-        //                .setAutoWidth(true).setFlexGrow(0);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getOverall())
+                .setHeader("OV")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPace())
+                .setHeader("PAC")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getShooting())
+                .setHeader("SHO")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPassing())
+                .setHeader("PAS")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getDribbling())
+                .setHeader("DRI")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getDefence())
+                .setHeader("DEF")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPhysically())
+                .setHeader("PHY")
+                .setAutoWidth(true)
+                .setSortable(true);
         return grid;
     }
 }

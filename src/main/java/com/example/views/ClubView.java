@@ -35,6 +35,8 @@ public class ClubView extends HorizontalLayout {
     public ClubView(User user, Fixtures fixtures) {
         this.user = user;
         this.fixtures = fixtures;
+
+        setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.AUTO);
         add(clubInformation(), matchTable());
 
@@ -43,9 +45,9 @@ public class ClubView extends HorizontalLayout {
     private VerticalLayout clubInformation() {
         VerticalLayout infoLayout = new VerticalLayout();
         infoLayout.setAlignItems(Alignment.CENTER);
-        infoLayout.add(new H2(user.getClub().getName()));
-        infoLayout.add(new Paragraph("Budget: " + user.getClub().getBudget() + " zl"));
-        infoLayout.add(detailsLayout());
+        H2 header = new H2(user.getClub().getName());
+        Paragraph paragraph = new Paragraph("Budget: " + user.getClub().getBudget() + " zl");
+        infoLayout.add(nextMatch(), header, paragraph, detailsLayout());
         return infoLayout;
     }
 
@@ -53,7 +55,7 @@ public class ClubView extends HorizontalLayout {
         VerticalLayout matchLayout = new VerticalLayout();
         matchLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
-        matchLayout.add(nextMatch(), leagueTable());
+        matchLayout.add(leagueTable());
         return matchLayout;
     }
 
@@ -103,7 +105,7 @@ public class ClubView extends HorizontalLayout {
         grid.addColumn(c -> c.getPoints()).setHeader("Points:").setSortable(true);
 
         grid.setItems(fixtures.getLeagueClubs());
-        grid.setHeight(710, Unit.PIXELS);
+        grid.setHeight(100, Unit.PERCENTAGE);
         return grid;
     }
 

@@ -1,5 +1,6 @@
 package com.example.views;
 
+import com.example.controller.database.DatabaseController;
 import com.example.model.Player;
 import com.example.model.User;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -25,6 +26,8 @@ import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
+import java.util.ArrayList;
+
 @Route("/")
 @PageTitle("Welcome")
 @AnonymousAllowed
@@ -34,13 +37,15 @@ public class AppLayoutBasic extends AppLayout {
 
     private final transient AuthenticationContext authContext;
     private final transient User user;
+    private final DatabaseController dbController;
     private Dialog addNewUserDialog;
 
 
     @Autowired
-    public AppLayoutBasic(AuthenticationContext authContext, User logUser) {
+    public AppLayoutBasic(AuthenticationContext authContext, User logUser, DatabaseController databaseController) {
         this.authContext = authContext;
         this.user = logUser;
+        this.dbController = databaseController;
 
         HorizontalLayout header;
         DrawerToggle toggle = new DrawerToggle();
@@ -114,6 +119,6 @@ public class AppLayoutBasic extends AppLayout {
     }
 
     private void getUserDataFromDB() {
-        user.setSubstitutes(Player.getAllPlayersFromClub(347)); //347 - Lech Poznań
+        user.setSubstitutes(new ArrayList<>(Player.getAllPlayersFromClubWithStats(347, dbController))); //347 - Lech Poznań
     }
 }

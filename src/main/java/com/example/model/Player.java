@@ -60,15 +60,12 @@ public class Player extends Person {
         }
     }
 
-    public static ArrayList<Player> getAllPlayersFromClub(int clubId) {
-        String query = "SELECT * FROM player WHERE club_id =?";
-        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-             PreparedStatement pstatement = connection.prepareStatement(query)) {
-            pstatement.setInt(1, clubId);
-            ResultSet result = pstatement.executeQuery();
-            return resultSetToType(result);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public static List<Player> getAllPlayersFromClubWithStats(int clubId, DatabaseController dbController) {
+        String query = "SELECT * FROM " + DatabaseConfig.PLAYERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id) WHERE club_id = " + clubId;
+        try {
+            return dbController.getPlayersFromDB(query);
+        } catch (Exception e) {
+            return null; //TODO
         }
     }
 
@@ -109,7 +106,6 @@ public class Player extends Person {
                     player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, Statistics.resultSetToType(result), positionEnum);
                 } catch (SQLException e) {
                     player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, null, positionEnum);
-                    ;
                 }
                 players.add(player);
             }
