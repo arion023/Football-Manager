@@ -27,7 +27,16 @@ public class DatabaseController {
         return createSelectQuery(fields, tables, Collections.emptyList());
     }
 
-    public String createSelectQuery(List<String> fields, List<String> tables, List<String> conditions) {
+    public String createInstertQuery(String table, List<String> values){
+        String query = "INSERT INTO " + table + " VALUES ( ";
+        for (String v : values){
+            query += v + ", ";
+        }
+        query += ")";
+        return query;
+    }
+
+    public String createSelectQuery(List<String> fields, List<String> tables, List<String> conditions) { //TODO WORKS?
         String query = SELECT + " " + String.join(", ", fields) + " " +
                 FROM + " " + String.join(", ", tables) + " ";
         if (conditions.isEmpty()) {
@@ -38,27 +47,13 @@ public class DatabaseController {
 
 
     public List<Player> getPlayersFromDB(String query) throws Exception {
-        List<Player> players;
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(query + "FETCH FIRST 20 ROWS ONLY")){;
-            players = Player.resultSetToType(rs);
+            ResultSet rs = statement.executeQuery(query)){;
+            return Player.resultSetToType(rs);
         } catch (SQLException e) {
             throw new RuntimeException(e); //TODO new custom exception
         }
-        for(Player p : players){
-            String statistics_query = "SELECT * FROM " + STATISTICS_TABLE_NAME + " WHERE player_id =" + p.getId();
-            List<Statistics> stats = this.getStatisticsFromDB(statistics_query);
-            try {
-                if (stats.size() == 1) {
-                    p.setStatistics(stats.get(0));
-                } else
-                    throw new Exception("Too many statistics for one player");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return players;
         }
 
 
@@ -73,7 +68,7 @@ public class DatabaseController {
         }
     }
 
-    public List<Statistics> getStatisticsFromDB(String query) {
+    public Statistics getStatisticsFromDB(String query) {
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {

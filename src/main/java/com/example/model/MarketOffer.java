@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 public class MarketOffer {
-    public static int OffersLimit = 10;
+    public static int OffersLimit = 40;
     private Player player;
     private int price;
     public MarketOffer(Player player, int price){

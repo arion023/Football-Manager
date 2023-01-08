@@ -50,7 +50,8 @@ public class Player extends Person{
         else return 0;
     }
     public static List<Player> getAllPlayersFromDB(DatabaseController dbController) {
-        String query = dbController.createSelectQuery(List.of(DatabaseConfig.PLAYERS_TABLE_NAME));
+        //String query = dbController.createSelectQuery(List.of(DatabaseConfig.PLAYERS_TABLE_NAME));
+        String query = "SELECT * FROM " + DatabaseConfig.PLAYERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id)";
         try {
             return dbController.getPlayersFromDB(query);
         } catch (Exception e) {
@@ -89,8 +90,13 @@ public class Player extends Person{
 
 //                countries.put(countryId, country);
 //                clubs.put(clubId, club);
-
-                Player player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, null, positionEnum);
+                Player player;
+                try {
+                    result.findColumn("overall");
+                     player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, Statistics.resultSetToType(result), positionEnum);
+                } catch (SQLException e) {
+                    player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, null, positionEnum);;
+                }
                 players.add(player);
             }
         } catch (SQLException e) {

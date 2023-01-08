@@ -26,17 +26,12 @@ public class Statistics {
 
     public static Statistics getStatisticsById(int playerId, DatabaseController dbController) {
         String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.STATISTICS_TABLE_NAME), List.of("player_id = " + playerId));
-        List<Statistics> stats = dbController.getStatisticsFromDB(query);
-        if (stats.size() == 1)
-            return stats.get(0);
-        else
-            return null;
+        return dbController.getStatisticsFromDB(query);
     }
 
-    public static List<Statistics> resultSetToType(ResultSet rs) {
+    public static Statistics resultSetToType(ResultSet rs) {
         List<Statistics> stats = new ArrayList<>();
         try {
-            while (rs.next()) {
                 var overall = rs.getInt("overall");
                 var pace = rs.getInt("pace");
                 var shooting = rs.getInt("shooting");
@@ -44,12 +39,10 @@ public class Statistics {
                 var dribbling = rs.getInt("dribbling");
                 var defence = rs.getInt("defence");
                 var physically = rs.getInt("physical");
-                stats.add(new Statistics(overall, pace, shooting, passing, dribbling, defence, physically));
-            }
+                return new Statistics(overall, pace, shooting, passing, dribbling, defence, physically);
 
         } catch (SQLException e) {
             throw new RuntimeException(e); //TODO Dedicated exception
         }
-        return stats;
     }
 }
