@@ -27,9 +27,9 @@ public class DatabaseController {
         return createSelectQuery(fields, tables, Collections.emptyList());
     }
 
-    public String createInstertQuery(String table, List<String> values){
+    public String createInstertQuery(String table, List<String> values) {
         String query = "INSERT INTO " + table + " VALUES ( ";
-        for (String v : values){
+        for (String v : values) {
             query += v + ", ";
         }
         query += ")";
@@ -39,7 +39,7 @@ public class DatabaseController {
     public String createSelectQuery(List<String> fields, List<String> tables, List<String> conditions) { //TODO WORKS?
         String query = SELECT + " " + String.join(", ", fields) + " " +
                 FROM + " " + String.join(", ", tables) + " ";
-        if (conditions.isEmpty()) {
+        if (!conditions.isEmpty()) {
             query.concat(WHERE + " " + String.join(" and ", conditions));
         }
         return query;
@@ -49,13 +49,12 @@ public class DatabaseController {
     public List<Player> getPlayersFromDB(String query) throws Exception {
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(query)){;
+             ResultSet rs = statement.executeQuery(query)) {
             return Player.resultSetToType(rs);
         } catch (SQLException e) {
             throw new RuntimeException(e); //TODO new custom exception
         }
-        }
-
+    }
 
 
     public List<Club> getClubsFromDB(String query) {
@@ -77,7 +76,6 @@ public class DatabaseController {
             throw new RuntimeException(e);
         }
     }
-
 
 
 }

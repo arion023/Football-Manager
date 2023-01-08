@@ -19,6 +19,7 @@ public class Player extends Person {
     private int currentClubId;
     private Statistics statistics;
     private Position position;
+
     public Player(int id, String name, String surname, LocalDate birthDate, String countryId,
                   int currentClubId, Statistics statistics, Position position) {
         super(id, name, surname, birthDate, countryId);
@@ -44,11 +45,11 @@ public class Player extends Person {
         //TODO IT CAN BE BETTER...
         if (this.statistics != null) {
             int overall = this.statistics.getOverall();
-            int estimatedPrice = (int) pow(overall/10, 2) * 1000;
+            int estimatedPrice = (int) pow(overall / 10, 2) * 1000;
             return estimatedPrice;
-        }
-        else return 0;
+        } else return 0;
     }
+
     public static List<Player> getAllPlayersFromDB(DatabaseController dbController) {
         //String query = dbController.createSelectQuery(List.of(DatabaseConfig.PLAYERS_TABLE_NAME));
         String query = "SELECT * FROM " + DatabaseConfig.PLAYERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id)";
@@ -70,6 +71,7 @@ public class Player extends Person {
             throw new RuntimeException(e);
         }
     }
+
     public static List<Player> getPlayersByClub(int clubId, DatabaseController dbController) {
         String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.PLAYERS_TABLE_NAME), List.of("club_id = " + clubId));
         try {
@@ -80,7 +82,7 @@ public class Player extends Person {
     }
 
     public static ArrayList<Player> resultSetToType(ResultSet result) {
-        List<Player> players = new ArrayList<>();
+        ArrayList<Player> players = new ArrayList<>();
         Map<Integer, Country> countries = new HashMap<>();
         Map<Integer, Club> clubs = new HashMap<>();
         try {
@@ -104,9 +106,10 @@ public class Player extends Person {
                 Player player;
                 try {
                     result.findColumn("overall");
-                     player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, Statistics.resultSetToType(result), positionEnum);
+                    player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, Statistics.resultSetToType(result), positionEnum);
                 } catch (SQLException e) {
-                    player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, null, positionEnum);;
+                    player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, null, positionEnum);
+                    ;
                 }
                 players.add(player);
             }
@@ -128,8 +131,6 @@ public class Player extends Person {
     }
 
 
-
-
     @Getter
     @RequiredArgsConstructor
     public enum Position {
@@ -149,6 +150,7 @@ public class Player extends Person {
         public static List<Position> getGoalkeepersPositions() {
             return List.of(GK);
         }
+
         public static List<Position> getBackPositions() {
             return List.of(LB, CB, RB);
         }
