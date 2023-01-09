@@ -5,6 +5,8 @@ import com.example.model.entities.Player;
 import com.example.model.enums.Position;
 import com.example.model.User;
 import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Image;
@@ -35,6 +37,10 @@ public class SquadView extends HorizontalLayout {
     private final transient User user;
     private final Select<Formation> selectFormation = createFormationSelect();
 
+    private final Dialog fullTeamDialog = new Dialog();
+
+    private final Dialog positionsDialog = new Dialog();
+
     private GridListDataView<Player> firstSquadData;
     private GridListDataView<Player> substitutesData;
 
@@ -44,12 +50,15 @@ public class SquadView extends HorizontalLayout {
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
         ArrayList<Player> clubPlayers = user.getSubstitutes();
+
         if (user.getFirstSquad().isEmpty()) {
             user.setFirstSquad(getFirstSquadWithFormation(clubPlayers));
             user.getSubstitutes().removeAll(user.getFirstSquad());
         }
+
+        configureDialogs();
         var playersLayout = playerListLayout(); //Must be called before pitchLayout()
-        add(pitchLayout(), playersLayout);
+        add(pitchLayout(), playersLayout, fullTeamDialog, positionsDialog);
     }
 
     private ArrayList<Player> getFirstSquadWithFormation(List<Player> clubPlayers) {
@@ -62,6 +71,20 @@ public class SquadView extends HorizontalLayout {
         firstSquadList.addAll(getPlayersFromPositions(clubPlayers, Position.getBackPositions()).subList(0, formation.getDefendersNumber()));
 
         return firstSquadList;
+    }
+
+    private void configureDialogs() {
+        Button fullTeamButton = new Button("Close");
+        fullTeamButton.addClickListener(event -> fullTeamDialog.close());
+        fullTeamDialog.getFooter().add(fullTeamButton);
+        fullTeamDialog.setHeaderTitle("First squad is full!");
+        fullTeamDialog.add(new Span("You already have 11 players in your first squad."));
+
+        Button positionsButton = new Button("Close");
+        positionsButton.addClickListener(event -> positionsDialog.close());
+        positionsDialog.getFooter().add(positionsButton);
+        positionsDialog.setHeaderTitle("Position line is full!");
+        positionsDialog.add(new Span("You already have enough players for this position line. Try to change formation."));
     }
 
     private VerticalLayout pitchLayout() {
@@ -143,9 +166,9 @@ public class SquadView extends HorizontalLayout {
         substitutesGrid.addColumn(new NativeButtonRenderer<>("Add player",
                 player -> {
                     if (user.getFirstSquad().size() == 11) {
-                        //TODO komunikat
+                        fullTeamDialog.open();
                     } else if (checkPositions(player)) {
-                        //TODO komunikat
+                        positionsDialog.open();
                     } else {
                         substitutesData.removeItem(player);
                         firstSquadData.addItem(player);
