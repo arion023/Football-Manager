@@ -1,9 +1,8 @@
 package com.example.views;
 
-import com.example.controller.database.DatabaseController;
-import com.example.model.Formation;
-import com.example.model.Player;
-import com.example.model.Player.Position;
+import com.example.model.enums.Formation;
+import com.example.model.entities.Player;
+import com.example.model.enums.Position;
 import com.example.model.User;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.grid.Grid;
@@ -18,45 +17,36 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.renderer.NativeButtonRenderer;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.ApplicationScope;
 
 import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
+
 @Route(value = "/squad", layout = AppLayoutBasic.class)
 @PageTitle("Squad")
-//@PreserveOnRefresh //Czy to będzie git?
-//TODO zrobić żeby się nie renderowała za każdym razem od nowa
 @PermitAll
 public class SquadView extends HorizontalLayout {
 
-    private final User user;
-//    private ArrayList<Player> firstSquad;
-//    private ArrayList<Player> substitutes; //Must be mutable list i.e ArrayList
-
-    private Select<Formation> selectFormation = createFormationSelect();
+    private final transient User user;
+    private final Select<Formation> selectFormation = createFormationSelect();
 
     private GridListDataView<Player> firstSquadData;
     private GridListDataView<Player> substitutesData;
-    private DatabaseController dbController;
 
     @Autowired
-    public SquadView(User user,DatabaseController dbController) {
+    public SquadView(User user) {
         this.user = user;
-        this.dbController = dbController;
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
         ArrayList<Player> clubPlayers = user.getSubstitutes();
-//        firstSquad = new ArrayList<>(clubPlayers.subList(0, 11));
         if (user.getFirstSquad().isEmpty()) {
             user.setFirstSquad(getFirstSquadWithFormation(clubPlayers));
-            user.getSubstitutes().removeAll(user.getFirstSquad()); //TODO czy zadziała?
+            user.getSubstitutes().removeAll(user.getFirstSquad());
         }
         var playersLayout = playerListLayout(); //Must be called before pitchLayout()
         add(pitchLayout(), playersLayout);
@@ -96,7 +86,7 @@ public class SquadView extends HorizontalLayout {
     }
 
     private ArrayList<Player> getPlayersFromPositions(List<Player> players, List<Position> positions) {
-        return players.stream() //TODO wybierać dobrych zawodników
+        return players.stream()
                 .filter(p -> positions.contains(p.getPosition()))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
@@ -109,7 +99,7 @@ public class SquadView extends HorizontalLayout {
         shirt.setHeight(100, Unit.PIXELS);
         Span surname = new Span(player.getSurname());
         surname.getStyle().set("font-weight", "bold");
-        surname.getStyle().set("font-size", "1.1rem");
+        surname.getStyle().set(CSS_FONT_SIZE, "1.1rem");
 
         vL.add(shirt, surname);
         return vL;
@@ -175,14 +165,11 @@ public class SquadView extends HorizontalLayout {
         var backsInSquad = countPlayersInPositions(Position.getBackPositions());
         var midfieldersInSquad = countPlayersInPositions(Position.getMidfieldPositions());
         var forwardsInSquad = countPlayersInPositions(Position.getForwardPositions());
-        //TODO refactor
-        if (Position.GK.equals(position) && goalkeeperInSquad == 1) {
-            return true;
-        } else if (Position.getBackPositions().contains(position) && backsInSquad == formation.getDefendersNumber()) {
-            return true;
-        } else if (Position.getMidfieldPositions().contains(position) && midfieldersInSquad == formation.getMidfieldersNumber()) {
-            return true;
-        } else if (Position.getForwardPositions().contains(position) && forwardsInSquad == formation.getForwardsNumber()) {
+
+        if ((Position.GK.equals(position) && goalkeeperInSquad == 1)
+                || (Position.getBackPositions().contains(position) && backsInSquad == formation.getDefendersNumber())
+                || (Position.getMidfieldPositions().contains(position) && midfieldersInSquad == formation.getMidfieldersNumber())
+                || (Position.getForwardPositions().contains(position) && forwardsInSquad == formation.getForwardsNumber())) {
             return true;
         }
 
@@ -201,9 +188,7 @@ public class SquadView extends HorizontalLayout {
         select.setItemLabelGenerator(Formation::getName);
         select.setItems(Formation.values());
         select.setValue(Formation.F_442);
-        select.addValueChangeListener(selectFormationComponentValueChangeEvent -> {
-            this.replace(this.getComponentAt(0), pitchLayout());
-        });
+        select.addValueChangeListener(selectFormationComponentValueChangeEvent -> this.replace(this.getComponentAt(0), pitchLayout()));
         return select;
     }
 
@@ -225,9 +210,34 @@ public class SquadView extends HorizontalLayout {
                 .setAutoWidth(true)
                 .setFlexGrow(0)
                 .setSortable(true);
-        //TODO dodać statystyki
-        //        firstSquadGrid.addColumn(Player::getStatistics).setHeader("Statystyki")
-        //                .setAutoWidth(true).setFlexGrow(0);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getOverall())
+                .setHeader("OV")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPace())
+                .setHeader("PAC")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getShooting())
+                .setHeader("SHO")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPassing())
+                .setHeader("PAS")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getDribbling())
+                .setHeader("DRI")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getDefence())
+                .setHeader("DEF")
+                .setAutoWidth(true)
+                .setSortable(true);
+        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPhysically())
+                .setHeader("PHY")
+                .setAutoWidth(true)
+                .setSortable(true);
         return grid;
     }
 }

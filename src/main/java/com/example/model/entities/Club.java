@@ -1,8 +1,7 @@
-package com.example.model;
+package com.example.model.entities;
 
 import com.example.controller.database.DatabaseConfig;
 import com.example.controller.database.DatabaseController;
-import com.vaadin.flow.component.html.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,16 +16,18 @@ import java.util.List;
 public class Club {
     private int id;
     private String name;
-    //private List<Player> players;
     private Statistics overallStatistics;
     private int budget;
-//    private Coach coach;
     private List<League> leagues;
     private int currentPosition;
     private Stadium stadium;
-//    private List<Match> matchesPlayed;
     private List<Trophy> trophies;
 
+
+    public static int getPoints() {
+        //TODO point counter
+        return 0;
+    }
 
     public static Club getClubById(int clubId, DatabaseController dbController) {
         String query = "SELECT";
@@ -41,11 +42,6 @@ public class Club {
         return dbController.getClubsFromDB(query);
     }
 
-    public static int getPoints() {
-//        int points = ;
-        int points = 0; //TODO point counter
-        return points;
-    }
 
     public static List<Club> getAllClubsFromDB() {
         DatabaseController dbController = new DatabaseController();
@@ -53,22 +49,22 @@ public class Club {
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
              ResultSet result = statement.executeQuery(query)) {
-            return resultSetToType(result);
+            return resultSetToClubs(result);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static List<Club> resultSetToType(ResultSet result) {
+    public static List<Club> resultSetToClubs(ResultSet result) {
         List<Club> clubs = new ArrayList<>();
         try {
             while (result.next()) {
+                var clubId = result.getInt("club_id");
                 var name = result.getString("name");
-                var id = result.getInt("club_id");
                 var budget = result.getInt("budget");
 
-                Club club = new Club(id, name, null , budget,
-                        null, 0, null, null); //TODO sql
+                Club club = new Club(clubId, name, null, budget,
+                        null, 0, null, null);//TODO get proper data
                 clubs.add(club);
             }
         } catch (SQLException e) {

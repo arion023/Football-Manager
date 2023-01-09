@@ -1,9 +1,9 @@
-package com.example.model;
+package com.example.model.entities;
 
 import com.example.controller.database.DatabaseConfig;
 import com.example.controller.database.DatabaseController;
+import com.example.model.enums.Position;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.sql.*;
@@ -28,25 +28,17 @@ public class Player extends Person {
         this.position = position;
     }
 
-    //    public static List<Player> getAllPlayersFromDB() {
-//        DatabaseController dbController = new DatabaseController();
-//        String query = dbController.createSelectQuery(DatabaseConfig.PLAYERS_TABLE_NAME);
-//        ResultSet resultSet = dbController.doQuery(query);
-//        return resultSetToPlayers(resultSet);
-//    }
 
 
     public String getFullName() {
-        String allName = super.getName() + " " + super.getSurname();
-        return allName;
+        return super.getName() + " " + super.getSurname();
     }
 
     public int estimatePrice() {
         //TODO IT CAN BE BETTER...
         if (this.statistics != null) {
             int overall = this.statistics.getOverall();
-            int estimatedPrice = (int) pow(overall / 10, 2) * 1000;
-            return estimatedPrice;
+            return  (int) pow(overall / 10.0, 2) * 1000;
         } else return 0;
     }
 
@@ -56,19 +48,16 @@ public class Player extends Person {
         try {
             return dbController.getPlayersFromDB(query);
         } catch (Exception e) {
-            return null; //TODO
+            return Collections.emptyList(); //TODO
         }
     }
 
-    public static ArrayList<Player> getAllPlayersFromClub(int clubId) {
-        String query = "SELECT * FROM player WHERE club_id =?";
-        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-             PreparedStatement pstatement = connection.prepareStatement(query)) {
-            pstatement.setInt(1, clubId);
-            ResultSet result = pstatement.executeQuery();
-            return resultSetToType(result);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public static List<Player> getAllPlayersFromClubWithStats(int clubId, DatabaseController dbController) {
+        String query = "SELECT * FROM " + DatabaseConfig.PLAYERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id) WHERE club_id = " + clubId;
+        try {
+            return dbController.getPlayersFromDB(query);
+        } catch (Exception e) {
+            return Collections.emptyList(); //TODO
         }
     }
 
@@ -77,14 +66,12 @@ public class Player extends Person {
         try {
             return dbController.getPlayersFromDB(query);
         } catch (Exception e) {
-            return null; //TODO
+            return Collections.emptyList(); //TODO
         }
     }
 
     public static ArrayList<Player> resultSetToType(ResultSet result) {
         ArrayList<Player> players = new ArrayList<>();
-        Map<Integer, Country> countries = new HashMap<>();
-        Map<Integer, Club> clubs = new HashMap<>();
         try {
             while (result.next()) {
                 var id = result.getInt("player_id");
@@ -95,21 +82,14 @@ public class Player extends Person {
                 var clubId = result.getInt("club_id");
                 var position = result.getString("position_id");
 
-//                Country country = countries.getOrDefault(countryId, Country.getCountryById(countryId));
-//                Club club = clubs.getOrDefault(clubId, Club.getClubById(clubId));
-//                List<Club> clubsHistory = getClubsHistory(id);
-//                Statistics statistics = Statistics.getStatisticsById(statsId);
                 Position positionEnum = getPositionEnum(position);
 
-//                countries.put(countryId, country);
-//                clubs.put(clubId, club);
                 Player player;
                 try {
                     result.findColumn("overall");
                     player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, Statistics.resultSetToType(result), positionEnum);
                 } catch (SQLException e) {
                     player = new Player(id, name, surname, birthDate.toLocalDate(), countryId, clubId, null, positionEnum);
-                    ;
                 }
                 players.add(player);
             }
@@ -120,47 +100,13 @@ public class Player extends Person {
         return players;
     }
 
-    private static List<Club> getClubsHistory(int playerId) {
-        return new ArrayList<>();
-    }
 
     private static Position getPositionEnum(String position) {
-        var positions = Position.values();
+        var positions = Position.values();//TODO chyba powinna być wybrana jakoś ta pozycja na podstawie stringa a nie losowo
         int index = new Random().nextInt(positions.length);
         return positions[index];
     }
 
 
-    @Getter
-    @RequiredArgsConstructor
-    public enum Position {
-        GK("Goalkeeper"),
-        LB("Left Back"),
-        CB("Center Back"),
-        RB("Right Back"),
-        LM("Left Midfielder"),
-        CM("Center Midfielder"),
-        RM("Right Midfielder"),
-        LF("Left Forward"),
-        CF("Center Forward"),
-        RF("Right Forward");
 
-        private final String positionName;
-
-        public static List<Position> getGoalkeepersPositions() {
-            return List.of(GK);
-        }
-
-        public static List<Position> getBackPositions() {
-            return List.of(LB, CB, RB);
-        }
-
-        public static List<Position> getMidfieldPositions() {
-            return List.of(LM, CM, RM);
-        }
-
-        public static List<Position> getForwardPositions() {
-            return List.of(LF, CF, RF);
-        }
-    }
 }

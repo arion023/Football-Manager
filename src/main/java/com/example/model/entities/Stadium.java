@@ -1,8 +1,8 @@
-package com.example.model;
+package com.example.model.entities;
 
+import com.example.model.entities.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;

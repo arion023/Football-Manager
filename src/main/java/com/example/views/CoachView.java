@@ -1,8 +1,8 @@
 //package com.example.views;
 //
-//import com.example.model.Club;
-//import com.example.model.Coach;
-//import com.example.model.Country;
+//import com.example.model.entities.Club;
+//import com.example.model.entities.Coach;
+//import com.example.model.entities.Country;
 //import com.vaadin.flow.component.details.Details;
 //import com.vaadin.flow.component.html.H2;
 //import com.vaadin.flow.component.html.Image;

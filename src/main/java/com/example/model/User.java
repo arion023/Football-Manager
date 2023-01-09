@@ -2,11 +2,12 @@ package com.example.model;
 
 import com.example.controller.database.DatabaseConfig;
 import com.example.controller.database.DatabaseController;
+import com.example.model.entities.Club;
+import com.example.model.entities.Player;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.yaml.snakeyaml.error.Mark;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -84,12 +85,12 @@ public class User {
             }
             return size == 1;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static boolean addNewUser(int id, String login, String password, String mail, int budget, int club_id) {
+    public static boolean addNewUser(int id, String login, String password, String mail, int budget, int clubId) {
         DatabaseController dbController = new DatabaseController();
 
         //TODO checking if operation complete

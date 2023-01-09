@@ -24,9 +24,12 @@
 ALTER SESSION SET nls_date_format='yyyy-mm-dd';
 
 /* USERS */
-INSERT INTO users VALUES('root@gmail.com', 'root', 50000, 4248);
-INSERT INTO users VALUES ('masikow200@gmail.com', 'martinez', 1000000, 4248 );
-INSERT INTO users VALUES ('xarigamesx@gmail.com', 'arigames', 200, 4248 );
+INSERT INTO users VALUES(0, 'root@gmail.com', 'root', 50000, 4248, 0);
+INSERT INTO users VALUES (1, 'masikow200@gmail.com', 'martinez', 1000000, 4248, 0);
+INSERT INTO users VALUES (2, 'xarigamesx@gmail.com', 'arigames', 200, 4248, 0);
+
+INSERT INTO user_club VALUES (4248, 'Legia WArszawa', 'PL', 106, NULL);
+
 
 commit;
 

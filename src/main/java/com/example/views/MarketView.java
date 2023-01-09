@@ -2,7 +2,7 @@ package com.example.views;
 
 import com.example.controller.database.DatabaseController;
 import com.example.model.MarketOffer;
-import com.example.model.Player;
+import com.example.model.entities.Player;
 import com.example.model.User;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
@@ -32,7 +32,8 @@ import javax.annotation.security.PermitAll;
 @PreserveOnRefresh
 @PermitAll
 public class MarketView extends HorizontalLayout {
-    private User user;
+    private final transient User user;
+    private final transient DatabaseController dbController;
     private Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
     private FormLayout sellForm = new FormLayout();
     ComboBox<Player> playerField;
@@ -47,7 +48,6 @@ public class MarketView extends HorizontalLayout {
     private Tab buyTab;
     private Tab sellTab;
     private Button budgetValue;
-    private DatabaseController dbController;
 
     @Autowired
     public MarketView(User user, DatabaseController dbController){

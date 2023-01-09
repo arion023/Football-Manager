@@ -10,6 +10,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import static com.example.model.utils.TextValues.FOOTBALL_MANAGER_DESCRIPTION;
+import static com.example.model.utils.TextValues.FOOTBALL_MANAGER_WELCOME;
+
 @Route(value = "/welcome", layout = AppLayoutBasic.class)
 @PageTitle("Welcome")
 @AnonymousAllowed
@@ -29,14 +32,12 @@ public class WelcomeView extends HorizontalLayout {
 
         Image logo = new Image("images/fm_logo.png", "logo");
         logo.setHeight(200, Unit.PIXELS);
-//        logo.getStyle().set("margin", "50px 0px 0px 50px");
-        H1 heading = new H1("Welcome to the Football Manager");
+        logo.getStyle().set("margin", "50px 0px 0px 0px");
+
+        H1 heading = new H1(FOOTBALL_MANAGER_WELCOME);
         heading.getStyle().set("text-align", "center");
-        Span description = new Span("Do you have what it takes to lead your football club to greatness? " +
-                "Football Manager is the ultimate test of your managerial skills. You'll need to make tough decisions," +
-                " handle the media, and keep your players and the board happy if you want to succeed." +
-                " With a huge database of players and teams, you'll be able to compete in leagues and competitions all around the world." +
-                " Whether you're a seasoned pro or new to the game, Football Manager offers an immersive and rewarding experience that will keep you coming back for more.");
+
+        Span description = new Span(FOOTBALL_MANAGER_DESCRIPTION);
         description.getStyle().set("text-align", "justify");
 
         vL.add(logo, heading, description);

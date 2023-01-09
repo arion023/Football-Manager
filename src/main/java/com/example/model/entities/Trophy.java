@@ -1,5 +1,6 @@
-package com.example.model;
+package com.example.model.entities;
 
+import com.example.model.entities.League;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

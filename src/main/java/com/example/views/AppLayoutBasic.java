@@ -1,6 +1,7 @@
 package com.example.views;
 
-import com.example.model.Player;
+import com.example.controller.database.DatabaseController;
+import com.example.model.entities.Player;
 import com.example.model.User;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -25,28 +26,33 @@ import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
+import java.util.ArrayList;
+
+import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
+
 @Route("/")
 @PageTitle("Welcome")
 @AnonymousAllowed
-
 @CssImport(value = "themes/footballmanager/styles.css", themeFor = "vaadin-app-layout")
 public class AppLayoutBasic extends AppLayout {
 
     private final transient AuthenticationContext authContext;
     private final transient User user;
+    private final transient DatabaseController dbController;
     private Dialog addNewUserDialog;
 
 
     @Autowired
-    public AppLayoutBasic(AuthenticationContext authContext, User logUser) {
+    public AppLayoutBasic(AuthenticationContext authContext, User logUser, DatabaseController databaseController) {
         this.authContext = authContext;
         this.user = logUser;
+        this.dbController = databaseController;
 
         HorizontalLayout header;
         DrawerToggle toggle = new DrawerToggle();
 
         H1 title = new H1("Football Manager");
-        title.getStyle().set("font-size", "var(--lumo-font-size-l)").set("margin", "0");
+        title.getStyle().set(CSS_FONT_SIZE, "var(--lumo-font-size-l)").set("margin", "0");
 
         if (authContext.isAuthenticated()) {
             Button logout = new Button("Logout", click -> this.authContext.logout());
@@ -61,7 +67,7 @@ public class AppLayoutBasic extends AppLayout {
 
             Span loggedUser = new Span("Welcome " + userFullName + " " + user.getClub().getName() + "'s manager");
             loggedUser.getStyle()
-                    .set("font-size", "var(--lumo-font-size-m)");
+                    .set(CSS_FONT_SIZE, "var(--lumo-font-size-m)");
 
             header = new HorizontalLayout(toggle, title, loggedUser, logout);
         } else {
@@ -74,7 +80,6 @@ public class AppLayoutBasic extends AppLayout {
         Tab squad = new Tab(VaadinIcon.SHIELD.create(), new RouterLink("Squad", SquadView.class));
         Tab market = new Tab(VaadinIcon.CART.create(), new RouterLink("Market", MarketView.class));
         Tab statistic = new Tab(VaadinIcon.BAR_CHART_H.create(), new RouterLink("Statistics", StatisticsView.class));
-//        Tab profile = new Tab(VaadinIcon.USER.create(), new RouterLink("Profile", CoachView.class));
         Tab settings = new Tab(VaadinIcon.COG.create(), new RouterLink("Settings", SettingsView.class));
 
         Tabs tabs = new Tabs(welcome, club, squad, market, statistic, settings);
@@ -114,6 +119,6 @@ public class AppLayoutBasic extends AppLayout {
     }
 
     private void getUserDataFromDB() {
-        user.setSubstitutes(Player.getAllPlayersFromClub(347)); //347 - Lech Poznań
+        user.setSubstitutes(new ArrayList<>(Player.getAllPlayersFromClubWithStats(347, dbController))); //347 - Lech Poznań
     }
 }
