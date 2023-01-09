@@ -77,6 +77,18 @@ public class DatabaseController {
         }
     }
 
+    //UPDATE; INSERT; DROP; CREATE; DELETE etc
+    public void updateDatabase(String command) {
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();) {
+            statement.executeUpdate(command);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 
 }
 

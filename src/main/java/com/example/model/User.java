@@ -17,9 +17,13 @@ import java.util.List;
 @Setter
 public class User {
 
+    private int id;
     private String mail;
+    private String nickname;
     private int budget;
     private int clubID;
+    private int formationID; //TODO CHANGE ON FORMATION
+
     private Club club = new Club(101, "Korona Kielce", null, 250, null, 1, null, null);
     private List<MarketOffer> offers;
     private List<MarketOffer> userOffers;
@@ -58,26 +62,29 @@ public class User {
     //this.setBudget();
 
 
-    private void setClubByID(int id) {
-        //TODO
-        this.clubID = id;
-    }
-
-
     public boolean setUserInfo(ResultSet userInfo, String mail) {
-        this.mail = mail;
         int size = 0;
         try {
             while (userInfo.next()) {
                 this.mail = userInfo.getString("mail");
+                this.nickname = userInfo.getString("nickname");
                 this.budget = userInfo.getInt("budget");
-                var club_id = userInfo.getInt("club_id");
-                this.setClubByID(club_id);
+                this.formationID = userInfo.getInt("formation_id");
+                try {
+                    this.clubID = userInfo.getInt("club_id");
+                    String clubName = userInfo.getString("name");
+                    String countryID = userInfo.getString("country_id");
+                    int leagueID = userInfo.getInt("league_id");
+                    int stadiumID = userInfo.getInt("stadium_id");
+                    //TODO JUST SET NEW CLUB
+                } catch (SQLException e) {
+                    throw new SQLException("Club of user not found"); //TODO SPECIAL EXCEPTION AND ERROR
+                }
                 size += 1;
             }
             return size == 1;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -90,7 +97,7 @@ public class User {
     }
 
     public static boolean setUserInfoFromDB(User usr, String mail) {
-        String query = "SELECT * FROM users WHERE mail = ?";
+        String query = "SELECT * FROM users INNER JOIN USER_CLUB USING (club_id) WHERE mail = ?";
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              PreparedStatement pstatement = connection.prepareStatement(query);
         ) {
