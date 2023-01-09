@@ -125,7 +125,7 @@ public class MarketView extends HorizontalLayout {
 
     private void configureSellForm() {
         ComboBox<Player> playerForm = new ComboBox<>("Player");
-        playerForm.setItems(Player.getPlayersByClub(this.user.getClubID(), this.dbController));
+        playerForm.setItems(Player.getPlayersByClub(this.user.getClub().getId(), this.dbController));
         playerForm.setItemLabelGenerator(Player::getFullName);
 
         Div plnSuffix = new Div();

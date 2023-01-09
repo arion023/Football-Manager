@@ -119,6 +119,6 @@ public class AppLayoutBasic extends AppLayout {
     }
 
     private void getUserDataFromDB() {
-        user.setSubstitutes(new ArrayList<>(Player.getAllPlayersFromClubWithStats(347, dbController))); //347 - Lech Poznań
+        user.setSubstitutes(new ArrayList<>(Player.getAllPlayersFromClubWithStats(347, dbController))); // TODO get userss club 347 - Lech Poznań
     }
 }

@@ -19,14 +19,29 @@ public class Club {
     private Statistics overallStatistics;
     private int budget;
     private List<League> leagues;
+    private int currentPoints;
+    private int goalsScored;
+    private int goalsConceded;
     private int currentPosition;
     private Stadium stadium;
     private List<Trophy> trophies;
 
 
-    public static int getPoints() {
-        //TODO point counter
-        return 0;
+    public static List<Club> getAllClubs(DatabaseController dbController) {
+        String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME));
+        List<Club> clubs = dbController.getClubsFromDB(query);
+        String getPointsQuery = "SELECT GET_POINTS(%d) FROM DUAL";
+        String getScoredGoalsQuery = "SELECT GET_SCORED_GOALS(%d) FROM DUAL";
+        String getConcededGoalsQuery = "SELECT GET_CONCEDED_GOALS(%d) FROM DUAL";
+        for (var club : clubs) {
+            club.setCurrentPoints(dbController.callFunction(String.format(getPointsQuery, club.getId())));
+            club.setGoalsScored(dbController.callFunction(String.format(getScoredGoalsQuery, club.getId())));
+            club.setGoalsConceded(dbController.callFunction(String.format(getConcededGoalsQuery, club.getId())));
+            //TODO load matchweek from db
+            //TODO wczytać dane klubu gracza
+        }
+
+        return clubs;
     }
 
     public static Club getClubById(int clubId, DatabaseController dbController) {
@@ -43,17 +58,17 @@ public class Club {
     }
 
 
-    public static List<Club> getAllClubsFromDB() {
-        DatabaseController dbController = new DatabaseController();
-        String query = dbController.createSelectQuery(DatabaseConfig.CLUBS_TABLE_NAME);
-        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-             Statement statement = connection.createStatement();
-             ResultSet result = statement.executeQuery(query)) {
-            return resultSetToClubs(result);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public static List<Club> getAllClubsFromDB() { //TODO probably should be removed
+//        DatabaseController dbController = new DatabaseController();
+//        String query = dbController.createSelectQuery(DatabaseConfig.CLUBS_TABLE_NAME);
+//        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+//             Statement statement = connection.createStatement();
+//             ResultSet result = statement.executeQuery(query)) {
+//            return resultSetToClubs(result);
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     public static List<Club> resultSetToClubs(ResultSet result) {
         List<Club> clubs = new ArrayList<>();
@@ -64,7 +79,7 @@ public class Club {
                 var budget = result.getInt("budget");
 
                 Club club = new Club(clubId, name, null, budget,
-                        null, 0, null, null);//TODO get proper data
+                        null, 0, 0, 0, 0, null, null);//TODO get proper data
                 clubs.add(club);
             }
         } catch (SQLException e) {

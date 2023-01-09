@@ -1,7 +1,10 @@
 package com.example.views;
 
+import com.example.controller.database.DatabaseConfig;
 import com.example.controller.database.DatabaseController;
 import com.example.model.*;
+import com.example.model.entities.Club;
+import com.example.model.entities.Match;
 import com.example.model.entities.Player;
 import com.example.model.enums.ClubLogo;
 import com.example.model.enums.GameplayEvents;
@@ -27,6 +30,13 @@ import com.vaadin.flow.router.RouterLink;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.util.Comparator;
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +55,7 @@ public class GameplayView extends VerticalLayout {
     private final transient Fixtures fixtures;
     private final transient DatabaseController dbController;
     private final Dialog dialog = new Dialog();
+    private final Random random = new Random();
 
     private int minutes = 0;
     private int homeTeamGoals = 0;
@@ -98,30 +109,93 @@ public class GameplayView extends VerticalLayout {
     }
 
     private void saveMatch() {
-        fixtures.setCurrentMatchweek(fixtures.getCurrentMatchweek() + 1);
+        countAndSavePoints(user.getClub().getId(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals);
+        simulateOtherMatches();
+        updatePositions();
 //   SELECT MAX(CLUB_ID) FROM CLUB
-//        int maxId = 0;
-//        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-//             Statement statement = connection.createStatement();
-//             ResultSet result = statement.executeQuery("SELECT MAX(MATCH_ID) FROM MATCH")) {
-//            while (result.next()) {
-//                maxId = result.getInt(1);
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        Match match = new Match(maxId + 1, user.getClubID(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals, fixtures.getCurrentMatchweek());
-//        String query = "INSERT INTO MATCH VALUES(" + match.getId() + ", " + match.getHomeTeamId() + ", " + match.getAwayTeamId() + ", " + match.getHomeTeamGoals() + ", " + match.getAwayTeamGoals() + ", " + match.getMatchweek() + ")";
-//
-//
-//        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-//             Statement statement = connection.createStatement();
-//             ResultSet result = statement.executeQuery(query)) {
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+        int matchId = getNewMatchId();
+        Match match = new Match(matchId, user.getClub().getId(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals, fixtures.getCurrentMatchweek());
+        saveMatchToDB(match);
 
+        fixtures.setCurrentMatchweek(fixtures.getCurrentMatchweek() + 1);
+    }
+
+    private int getNewMatchId() {
+        int maxId = 0;
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery("SELECT MAX(MATCH_ID) FROM MATCH")) {
+            while (result.next()) {
+                maxId = result.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return maxId + 1;
+    }
+
+    private void saveMatchToDB(Match match) {
+        String query = "INSERT INTO MATCH VALUES(" + match.getId() + ", " + match.getHomeTeamId() + ", " + match.getAwayTeamId() + ", " + match.getHomeTeamGoals() + ", " + match.getAwayTeamGoals() + ", " + match.getMatchweek() + ")";
+
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery(query)) {
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void simulateOtherMatches() {
+        var allMatches = fixtures.getMatchweekToFixtures().get(fixtures.getCurrentMatchweek());
+        int matchId = getNewMatchId();
+        for (var match : allMatches.entrySet()) {
+            if (match.getKey() != user.getClub().getId() && match.getValue() != user.getClub().getId()) {
+
+                int homeGoals = random.nextInt(4);
+                int awayGoals = random.nextInt(4);
+                Match matchToSave = new Match(matchId, match.getKey(), match.getValue(), homeGoals, awayGoals, fixtures.getCurrentMatchweek());
+                matchId++;
+                saveMatchToDB(matchToSave);
+                countAndSavePoints(match.getKey(), match.getValue(), homeGoals, awayGoals);
+            }
+        }
+    }
+
+    private void countAndSavePoints(int homeTeamId, int awayTeamId, int homeTeamGoalsTemp, int awayTeamGoalsTemp) {
+        int homeTeamPoints;
+        int awayTeamPoints;
+        if (homeTeamGoalsTemp > awayTeamGoalsTemp) {
+            homeTeamPoints = 3;
+            awayTeamPoints = 0;
+        } else if (homeTeamGoalsTemp < awayTeamGoalsTemp) {
+            homeTeamPoints = 0;
+            awayTeamPoints = 3;
+        } else {
+            homeTeamPoints = 1;
+            awayTeamPoints = 1;
+        }
+        Club homeTeam = fixtures.getLeagueClubs().stream()
+                .filter(club -> club.getId() == homeTeamId)
+                .findFirst().get();
+        homeTeam.setCurrentPoints(homeTeam.getCurrentPoints() + homeTeamPoints);
+        homeTeam.setGoalsScored(homeTeam.getGoalsScored() + homeTeamGoalsTemp);
+        homeTeam.setGoalsConceded(homeTeam.getGoalsConceded() + awayTeamGoalsTemp);
+
+        Club awayTeam = fixtures.getLeagueClubs().stream()
+                .filter(club -> club.getId() == awayTeamId)
+                .findFirst().get();
+        awayTeam.setCurrentPoints(awayTeam.getCurrentPoints() + awayTeamPoints);
+        awayTeam.setGoalsScored(awayTeam.getGoalsScored() + awayTeamGoalsTemp);
+        awayTeam.setGoalsConceded(awayTeam.getGoalsConceded() + homeTeamGoalsTemp);
+    }
+
+    private void updatePositions() {
+        fixtures.getLeagueClubs().sort(Comparator.comparing(Club::getCurrentPoints).reversed());
+        int currentPosition = 1;
+        for (var club : fixtures.getLeagueClubs()) {
+            club.setCurrentPosition(currentPosition);
+            currentPosition++;
+        }
     }
 
     private HorizontalLayout clubsInfoLayout() {

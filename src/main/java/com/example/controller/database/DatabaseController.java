@@ -79,6 +79,20 @@ public class DatabaseController {
         }
     }
 
+    public int callFunction(String query) {
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(query)) {
+            return resultSetToFunction(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private int resultSetToFunction(ResultSet resultSet) throws SQLException {
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
 
 }
 

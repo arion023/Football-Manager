@@ -18,8 +18,7 @@ public class User {
 
     private String mail;
     private int budget;
-    private int clubID;
-    private Club club = new Club(101, "Korona Kielce", null, 250, null, 1, null, null);
+    private Club club = new Club(101, "Korona Kielce", null, 250, null, 0, 0, 0, 0, null, null);
 
     private int nextOpponentClubId;
     private String nextOpponentClubName;
@@ -36,10 +35,6 @@ public class User {
         return this.budget;
     }
 
-    public int getClubID() {
-        return this.clubID;
-    }
-
     public boolean buy(int price) {
 
         //TODO checking if operation complete
@@ -51,11 +46,6 @@ public class User {
     //this.setBudget();
 
 
-    private void setClubByID(int id) {
-        //TODO
-        this.clubID = id;
-    }
-
 
     public boolean setUserInfo(ResultSet userInfo, String mail) {
         this.mail = mail;
@@ -65,7 +55,7 @@ public class User {
                 this.mail = userInfo.getString("mail");
                 this.budget = userInfo.getInt("budget");
                 var clubId = userInfo.getInt("club_id");
-                this.setClubByID(clubId);
+//                this.setClubByID(clubId);
                 size += 1;
             }
             return size == 1;

@@ -8,6 +8,7 @@ import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
@@ -152,7 +153,9 @@ public class SquadView extends HorizontalLayout {
         vL.getStyle().set("overflow-y", "auto"); //Scroll
 
         Grid<Player> firstSquadGrid = createPlayersGrid();
+        firstSquadGrid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         Grid<Player> substitutesGrid = createPlayersGrid();
+        substitutesGrid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         firstSquadData = firstSquadGrid.setItems(user.getFirstSquad());
         substitutesData = substitutesGrid.setItems(user.getSubstitutes());
 
@@ -239,28 +242,22 @@ public class SquadView extends HorizontalLayout {
                 .setSortable(true);
         grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPace())
                 .setHeader("PAC")
-                .setAutoWidth(true)
-                .setSortable(true);
+                .setAutoWidth(true);
         grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getShooting())
                 .setHeader("SHO")
-                .setAutoWidth(true)
-                .setSortable(true);
+                .setAutoWidth(true);
         grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPassing())
                 .setHeader("PAS")
-                .setAutoWidth(true)
-                .setSortable(true);
+                .setAutoWidth(true);
         grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getDribbling())
                 .setHeader("DRI")
-                .setAutoWidth(true)
-                .setSortable(true);
+                .setAutoWidth(true);
         grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getDefence())
                 .setHeader("DEF")
-                .setAutoWidth(true)
-                .setSortable(true);
+                .setAutoWidth(true);
         grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPhysically())
                 .setHeader("PHY")
-                .setAutoWidth(true)
-                .setSortable(true);
+                .setAutoWidth(true);
         return grid;
     }
 }

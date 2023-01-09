@@ -1,6 +1,8 @@
 package com.example.model;
 
+import com.example.controller.database.DatabaseController;
 import com.example.model.entities.Club;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +17,23 @@ public class Fixtures {
     private static final int CLUBS_NO = 18;
 
     private final User user;
+    private  final DatabaseController databaseController;
     private final Random random = new Random();
     @Getter
     @Setter
     private int currentMatchweek = 1;
     @Getter
-    private Map<Integer, Map<Integer, Integer>> matchweekToFixtures;
+    private final Map<Integer, Map<Integer, Integer>> matchweekToFixtures;
 
     @Getter
-    private final List<Club> leagueClubs = Club.getAllClubsFromDB();
+    private final List<Club> leagueClubs;
 
     @Autowired
-    public Fixtures(User user) {
+    public Fixtures(User user, DatabaseController databaseController) {
         this.user = user;
+        this.databaseController = databaseController;
+
+        leagueClubs = Club.getAllClubs(databaseController);
 
         matchweekToFixtures = new HashMap<>();
         drawMatchweeks(leagueClubs);
