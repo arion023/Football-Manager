@@ -44,7 +44,8 @@ public class Fixtures {
 
     private Map<Integer, Integer> drawFixtures(int matchweekNumber, List<Club> clubs, Club userClub) {
         Map<Integer, Integer> fixtures = new HashMap<>();
-        fixtures.put(userClub.getId(), clubs.get(matchweekNumber - 1).getId());
+        if (userClub != null)
+            fixtures.put(userClub.getId(), clubs.get(matchweekNumber - 1).getId());
         ArrayList<Integer> numbers = new ArrayList<>(IntStream.rangeClosed(0, CLUBS_NO - 1).boxed().toList());
         numbers.remove(matchweekNumber - 1);
         for (int i = 0; i < ((CLUBS_NO - 2) / 2); i++) {

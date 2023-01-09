@@ -25,7 +25,7 @@ public class User {
     private int clubID;
     private int formationID; //TODO CHANGE ON FORMATION
 
-    private Club club = new Club(101, "Korona Kielce", null, 250, null, 1, null, null);
+    private Club club;
     private List<MarketOffer> offers;
     private List<MarketOffer> userOffers;
     private int nextOpponentClubId;
@@ -63,7 +63,9 @@ public class User {
     //this.setBudget();
 
 
-    public boolean setUserInfo(ResultSet userInfo, String mail) {
+
+    public boolean setUserBasicsInfo(ResultSet userInfo) {
+        // setting user id, mail, nickname, budget, formation, club_id
         int size = 0;
         try {
             while (userInfo.next()) {
@@ -77,7 +79,8 @@ public class User {
                     String countryID = userInfo.getString("country_id");
                     int leagueID = userInfo.getInt("league_id");
                     int stadiumID = userInfo.getInt("stadium_id");
-                    //TODO JUST SET NEW CLUB
+                    //TODO REPAIR CONSTRUCTOR TO ONLY NEEDED DATA
+                    this.club = new Club(clubID, clubName, null, 1000, null, 0, null, null);
                 } catch (SQLException e) {
                     throw new SQLException("Club of user not found"); //TODO SPECIAL EXCEPTION AND ERROR
                 }
@@ -90,14 +93,17 @@ public class User {
         }
     }
 
-    public static boolean addNewUser(int id, String login, String password, String mail, int budget, int clubId) {
-        DatabaseController dbController = new DatabaseController();
-
-        //TODO checking if operation complete
+    public static boolean addNewUserToDB(String mail, String nickname, String clubName, DatabaseController dbController) {
+        //TODO AUTOGENERETING ID AS TRIGGER IN DB (ACTUALLY HARDCODED)
+        String newClubCommand = "INSERT INTO user_club VALUES ( 349, '" + clubName + "', DEFAULT, DEFAULT, NULL )";
+        String newUserCommand = "INSERT INTO users VALUES ( 101, '" + mail + "', '" + nickname + "', DEFAULT, 349, NULL )";
+        dbController.updateDatabase(newClubCommand);
+        dbController.updateDatabase(newUserCommand);
         return true;
     }
 
-    public static boolean setUserInfoFromDB(User usr, String mail) {
+    public static boolean setUserBasicAndClubFromDB(User usr, String mail) {
+        //TODO MOVE ADDING CLUB TO OTHER FUN
         String query = "SELECT * FROM users INNER JOIN USER_CLUB USING (club_id) WHERE mail = ?";
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              PreparedStatement pstatement = connection.prepareStatement(query);
@@ -105,7 +111,7 @@ public class User {
             pstatement.setString(1, mail);
             ResultSet result = pstatement.executeQuery();
 
-            return usr.setUserInfo(result, mail);
+            return usr.setUserBasicsInfo(result);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

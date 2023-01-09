@@ -18,7 +18,7 @@ public class Club {
     private String name;
     private Statistics overallStatistics;
     private int budget;
-    private List<League> leagues;
+    private League leagues;
     private int currentPosition;
     private Stadium stadium;
     private List<Trophy> trophies;

@@ -22,6 +22,7 @@ DROP TABLE country;
 /* DATES IN THIS FORMAT */
 
 ALTER SESSION SET nls_date_format='yyyy-mm-dd';
+INSERT INTO users VALUES ( 101, 'mail', 'nickname', NULL, 349, DEFAULT );
 
 /* CREATING TABLES */
 --TODO ADD TO PLAYER IF HE IS IN FIRST SQUAD ?
@@ -46,11 +47,12 @@ CREATE TABLE offer
 
 CREATE TABLE user_club
 (
+    --TODO ON NEW INSERT DEFAULT ADDING SOME DEFAULT PLAYERS TO THIS CLUB;
     club_id         NUMBER NOT NULL CONSTRAINT user_club_pk PRIMARY KEY, --TODO TRIGGER FOR AUTOMATIC CLUB ID
     name            VARCHAR2(30) NOT NULL,
-    country_id      CHAR(2),    --TODO TRIGGER -> SAME COUNTRY AS LEAGUE
-    league_id       NUMBER NOT NULL,
-    stadium_id      NUMBER
+    country_id      CHAR(2) DEFAULT 'PL',    --TODO TRIGGER -> SAME COUNTRY AS LEAGUE
+    league_id       NUMBER DEFAULT '106',
+    stadium_id      NUMBER DEFAULT NULL
 );
 
 
