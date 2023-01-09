@@ -163,14 +163,21 @@ CREATE TABLE referee
 
 CREATE TABLE match
 (
-match_id            NUMBER NOT NULL CONSTRAINT match_pk PRIMARY KEY,
-home_club           NUMBER NOT NULL,
-away_club           NUMBER NOT NULL,
-match_date          DATE NOT NULL,
-result              CHAR(3) NOT NULL,
-stadium_id          NUMBER NOT NULL,
-referee_id          NUMBER NOT NULL
+    match_id            NUMBER NOT NULL CONSTRAINT match_pk PRIMARY KEY,
+    home_club           NUMBER NOT NULL,
+    away_club           NUMBER NOT NULL,
+    home_goals          NUMBER NOT NULL,
+    away_goals          NUMBER NOT NULL,
+    match_week          NUMBER NOT NULL
 );
+
+INSERT INTO match VALUES ( 1, 340, 350, 1, 3, 1 );
+INSERT INTO match VALUES ( 2, 340, 350, 2, 2, 2 );
+INSERT INTO match VALUES ( 3, 350, 340, 0, 0, 3 );
+INSERT INTO match VALUES ( 4, 350, 340, 1, 2, 4 );
+INSERT INTO match VALUES ( 5, 340, 350, 1, 0, 5 );
+INSERT INTO match VALUES ( 6, 339, 338, 1, 2, 6 );
+
 
 CREATE TABLE event
 (
