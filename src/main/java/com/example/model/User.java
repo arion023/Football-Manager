@@ -62,13 +62,9 @@ public class User {
                 try {
                     this.clubId = userInfo.getInt("club_id");
                     String clubName = userInfo.getString("name");
-                    String countryID = userInfo.getString("country_id");
-                    int leagueID = userInfo.getInt("league_id");
-                    int stadiumID = userInfo.getInt("stadium_id");
-                    //TODO REPAIR CONSTRUCTOR TO ONLY NEEDED DATA
-                    this.club = new Club(clubId, clubName, null, 1000, null, 0, 0, 0, 0, null, null);
+                    this.club = new Club(clubId, clubName);
                 } catch (SQLException e) {
-                    throw new SQLException("Club of user not found"); //TODO SPECIAL EXCEPTION AND ERROR
+                    throw new SQLException("Club of user not found");
                 }
                 size += 1;
             }
@@ -101,7 +97,7 @@ public class User {
         //TODO MOVE ADDING CLUB TO OTHER FUN
         String query = "SELECT * FROM " + DatabaseConfig.USERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.USER_CLUB_TABLE_NAME + " USING (club_id) WHERE mail = ?";
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-             PreparedStatement pstatement = connection.prepareStatement(query);
+             PreparedStatement pstatement = connection.prepareStatement(query)
         ) {
             pstatement.setString(1, mail);
             ResultSet result = pstatement.executeQuery();

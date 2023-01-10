@@ -35,7 +35,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.util.Comparator;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -102,8 +101,6 @@ public class GameplayView extends VerticalLayout {
 
         Span teams = new Span(user.getClub().getName() + " - " + user.getNextOpponentClubName());
         teams.getStyle().set(CSS_FONT_SIZE, "1.2rem");
-//        Span result = new Span(homeTeamGoals + " - " + awayTeamGoals);
-//        result.getStyle().set(CSS_FONT_SIZE, "1.5rem");
         dialogLayout.add(clubLogos, teams);
 
         return dialogLayout;

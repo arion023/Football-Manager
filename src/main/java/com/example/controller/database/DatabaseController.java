@@ -94,7 +94,6 @@ public class DatabaseController {
             club.setCurrentPoints(callFunction(String.format(CLUB_POINTS_QUERY, club.getId())));
             club.setGoalsScored(callFunction(String.format(CLUB_GOALS_SCORED_QUERY, club.getId())));
             club.setGoalsConceded(callFunction(String.format(CLUB_GOALS_CONCEDED_QUERY, club.getId())));
-            //TODO wczytać dane klubu gracza
         }
 
         return clubs;
@@ -193,7 +192,7 @@ public class DatabaseController {
     //UPDATE; INSERT; DROP; CREATE; DELETE etc
     public void updateDatabase(String command) {
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-             Statement statement = connection.createStatement();) {
+             Statement statement = connection.createStatement()) {
             statement.executeUpdate(command);
         } catch (SQLException e) {
             throw new RuntimeException(e);

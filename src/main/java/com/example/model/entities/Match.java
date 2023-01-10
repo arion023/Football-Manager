@@ -1,7 +1,5 @@
 package com.example.model.entities;
 
-import com.example.model.MarketOffer;
-import com.example.model.enums.Position;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +7,7 @@ import lombok.Setter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -37,7 +36,7 @@ public class Match {
                 matches.add(new Match(matchId, homeClubId, awayClubId, homeTeamGoals, awayTeamGoals, matchweek));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return matches;
         }
         return matches;
     }

@@ -72,8 +72,8 @@ public class MarketOffer {
         List<MarketOffer> offers = new ArrayList<>();
         try {
             while (rs.next()) {
-                int offer_id = rs.getInt("offer_id");
-                int player_id = rs.getInt("user_id");
+                int offerId = rs.getInt("offer_id");
+                int playerId = rs.getInt("user_id");
                 int price = rs.getInt("price");
 
                 String name = rs.getString("name");
@@ -88,11 +88,11 @@ public class MarketOffer {
                 Player player;
                 try {
                     rs.findColumn("overall");
-                    player = new Player(player_id, name, surname, birthDate.toLocalDate(), countryId, clubId, Statistics.resultSetToType(rs), positionEnum);
+                    player = new Player(playerId, name, surname, birthDate.toLocalDate(), countryId, clubId, Statistics.resultSetToType(rs), positionEnum);
                 } catch (SQLException e) {
-                    player = new Player(player_id, name, surname, birthDate.toLocalDate(), countryId, clubId, null, positionEnum);
+                    player = new Player(playerId, name, surname, birthDate.toLocalDate(), countryId, clubId, null, positionEnum);
                 }
-                offers.add(new MarketOffer(offer_id, player, price));
+                offers.add(new MarketOffer(offerId, player, price));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

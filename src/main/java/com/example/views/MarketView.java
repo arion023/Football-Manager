@@ -1,6 +1,5 @@
 package com.example.views;
 
-import com.example.controller.database.DatabaseController;
 import com.example.model.MarketOffer;
 import com.example.model.entities.Player;
 import com.example.model.User;
@@ -30,15 +29,14 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class MarketView extends HorizontalLayout {
     private final transient User user;
-    private final transient DatabaseController dbController;
-    private Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
-    private FormLayout sellForm = new FormLayout();
+    private final Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
+    private final FormLayout sellForm = new FormLayout();
     ComboBox<Player> playerField;
     NumberField price;
-    private HorizontalLayout sellContent = new HorizontalLayout();
+    private final HorizontalLayout sellContent = new HorizontalLayout();
     private VerticalLayout operationSpace;
-    private VerticalLayout buttonSpace = new VerticalLayout();
-    private VerticalLayout sideBar = new VerticalLayout();
+    private final VerticalLayout buttonSpace = new VerticalLayout();
+    private final VerticalLayout sideBar = new VerticalLayout();
     private HorizontalLayout operationBar;
     private Button operationButton;
     private Tabs operationTabs;
@@ -47,11 +45,10 @@ public class MarketView extends HorizontalLayout {
     private Button budgetValue;
 
     @Autowired
-    public MarketView(User user, DatabaseController dbController){
+    public MarketView(User user){
         addClassName("Market");
         setSizeFull();
 
-        this.dbController = dbController;
         this.user = user;
 
         configureSideBar();

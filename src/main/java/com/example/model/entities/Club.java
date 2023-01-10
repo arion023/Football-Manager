@@ -25,6 +25,16 @@ public class Club {
     private Stadium stadium;
     private List<Trophy> trophies;
 
+    public Club(int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.budget = 0;
+        this.currentPoints = 0;
+        this.goalsScored = 0;
+        this.goalsConceded = 0;
+        this.currentPosition = 0;
+    }
+
 
     public static List<Club> resultSetToClubs(ResultSet result) {
         List<Club> clubs = new ArrayList<>();
