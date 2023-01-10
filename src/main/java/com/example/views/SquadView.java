@@ -40,7 +40,7 @@ public class SquadView extends HorizontalLayout {
 
     private final transient User user;
     private final transient DatabaseController dbController;
-    private final Select<Formation> selectFormation = createFormationSelect();
+    private final Select<Formation> selectFormation;
 
     private final Dialog fullTeamDialog = new Dialog();
 
@@ -53,6 +53,9 @@ public class SquadView extends HorizontalLayout {
     public SquadView(User user, DatabaseController dbController) {
         this.user = user;
         this.dbController = dbController;
+
+        selectFormation = createFormationSelect();
+
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
         ArrayList<Player> clubPlayers = user.getSubstitutes();

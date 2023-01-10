@@ -42,14 +42,13 @@ public class Club {
             while (result.next()) {
                 var clubId = result.getInt("club_id");
                 var name = result.getString("name");
-                var budget = result.getInt("budget");
 
-                Club club = new Club(clubId, name, null, budget,
+                Club club = new Club(clubId, name, null, 0,
                         null, 0, 0, 0, 0, null, null);//TODO get proper data
                 clubs.add(club);
             }
         } catch (SQLException e) {
-            return Collections.emptyList();
+            throw new RuntimeException(e);//TODO handle exception
         }
 
         return clubs;
@@ -66,7 +65,7 @@ public class Club {
                 userClubs.add(club);
             }
         } catch (SQLException e) {
-            return Collections.emptyList();
+            throw new RuntimeException(e);
         }
 
         return userClubs;

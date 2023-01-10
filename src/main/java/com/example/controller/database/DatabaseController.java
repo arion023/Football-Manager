@@ -54,7 +54,7 @@ public class DatabaseController {
         try {
             return getPlayersFromDB(query);
         } catch (Exception e) {
-            return Collections.emptyList();
+            throw new RuntimeException(e);
         }
     }
 
@@ -63,7 +63,7 @@ public class DatabaseController {
         try {
             return getPlayersFromDB(query);
         } catch (Exception e) {
-            return Collections.emptyList();
+            throw new RuntimeException(e);
         }
     }
 
@@ -72,7 +72,7 @@ public class DatabaseController {
         try {
             return getPlayersFromDB(query);
         } catch (Exception e) {
-            return Collections.emptyList();
+            throw new RuntimeException(e);
         }
     }
 
@@ -82,13 +82,13 @@ public class DatabaseController {
              ResultSet rs = statement.executeQuery(query)) {
             return Player.resultSetToPlayers(rs);
         } catch (SQLException e) {
-            return Collections.emptyList();
+            throw new RuntimeException(e);
         }
     }
 
 
     public List<Club> getAllClubs() {
-        String query = createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME));
+        String query = "SELECT * FROM CLUB WHERE CLUB_ID > 300";
         List<Club> clubs = getClubsFromDB(query);
         for (var club : clubs) {
             club.setCurrentPoints(callFunction(String.format(CLUB_POINTS_QUERY, club.getId())));
@@ -109,7 +109,9 @@ public class DatabaseController {
             club.setGoalsScored(callFunction(String.format(CLUB_GOALS_SCORED_QUERY, club.getId())));
             club.setGoalsConceded(callFunction(String.format(CLUB_GOALS_CONCEDED_QUERY, club.getId())));
             return club;
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
     public List<Club> getClubsByLeague(int leagueId) {
@@ -123,7 +125,7 @@ public class DatabaseController {
              ResultSet rs = statement.executeQuery(query)) {
             return Club.resultSetToClubs(rs);
         } catch (SQLException e) {
-            return Collections.emptyList();
+            throw new RuntimeException(e);
         }
     }
 
@@ -133,7 +135,7 @@ public class DatabaseController {
              ResultSet rs = statement.executeQuery(query)) {
             return Club.resultSetToUserClubs(rs);
         } catch (SQLException e) {
-            return Collections.emptyList();
+            throw new RuntimeException(e);
         }
     }
 
@@ -158,7 +160,7 @@ public class DatabaseController {
              ResultSet rs = statement.executeQuery(query)) {
             return MarketOffer.resultSetToType(rs);
         } catch (SQLException e) {
-            return Collections.emptyList();
+            throw new RuntimeException(e);
         }
     }
 
@@ -169,7 +171,7 @@ public class DatabaseController {
              ResultSet rs = statement.executeQuery(query)) {
             return Match.resultSetToMatch(rs);
         } catch (SQLException e) {
-            return Collections.emptyList();
+            throw new RuntimeException(e);
         }
     }
 

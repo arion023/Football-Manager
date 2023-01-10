@@ -25,14 +25,14 @@ public class Fixtures {
     private Map<Integer, Map<Integer, Integer>> matchweekToFixtures;
 
     @Getter
-    private final List<Club> leagueClubs;
+    private ArrayList<Club> leagueClubs;
     private boolean dataAlreadySet = false;
 
     @Autowired
     public Fixtures(User user, DatabaseController dbController) {
         this.user = user;
         this.dbController = dbController;
-        leagueClubs = dbController.getAllClubs();
+        this.leagueClubs = new ArrayList<>(dbController.getAllClubs());
     }
 
     public void prepareFixturesData() {
