@@ -61,10 +61,10 @@ END;
 
 
 select unique get_points(340)
-from match;
+from dual;
 
 select unique get_scored_goals(340)
-from match;
+from dual;
 
 select unique get_conceded_goals(340)
-from match;
+from dual;
