@@ -89,8 +89,6 @@ public class DatabaseController {
         }
     }
 
-
-
     public int callFunction(String query) {
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
@@ -104,6 +102,20 @@ public class DatabaseController {
     private int resultSetToFunction(ResultSet resultSet) throws SQLException {
         resultSet.next();
         return resultSet.getInt(1);
+    }
+
+    public int getNextId(String idName, String tableName) {
+        int maxId = 0;
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery(String.format("SELECT MAX(%s) FROM %s", idName, tableName))) {
+            while (result.next()) {
+                maxId = result.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return maxId + 1;
     }
 
 }

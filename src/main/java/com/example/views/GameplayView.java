@@ -74,7 +74,7 @@ public class GameplayView extends VerticalLayout {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         dialog.setHeaderTitle("Match finished");
-        dialog.add(dialogLayout()); //TODO dialog nie wyświetla poprawnej wartości
+//        dialog.add(dialogLayout()); //TODO dialog nie wyświetla poprawnej wartości
         dialog.setCloseOnOutsideClick(false);
         dialog.setCloseOnEsc(false);
 
@@ -114,25 +114,11 @@ public class GameplayView extends VerticalLayout {
         simulateOtherMatches();
         updatePositions();
 
-        int matchId = getNewMatchId();
+        int matchId = dbController.getNextId("MATCH_ID", "MATCH");
         Match match = new Match(matchId, user.getClub().getId(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals, fixtures.getCurrentMatchweek());
         saveMatchToDB(match);
 
         fixtures.setCurrentMatchweek(fixtures.getCurrentMatchweek() + 1);
-    }
-
-    private int getNewMatchId() {
-        int maxId = 0;
-        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-             Statement statement = connection.createStatement();
-             ResultSet result = statement.executeQuery("SELECT MAX(MATCH_ID) FROM MATCH")) {
-            while (result.next()) {
-                maxId = result.getInt(1);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return maxId + 1;
     }
 
     private void saveMatchToDB(Match match) {
@@ -148,7 +134,7 @@ public class GameplayView extends VerticalLayout {
 
     private void simulateOtherMatches() {
         var allMatches = fixtures.getMatchweekToFixtures().get(fixtures.getCurrentMatchweek());
-        int matchId = getNewMatchId();
+        int matchId =  dbController.getNextId("MATCH_ID", "MATCH");
         for (var match : allMatches.entrySet()) {
             if (match.getKey() != user.getClub().getId() && match.getValue() != user.getClub().getId()) {
 
@@ -396,6 +382,11 @@ public class GameplayView extends VerticalLayout {
 
     private void endGameplay(UI ui, GameplayView gameplayView) {
         executorService.shutdown();
-        ui.access(gameplayView.dialog::open);
+        gameplayView.dialog.add(gameplayView.dialogLayout());
+        ui.access(() -> {
+                    gameplayView.replace(gameplayView.getComponentAt(4), gameplayView.dialog);
+                    gameplayView.dialog.open();
+                }
+        );
     }
 }

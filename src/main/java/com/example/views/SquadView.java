@@ -52,7 +52,7 @@ public class SquadView extends HorizontalLayout {
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
         ArrayList<Player> clubPlayers = user.getSubstitutes();
 
-        if (user.getFirstSquad().isEmpty()) {
+        if (user.getFirstSquad().isEmpty()) { //TODO load at app start
             user.setFirstSquad(getFirstSquadWithFormation(clubPlayers));
             user.getSubstitutes().removeAll(user.getFirstSquad());
         }
