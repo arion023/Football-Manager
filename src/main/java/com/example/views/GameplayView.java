@@ -112,7 +112,7 @@ public class GameplayView extends VerticalLayout {
     private void saveMatch() {
         countAndSavePoints(user.getClub().getId(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals);
         simulateOtherMatches();
-        updatePositions();
+        fixtures.updatePositions();
 
         int matchId = dbController.getNextId("MATCH_ID", "MATCH");
         Match match = new Match(matchId, user.getClub().getId(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals, fixtures.getCurrentMatchweek());
@@ -182,15 +182,6 @@ public class GameplayView extends VerticalLayout {
         return fixtures.getLeagueClubs().stream()
                 .filter(club -> club.getId() == clubId)
                 .findFirst();
-    }
-
-    private void updatePositions() {
-        fixtures.getLeagueClubs().sort(Comparator.comparing(Club::getCurrentPoints).reversed());
-        int currentPosition = 1;
-        for (var club : fixtures.getLeagueClubs()) {
-            club.setCurrentPosition(currentPosition);
-            currentPosition++;
-        }
     }
 
     private HorizontalLayout clubsInfoLayout() {

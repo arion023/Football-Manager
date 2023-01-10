@@ -37,7 +37,8 @@ public class Fixtures {
 
     public void prepareFixturesData() {
         if (!dataAlreadySet) {
-            leagueClubs.add(dbController.getClubById(user.getClubId()));
+            currentMatchweek = dbController.getCurrentMatchweek(user.getClubId());
+            leagueClubs.add(dbController.getUserClubById(user.getClubId()));
 
             matchweekToFixtures = new HashMap<>();
             drawMatchweeks(leagueClubs);
@@ -72,5 +73,14 @@ public class Fixtures {
         }
 
         return fixtures;
+    }
+
+    public void updatePositions() {
+        leagueClubs.sort(Comparator.comparing(Club::getCurrentPoints).reversed());
+        int currentPosition = 1;
+        for (var club : leagueClubs) {
+            club.setCurrentPosition(currentPosition);
+            currentPosition++;
+        }
     }
 }

@@ -22,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
 
-import java.util.Comparator;
-
 import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
 
 @Route(value = "/club", layout = AppLayoutBasic.class)
@@ -42,22 +40,13 @@ public class ClubView extends HorizontalLayout {
         this.fixtures = fixtures;
         this.dbController = dbController;
 
-        fixtures.prepareFixturesData();//TODO może jest lepszy sposób na wywołanie tego raz
+        fixtures.prepareFixturesData();
+        fixtures.updatePositions();
 
-        updatePositions();
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.AUTO);
         add(clubInformation(), matchTable());
 
-    }
-
-    private void updatePositions() { //TODO code duplicate from GameplayView
-        fixtures.getLeagueClubs().sort(Comparator.comparing(Club::getCurrentPoints).reversed());
-        int currentPosition = 1;
-        for (var club : fixtures.getLeagueClubs()) {
-            club.setCurrentPosition(currentPosition);
-            currentPosition++;
-        }
     }
 
     private VerticalLayout clubInformation() {
@@ -142,7 +131,7 @@ public class ClubView extends HorizontalLayout {
         return grid;
     }
 
-    private Grid<Match> previousMatches() {
+    private Grid<Match> previousMatches() { //TODO
         Grid<Match> grid = new Grid<>(Match.class, false);
         grid.addColumn(Match::getMatchweek)
                 .setHeader("Matchweek");

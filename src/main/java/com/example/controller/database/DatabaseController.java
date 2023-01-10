@@ -82,7 +82,7 @@ public class DatabaseController {
              ResultSet rs = statement.executeQuery(query)) {
             return Player.resultSetToPlayers(rs);
         } catch (SQLException e) {
-            throw new RuntimeException(e); //TODO new custom exception
+            return Collections.emptyList();
         }
     }
 
@@ -90,26 +90,27 @@ public class DatabaseController {
     public List<Club> getAllClubs() {
         String query = createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME));
         List<Club> clubs = getClubsFromDB(query);
-        String getPointsQuery = "SELECT GET_POINTS(%d) FROM DUAL";
-        String getScoredGoalsQuery = "SELECT GET_SCORED_GOALS(%d) FROM DUAL";
-        String getConcededGoalsQuery = "SELECT GET_CONCEDED_GOALS(%d) FROM DUAL";
         for (var club : clubs) {
-            club.setCurrentPoints(callFunction(String.format(getPointsQuery, club.getId())));
-            club.setGoalsScored(callFunction(String.format(getScoredGoalsQuery, club.getId())));
-            club.setGoalsConceded(callFunction(String.format(getConcededGoalsQuery, club.getId())));
-            //TODO load matchweek from db
+            club.setCurrentPoints(callFunction(String.format(CLUB_POINTS_QUERY, club.getId())));
+            club.setGoalsScored(callFunction(String.format(CLUB_GOALS_SCORED_QUERY, club.getId())));
+            club.setGoalsConceded(callFunction(String.format(CLUB_GOALS_CONCEDED_QUERY, club.getId())));
             //TODO wczytać dane klubu gracza
         }
 
         return clubs;
     }
 
-    public Club getClubById(int clubId) {
-        String query = createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME), List.of("club_id = " + clubId));
-        List<Club> clubs = getClubsFromDB(query);
-        if (clubs.size() == 1)
-            return clubs.get(0);
-        else return null;
+    public Club getUserClubById(int clubId) {
+        String query = createSelectQuery(List.of("*"), List.of(USER_CLUB_TABLE_NAME), List.of("club_id = " + clubId));
+        List<Club> clubs = getUserClubsFromDB(query);
+
+        if (clubs.size() == 1) {
+            var club = clubs.get(0);
+            club.setCurrentPoints(callFunction(String.format(CLUB_POINTS_QUERY, club.getId())));
+            club.setGoalsScored(callFunction(String.format(CLUB_GOALS_SCORED_QUERY, club.getId())));
+            club.setGoalsConceded(callFunction(String.format(CLUB_GOALS_CONCEDED_QUERY, club.getId())));
+            return club;
+        } else return null;
     }
 
     public List<Club> getClubsByLeague(int leagueId) {
@@ -123,7 +124,17 @@ public class DatabaseController {
              ResultSet rs = statement.executeQuery(query)) {
             return Club.resultSetToClubs(rs);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return Collections.emptyList();
+        }
+    }
+
+    private List<Club> getUserClubsFromDB(String query) {
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(query)) {
+            return Club.resultSetToUserClubs(rs);
+        } catch (SQLException e) {
+            return Collections.emptyList();
         }
     }
 
@@ -148,20 +159,36 @@ public class DatabaseController {
              ResultSet rs = statement.executeQuery(query)) {
             return MarketOffer.resultSetToType(rs);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return Collections.emptyList();
         }
     }
 
-    public List<Match> getClubMatches(int clubId){
-        String query =  "SELECT * FROM " + MATCHES_TABLE_NAME + " WHERE home_club = " + clubId;;
+    public List<Match> getClubMatches(int clubId) {
+        String query = "SELECT * FROM " + MATCHES_TABLE_NAME + " WHERE home_club = " + clubId;
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {
             return Match.resultSetToMatch(rs);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return Collections.emptyList();
         }
     }
+
+    public int getCurrentMatchweek(int clubId) {
+        String query = "SELECT MAX(MATCH_WEEK) FROM " + MATCHES_TABLE_NAME + " WHERE home_club = " + clubId;
+        int matchweek = 1;
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(query)) {
+            while (rs.next()) {
+                matchweek = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return matchweek;
+    }
+
 
     //UPDATE; INSERT; DROP; CREATE; DELETE etc
     public void updateDatabase(String command) {

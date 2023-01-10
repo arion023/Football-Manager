@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -38,9 +39,28 @@ public class Club {
                 clubs.add(club);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);//TODO handle exception
+            return Collections.emptyList();
         }
 
         return clubs;
     }
+
+    public static List<Club> resultSetToUserClubs(ResultSet result) {
+        List<Club> userClubs = new ArrayList<>();
+        try {
+            while (result.next()) {
+                var clubId = result.getInt("club_id");
+                var name = result.getString("name");
+
+                Club club = new Club(clubId, name, null, 0,
+                        null, 0, 0, 0, 0, null, null);//TODO get proper data
+                userClubs.add(club);
+            }
+        } catch (SQLException e) {
+            return Collections.emptyList();
+        }
+
+        return userClubs;
+    }
+
 }

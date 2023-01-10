@@ -158,6 +158,7 @@ public class SquadView extends HorizontalLayout {
         firstSquadData = firstSquadGrid.setItems(user.getFirstSquad());
         substitutesData = substitutesGrid.setItems(user.getSubstitutes());
 
+        //TODO buttony wychodzą poza grid
         firstSquadGrid.addColumn(new NativeButtonRenderer<>("Remove player",
                 player -> {
                     firstSquadData.removeItem(player);
@@ -178,7 +179,6 @@ public class SquadView extends HorizontalLayout {
                     }
                 }));
 
-//        vL.setFlexGrow(1, firstSquadGrid); TODO rozciągnąć grid pierwszego składu
         vL.add(selectFormation, firstSquadGrid, substitutesGrid);
         return vL;
     }
