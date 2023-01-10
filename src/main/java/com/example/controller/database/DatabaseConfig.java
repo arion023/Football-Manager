@@ -2,6 +2,8 @@ package com.example.controller.database;
 
 public class DatabaseConfig {
 
+
+
     private DatabaseConfig() {
         throw new IllegalStateException("Utility class");
     }
@@ -18,11 +20,13 @@ public class DatabaseConfig {
     public static final String STATISTICS_TABLE_NAME = "player_stats";
     public static final String COACHES_TABLE_NAME = "coach";
     public static final String REFEREES_TABLE_NAME = "referee";
+    public static final String OFFER_TABLE_NAME = "offer";
     public static final String CLUBS_TABLE_NAME = "club";
     public static final String CLUB_HISTORY_TABLE_NAME = "club_history";
     public static final String STADIUM_TABLE_NAME = "stadium";
     public static final String LEAGUES_TABLE_NAME = "league";
     public static final String MATCHES_TABLE_NAME = "match";
     public static final String EVENTS_TABLE_NAME = "event";
-    public static final String USERS_TABLE_NAME = "user";
+    public static final String USERS_TABLE_NAME = "users";
+    public static final String USER_CLUB_TABLE_NAME = "user_club";
 }

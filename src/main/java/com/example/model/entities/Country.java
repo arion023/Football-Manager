@@ -16,10 +16,6 @@ public class Country {
     private String id;
     private String name;
 
-    public static Country getCountryById(String id) {
-        return new Country( id, null);
-    } //TODO fix return
-
     public static List<Country> resultSetToType(ResultSet rs){
         List<Country> countries = new ArrayList<>();
         try {

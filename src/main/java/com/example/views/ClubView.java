@@ -2,6 +2,7 @@ package com.example.views;
 
 import com.example.controller.database.DatabaseController;
 import com.example.model.entities.Club;
+import com.example.model.entities.Match;
 import com.example.model.enums.ClubLogo;
 import com.example.model.Fixtures;
 import com.example.model.User;
@@ -9,10 +10,7 @@ import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -35,14 +33,14 @@ public class ClubView extends HorizontalLayout {
 
     private final transient User user;
     private final transient Fixtures fixtures;
-    private final transient DatabaseController databaseController;
+    private final transient DatabaseController dbController;
 
 
     @Autowired
-    public ClubView(User user, Fixtures fixtures, DatabaseController databaseController) {
+    public ClubView(User user, Fixtures fixtures, DatabaseController dbController) {
         this.user = user;
         this.fixtures = fixtures;
-        this.databaseController = databaseController;
+        this.dbController = dbController;
 
         fixtures.prepareFixturesData();//TODO może jest lepszy sposób na wywołanie tego raz
 
@@ -64,10 +62,10 @@ public class ClubView extends HorizontalLayout {
 
     private VerticalLayout clubInformation() {
         VerticalLayout infoLayout = new VerticalLayout();
-        infoLayout.setAlignItems(Alignment.CENTER);
-        H2 header = new H2(user.getClub().getName());
-        Paragraph paragraph = new Paragraph("Budget: " + user.getClub().getBudget() + " zl");
-        infoLayout.add(nextMatch(), header, paragraph, detailsLayout());
+        infoLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        H1 header = new H1(user.getClub().getName());
+        Paragraph paragraph = new Paragraph("Budget: " + user.getClub().getBudget() + " PLN");
+        infoLayout.add(nextMatch(), header, paragraph, previousMatches());
         return infoLayout;
     }
 
@@ -144,6 +142,20 @@ public class ClubView extends HorizontalLayout {
         return grid;
     }
 
+    private Grid<Match> previousMatches() {
+        Grid<Match> grid = new Grid<>(Match.class, false);
+        grid.addColumn(Match::getMatchweek)
+                .setHeader("Matchweek");
+        grid.addColumn(Match::getHomeTeamId);
+        grid.addColumn(Match::getAwayTeamId);
+        grid.addColumn(Match::getHomeTeamGoals);
+        grid.addColumn(Match::getAwayTeamGoals);
+
+        grid.setItems(dbController.getClubMatches(user.getClubId()));
+
+        return grid;
+    }
+
     private ComponentRenderer<Image, Club> createLogoRenderer() {
         return new ComponentRenderer<>(Image::new, logoComponentUpdater);
     }
@@ -152,17 +164,5 @@ public class ClubView extends HorizontalLayout {
         image.setSrc(ClubLogo.getClubLogo(club.getName()));
         image.setHeight(30, Unit.PIXELS);
     };
-
-    private VerticalLayout detailsLayout() {
-        Span stadium = new Span("Stadium: Suzuki Arena, Ściegiennego 8, Kielce");
-        Span capacity = new Span("Capacity: " + 15000);
-        // TODO trophies list
-        VerticalLayout content = new VerticalLayout();
-        content.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        content.add(stadium);
-        content.add(capacity);
-
-        return content;
-    }
 
 }

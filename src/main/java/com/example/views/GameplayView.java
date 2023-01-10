@@ -74,7 +74,7 @@ public class GameplayView extends VerticalLayout {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         dialog.setHeaderTitle("Match finished");
-        dialog.add(dialogLayout()); //TODO dialog nie wyświetla poprawnej wartości
+        dialog.add(dialogLayout());
         dialog.setCloseOnOutsideClick(false);
         dialog.setCloseOnEsc(false);
 

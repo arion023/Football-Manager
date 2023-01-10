@@ -1,6 +1,8 @@
 package com.example.controller.database;
 
+import com.example.model.MarketOffer;
 import com.example.model.entities.Club;
+import com.example.model.entities.Match;
 import com.example.model.entities.Player;
 import com.example.model.entities.Statistics;
 import org.springframework.stereotype.Repository;
@@ -38,7 +40,7 @@ public class DatabaseController {
         return query;
     }
 
-    public String createSelectQuery(List<String> fields, List<String> tables, List<String> conditions) { //TODO WORKS?
+    public String createSelectQuery(List<String> fields, List<String> tables, List<String> conditions) {
         String query = SELECT + " " + String.join(", ", fields) + " " +
                 FROM + " " + String.join(", ", tables) + " ";
         if (!conditions.isEmpty()) {
@@ -85,7 +87,7 @@ public class DatabaseController {
     }
 
 
-    public  List<Club> getAllClubs() {
+    public List<Club> getAllClubs() {
         String query = createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME));
         List<Club> clubs = getClubsFromDB(query);
         String getPointsQuery = "SELECT GET_POINTS(%d) FROM DUAL";
@@ -102,7 +104,7 @@ public class DatabaseController {
         return clubs;
     }
 
-    public  Club getClubById(int clubId) {
+    public Club getClubById(int clubId) {
         String query = createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME), List.of("club_id = " + clubId));
         List<Club> clubs = getClubsFromDB(query);
         if (clubs.size() == 1)
@@ -110,7 +112,7 @@ public class DatabaseController {
         else return null;
     }
 
-    public  List<Club> getClubsByLeague(int leagueId) {
+    public List<Club> getClubsByLeague(int leagueId) {
         String query = createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME), List.of("league_id = " + leagueId));
         return getClubsFromDB(query);
     }
@@ -126,7 +128,7 @@ public class DatabaseController {
     }
 
     public Statistics getStatisticsById(int playerId) {
-        String query = "SELECT " + DatabaseConfig.STATISTICS_TABLE_NAME +" WHERE player_id = " + playerId;
+        String query = "SELECT " + DatabaseConfig.STATISTICS_TABLE_NAME + " WHERE player_id = " + playerId;
         return getStatisticsFromDB(query);
     }
 
@@ -135,6 +137,27 @@ public class DatabaseController {
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {
             return Statistics.resultSetToType(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<MarketOffer> getOffersFromDB(String query) {
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(query)) {
+            return MarketOffer.resultSetToType(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Match> getClubMatches(int clubId){
+        String query =  "SELECT * FROM " + MATCHES_TABLE_NAME + " WHERE home_club = " + clubId;;
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(query)) {
+            return Match.resultSetToMatch(rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

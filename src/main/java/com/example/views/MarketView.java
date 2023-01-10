@@ -197,7 +197,7 @@ public class MarketView extends HorizontalLayout {
     private void sellOperation() {
         //setOperation(this.sellTab);
         if (!(playerField.isEmpty() || price.isEmpty())) {
-            user.sellPlayer(this.playerField.getValue());
+            user.sellPlayer(this.playerField.getValue(), price.getValue().intValue() );
             playerField.clear();
             price.clear();
             refreshData();

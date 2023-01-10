@@ -22,8 +22,8 @@ public class User {
     private String mail;
     private String nickname;
     private int budget;
-    private int clubID;
-    private int formationID; //TODO CHANGE ON FORMATION
+    private int clubId;
+    private int formationId; //TODO CHANGE ON FORMATION
 
     private Club club;
     private List<MarketOffer> offers;
@@ -37,10 +37,7 @@ public class User {
     @Autowired
     public User(DatabaseController dbController) {
         this.dbController = dbController;
-        this.offers = MarketOffer.getOffers(dbController);
         this.userOffers = new ArrayList<>();
-        //TODO
-        //String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.PLAYERS_TABLE_NAME), List.of("club_id = " + clubId));
     }
 
 
@@ -48,34 +45,28 @@ public class User {
         return this.budget;
     }
 
-    public boolean buy(int price) {
-
-        //TODO checking if operation complete
-        return true;
+    public int getClubId() {
+        return this.clubId;
     }
-
-
-    //this.setMail(mail);
-    //this.setBudget();
-
 
     public boolean setUserBasicsInfo(ResultSet userInfo) {
         // setting user id, mail, nickname, budget, formation, club_id
         int size = 0;
         try {
             while (userInfo.next()) {
+                this.id = userInfo.getInt("user_id");
                 this.mail = userInfo.getString("mail");
                 this.nickname = userInfo.getString("nickname");
                 this.budget = userInfo.getInt("budget");
-                this.formationID = userInfo.getInt("formation_id");
+                this.formationId = userInfo.getInt("formation_id");
                 try {
-                    this.clubID = userInfo.getInt("club_id");
+                    this.clubId = userInfo.getInt("club_id");
                     String clubName = userInfo.getString("name");
                     String countryID = userInfo.getString("country_id");
                     int leagueID = userInfo.getInt("league_id");
                     int stadiumID = userInfo.getInt("stadium_id");
                     //TODO REPAIR CONSTRUCTOR TO ONLY NEEDED DATA
-                    this.club = new Club(clubID, clubName, null, 1000, null, 0, 0, 0, 0, null, null);
+                    this.club = new Club(clubId, clubName, null, 1000, null, 0, 0, 0, 0, null, null);
                 } catch (SQLException e) {
                     throw new SQLException("Club of user not found"); //TODO SPECIAL EXCEPTION AND ERROR
                 }
@@ -89,19 +80,26 @@ public class User {
     }
 
     public boolean addNewUserToDB(String mail, String nickname, String clubName) {
-        //TODO AUTOGENERETING ID AS TRIGGER IN DB (ACTUALLY HARDCODED)
         int userId = dbController.getNextId("USER_ID", "USERS");
-        int clubId = dbController.getNextId("CLUB_ID", "USER_CLUB");
-        String newClubCommand = "INSERT INTO user_club VALUES (" + clubId + ", '" + clubName + "', DEFAULT, DEFAULT, NULL )";
-        String newUserCommand = "INSERT INTO users VALUES (" + userId + ", '" + mail + "', '" + nickname + "', DEFAULT," + 349 + ", NULL )";//TODO dodaćid klubu tutaj
+        int nextClubId = dbController.getNextId("CLUB_ID", "USER_CLUB");
+        String newClubCommand = "INSERT INTO user_club VALUES (" + nextClubId + ", '" + clubName + "', DEFAULT, DEFAULT, NULL )";
+        String newUserCommand = "INSERT INTO users VALUES (" + userId + ", '" + mail + "', '" + nickname + "', DEFAULT," + nextClubId + ", NULL )";
         dbController.updateDatabase(newClubCommand);
         dbController.updateDatabase(newUserCommand);
         return true;
     }
 
+    public void setUserOffersFromDB() {
+        String myOffers = "SELECT * FROM " + DatabaseConfig.OFFER_TABLE_NAME + " INNER JOIN " + DatabaseConfig.PLAYERS_TABLE_NAME + " USING (player_id) INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id) WHERE user_id = " + this.getId() + " AND club_id = " + this.getClubId();
+        String restOffers = "SELECT * FROM " + DatabaseConfig.OFFER_TABLE_NAME + " INNER JOIN " + DatabaseConfig.PLAYERS_TABLE_NAME + " USING (player_id) INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id) WHERE user_id = " + this.getId() + " AND club_id != " + this.getClubId();
+        this.userOffers = dbController.getOffersFromDB(myOffers);
+        this.offers = dbController.getOffersFromDB(restOffers);
+
+    }
+
     public boolean setUserBasicAndClubFromDB(User usr, String mail) {
         //TODO MOVE ADDING CLUB TO OTHER FUN
-        String query = "SELECT * FROM users INNER JOIN USER_CLUB USING (club_id) WHERE mail = ?";
+        String query = "SELECT * FROM " + DatabaseConfig.USERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.USER_CLUB_TABLE_NAME + " USING (club_id) WHERE mail = ?";
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              PreparedStatement pstatement = connection.prepareStatement(query);
         ) {
@@ -123,23 +121,55 @@ public class User {
     }
 
 
-    public void buyPlayer(MarketOffer offer) {
+    public boolean buyPlayer(MarketOffer offer) {
         //TODO UPDATE DATABASE
-        this.offers.remove(offer);
-        this.userOffers.remove(offer);
-        this.budget -= offer.getPrice();
 
-        addPlayer(offer.getPlayer());
+        if (this.budget - offer.getPrice() > 0) {
+            this.removeOffer(offer);
+            this.budget -= offer.getPrice();
+            this.addPlayer(offer.getPlayer());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void removeOffer(MarketOffer offer) {
+        if (offer.getSellerId() == this.getClubId()) {
+            this.userOffers.remove(offer);
+        } else {
+            this.offers.remove(offer);
+        }
+
+        if (offer.getId() != 0) {
+            String update = "DELETE FROM " + DatabaseConfig.OFFER_TABLE_NAME + " WHERE offer_id = " + offer.getId();
+            dbController.updateDatabase(update);
+        }
+    }
+
+    private void addOffer(MarketOffer offer) {
+        if (offer.getSellerId() == this.getClubId()) {
+            this.userOffers.add(offer);
+        } else {
+            this.offers.add(offer);
+        }
+
+        int offerId = dbController.getNextId("OFFER_ID", DatabaseConfig.OFFER_TABLE_NAME);
+        String update = "INSERT INTO " + DatabaseConfig.OFFER_TABLE_NAME + " VALUES (" + offerId + ", " + this.getId() + ", " + offer.getPlayer().getId() + ", " + offer.getPrice() + " )";
+        dbController.updateDatabase(update);
     }
 
     private void addPlayer(Player player) {
         this.substitutes.add(player);
 
+        String update = "UPDATE " + DatabaseConfig.PLAYERS_TABLE_NAME + " SET club_id = " + this.getClubId() + " WHERE player_id = " + player.getId();
+        dbController.updateDatabase(update);
+
     }
 
-    public void sellPlayer(Player player) {
+    public void sellPlayer(Player player, int price) {
         //TODO UPDATE DATABASE
-        this.userOffers.add(new MarketOffer(player, player.estimatePrice()));
+        this.addOffer(new MarketOffer(player, price));
         this.firstSquad.remove(player);
         this.substitutes.remove(player);
 
@@ -151,18 +181,4 @@ public class User {
         all.addAll(this.userOffers);
         return all;
     }
-
-
-//    public static boolean userExist(String usrMail) {
-//        String query = "SELECT * FROM users WHERE mail = ?";
-//        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-//             PreparedStatement pstatement = connection.prepareStatement(query);
-//        ) {
-//            pstatement.setString(1, mail);
-//            ResultSet result = pstatement.executeQuery();
-//            usr.setUserInfo(result, mail);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }

@@ -31,7 +31,6 @@ public class Player extends Person {
     }
 
     public int estimatePrice() {
-        //TODO IT CAN BE BETTER...
         if (this.statistics != null) {
             int overall = this.statistics.getOverall();
             return  (int) pow(overall / 10.0, 2) * 1000;

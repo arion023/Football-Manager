@@ -5,8 +5,8 @@ import com.example.model.User;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
@@ -17,10 +17,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -29,16 +26,12 @@ import java.util.ArrayList;
 
 import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
 
-@Route("/")
-@PageTitle("Welcome")
-@AnonymousAllowed
 @CssImport(value = "themes/footballmanager/styles.css", themeFor = "vaadin-app-layout")
 public class AppLayoutBasic extends AppLayout {
 
     private final transient AuthenticationContext authContext;
     private final transient User user;
     private final transient DatabaseController dbController;
-    private String clubName;
     private Dialog addNewUserDialog;
     private TextField clubNameField;
     private TextField managerNickname;
@@ -57,10 +50,8 @@ public class AppLayoutBasic extends AppLayout {
         Tab club = new Tab(VaadinIcon.LIGHTBULB.create(), new RouterLink("Club", ClubView.class));
         Tab squad = new Tab(VaadinIcon.SHIELD.create(), new RouterLink("Squad", SquadView.class));
         Tab market = new Tab(VaadinIcon.CART.create(), new RouterLink("Market", MarketView.class));
-        Tab statistic = new Tab(VaadinIcon.BAR_CHART_H.create(), new RouterLink("Statistics", StatisticsView.class));
-        Tab settings = new Tab(VaadinIcon.COG.create(), new RouterLink("Settings", SettingsView.class));
 
-        Tabs tabs = new Tabs(welcome, club, squad, market, statistic, settings);
+        Tabs tabs = new Tabs(welcome, club, squad, market);
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
 
         addToDrawer(tabs);
@@ -86,11 +77,11 @@ public class AppLayoutBasic extends AppLayout {
                 user.setMail(usrMail);
                 this.configAddNewUserDialog();
                 this.addNewUserDialog.open();
-                loggedUser = new Span("Welcome " + userFullName);
-            } else { //TODO nie wiem czy tu coś nie zginelp
-                loggedUser = new Span("Welcome " + user.getNickname() + " " + user.getClub().getName() + "'s manager");
+                loggedUser = new Span("Welcome " + userFullName );
             }
-            fulfillUserDataFromDB();
+            else{
+                loggedUser = new Span("Welcome " + user.getNickname() + " " + user.getClub().getName() + "'s manager");
+                fulfillUserDataFromDB(); }
 
             loggedUser.getStyle()
                     .set(CSS_FONT_SIZE, "var(--lumo-font-size-m)");
@@ -99,6 +90,8 @@ public class AppLayoutBasic extends AppLayout {
         } else {
             header = new HorizontalLayout(toggle, title);
         }
+        header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+
         return header;
     }
 
@@ -108,7 +101,7 @@ public class AppLayoutBasic extends AppLayout {
 
         VerticalLayout dialogLayout = createAddNewUserLayout();
         this.addNewUserDialog.add(dialogLayout);
-        Button addButton = new Button("Create", e -> this.addNewUser(user.getMail(), managerNickname.getValue(), clubNameField.getValue()));
+        Button addButton = new Button("Create", e -> this.addNewUser(user.getMail(), managerNickname.getValue(), clubNameField.getValue())); //TODO StringUtils.capitalize()
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addNewUserDialog.getFooter().add(addButton);
     }
@@ -116,6 +109,8 @@ public class AppLayoutBasic extends AppLayout {
     private void addNewUser(String mail, String nickname, String clubName) {
         //TODO
         user.addNewUserToDB(mail, nickname, clubName);
+        fulfillUserDataFromDB();
+
         this.addNewUserDialog.close();
     }
 
@@ -133,10 +128,10 @@ public class AppLayoutBasic extends AppLayout {
 
     private void fulfillUserDataFromDB() {
         //TODO move here setting club
+        user.setUserOffersFromDB();
         //user.setStadium()
         //user.setPlayers()
-        //user.setOffers()
         //user.setPosition()
-        user.setSubstitutes(new ArrayList<>(dbController.getAllPlayersFromClubWithStats(user.getClubID()))); //347 - Lech Poznań
+        user.setSubstitutes(new ArrayList<>(dbController.getAllPlayersFromClubWithStats(user.getClubId()))); //347 - Lech Poznań
     }
 }

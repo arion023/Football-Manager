@@ -25,24 +25,22 @@ public class Fixtures {
     private Map<Integer, Map<Integer, Integer>> matchweekToFixtures;
 
     @Getter
-    private List<Club> leagueClubs;
+    private final List<Club> leagueClubs;
     private boolean dataAlreadySet = false;
 
     @Autowired
     public Fixtures(User user, DatabaseController dbController) {
         this.user = user;
         this.dbController = dbController;
+        leagueClubs = dbController.getAllClubs();
     }
 
     public void prepareFixturesData() {
         if (!dataAlreadySet) {
-
-            leagueClubs = dbController.getAllClubs();
-            leagueClubs.add(dbController.getClubById(user.getClubID()));
+            leagueClubs.add(dbController.getClubById(user.getClubId()));
 
             matchweekToFixtures = new HashMap<>();
             drawMatchweeks(leagueClubs);
-            leagueClubs.add(user.getClub());
             dataAlreadySet = true;
         }
     }
