@@ -1,5 +1,6 @@
 /* DROPPING TABLES */
 DROP TABLE users;
+DROP TABLE offer;
 DROP TABLE event;
 DROP TABLE event_type;
 DROP TABLE trophy;
@@ -21,17 +22,38 @@ DROP TABLE country;
 /* DATES IN THIS FORMAT */
 
 ALTER SESSION SET nls_date_format='yyyy-mm-dd';
+INSERT INTO users VALUES ( 101, 'mail', 'nickname', NULL, 349, DEFAULT );
 
 /* CREATING TABLES */
+--TODO ADD TO PLAYER IF HE IS IN FIRST SQUAD ?
 
 CREATE TABLE users
 (
-    mail        VARCHAR2(30) NOT NULL CONSTRAINT user_pk PRIMARY KEY,
-    manager_name VARCHAR2(20),
+    user_id     NUMBER NOT NULL CONSTRAINT user_pk PRIMARY KEY,  --TODO TRIGGER ADDING AUTOMATIC ID
+    mail        VARCHAR2(30) NOT NULL,
+    nickname    VARCHAR2(20),
     budget      NUMBER DEFAULT 1000000,
-    club_id     NUMBER NOT NULL --TODO TRIGGER FOR AUTOMATIC CLUB ID
+    club_id     NUMBER NOT NULL, --TODO TRIGGER FOR AUTOMATIC CLUB ID
+    formation_id NUMBER --TODO MAYBE GET ONLY NUMBER AND SET BY ENUM?
 );
 
+CREATE TABLE offer
+(
+    offer_id    NUMBER NOT NULL CONSTRAINT offer_pk PRIMARY KEY,
+    user_id     NUMBER NOT NULL,
+    player_id   NUMBER NOT NULL,
+    price       NUMBER DEFAULT 0
+);
+
+CREATE TABLE user_club
+(
+    --TODO ON NEW INSERT DEFAULT ADDING SOME DEFAULT PLAYERS TO THIS CLUB;
+    club_id         NUMBER NOT NULL CONSTRAINT user_club_pk PRIMARY KEY, --TODO TRIGGER FOR AUTOMATIC CLUB ID
+    name            VARCHAR2(30) NOT NULL,
+    country_id      CHAR(2) DEFAULT 'PL',    --TODO TRIGGER -> SAME COUNTRY AS LEAGUE
+    league_id       NUMBER DEFAULT '106',
+    stadium_id      NUMBER DEFAULT NULL
+);
 
 
 CREATE TABLE country
@@ -65,15 +87,6 @@ CREATE TABLE club
     name            VARCHAR2(30) NOT NULL,
     country_id      CHAR(2) NOT NULL,
     budget          NUMBER,
-    league_id       NUMBER NOT NULL,
-    stadium_id      NUMBER
-);
-
-CREATE TABLE user_club
-(
-    club_id         NUMBER NOT NULL CONSTRAINT user_club_pk PRIMARY KEY,
-    name            VARCHAR2(30) NOT NULL,
-    country_id      CHAR(2),
     league_id       NUMBER NOT NULL,
     stadium_id      NUMBER
 );
@@ -195,6 +208,24 @@ CREATE TABLE event_type
 --USER
 ALTER TABLE users ADD CONSTRAINT user_club_fk FOREIGN KEY(club_id)
     REFERENCES club (club_id);
+
+--OFFER
+ALTER TABLE offer ADD CONSTRAINT offer_user_fk FOREIGN KEY(user_id)
+    REFERENCES users (user_id);
+
+ALTER TABLE offer ADD CONSTRAINT offer_player_fk FOREIGN KEY(player_id)
+    REFERENCES player (player_id);
+
+
+--USER_CLUB
+ALTER TABLE user_club ADD CONSTRAINT user_club_country_fk FOREIGN KEY(country_id)
+    REFERENCES country (country_id);
+
+ALTER TABLE user_club ADD CONSTRAINT user_club_league_fk FOREIGN KEY(league_id)
+    REFERENCES league (league_id);
+
+ALTER TABLE user_club ADD CONSTRAINT user_club_stadium_fk FOREIGN KEY(stadium_id)
+    REFERENCES stadium (stadium_id);
 
 
 --LEAGUE

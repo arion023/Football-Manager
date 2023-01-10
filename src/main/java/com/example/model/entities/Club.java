@@ -18,7 +18,7 @@ public class Club {
     private String name;
     private Statistics overallStatistics;
     private int budget;
-    private List<League> leagues;
+    private League leagues;
     private int currentPoints;
     private int goalsScored;
     private int goalsConceded;
@@ -45,7 +45,8 @@ public class Club {
     }
 
     public static Club getClubById(int clubId, DatabaseController dbController) {
-        String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME), List.of("club_id = " + clubId));
+//        String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME), List.of("club_id = " + clubId));
+        String query = "SELECT";
         List<Club> clubs = dbController.getClubsFromDB(query);
         if (clubs.size() == 1)
             return clubs.get(0);

@@ -39,7 +39,10 @@ public class AppLayoutBasic extends AppLayout {
     private final transient AuthenticationContext authContext;
     private final transient User user;
     private final transient DatabaseController dbController;
+    private String clubName;
     private Dialog addNewUserDialog;
+    private TextField clubNameField;
+    private TextField managerNickname;
 
 
     @Autowired
@@ -59,13 +62,19 @@ public class AppLayoutBasic extends AppLayout {
             String userFullName = authContext.getAuthenticatedUser(DefaultOidcUser.class).get().getFullName(); //TODO optional check
             String usrMail = authContext.getAuthenticatedUser(DefaultOidcUser.class).get().getEmail();
 
-            if (!User.setUserInfoFromDB(logUser, usrMail)) {
+            Span loggedUser;
+
+            if (!User.setUserBasicAndClubFromDB(logUser, usrMail)) {
+                user.setMail(usrMail);
                 this.configAddNewUserDialog();
                 this.addNewUserDialog.open();
+                loggedUser = new Span("Welcome " + userFullName );
             }
-            getUserDataFromDB();
+            else //TODO nie wiem czy tu coś nie zginelp
+                loggedUser = new Span("Welcome " + user.getNickname() + " " + user.getClub().getName() + "'s manager");
 
-            Span loggedUser = new Span("Welcome " + userFullName + " " + user.getClub().getName() + "'s manager");
+            fulfillUserDataFromDB();
+
             loggedUser.getStyle()
                     .set(CSS_FONT_SIZE, "var(--lumo-font-size-m)");
 
@@ -96,21 +105,22 @@ public class AppLayoutBasic extends AppLayout {
 
         VerticalLayout dialogLayout = createAddNewUserLayout();
         this.addNewUserDialog.add(dialogLayout);
-        Button addButton = new Button("Create", e -> this.addNewUser());
+        Button addButton = new Button("Create", e -> this.addNewUser(user.getMail(), managerNickname.getValue(), clubNameField.getValue()));
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addNewUserDialog.getFooter().add(addButton);
     }
 
-    private void addNewUser() {
+    private void addNewUser(String mail, String nickname, String clubName) {
         //TODO
+        User.addNewUserToDB(mail, nickname, clubName, dbController);
         this.addNewUserDialog.close();
     }
 
     private VerticalLayout createAddNewUserLayout() {
-        TextField clubName = new TextField("Club name");
-        TextField managerNickname = new TextField("Manager nickname");
+        clubNameField = new TextField("Club name");
+        managerNickname = new TextField("Manager nickname");
 
-        VerticalLayout addNewUserLayout = new VerticalLayout(clubName, managerNickname);
+        VerticalLayout addNewUserLayout = new VerticalLayout(clubNameField, managerNickname);
         addNewUserLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
         addNewUserLayout.setPadding(false);
         addNewUserLayout.getStyle().set("max-width", "100%").set("width", "20em");
@@ -118,7 +128,12 @@ public class AppLayoutBasic extends AppLayout {
         return addNewUserLayout;
     }
 
-    private void getUserDataFromDB() {
-        user.setSubstitutes(new ArrayList<>(Player.getAllPlayersFromClubWithStats(347, dbController))); // TODO get userss club 347 - Lech Poznań
+    private void fulfillUserDataFromDB() {
+        //TODO move here setting club
+        //user.setStadium()
+        //user.setPlayers()
+        //user.setOffers()
+        //user.setPosition()
+        user.setSubstitutes(new ArrayList<>(Player.getAllPlayersFromClubWithStats(user.getClubID(), dbController))); //347 - Lech Poznań
     }
 }
