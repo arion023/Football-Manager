@@ -17,27 +17,35 @@ public class Fixtures {
     private static final int CLUBS_NO = 18;
 
     private final User user;
-    private  final DatabaseController databaseController;
+    private final DatabaseController databaseController;
     private final Random random = new Random();
     @Getter
     @Setter
     private int currentMatchweek = 1;
     @Getter
-    private final Map<Integer, Map<Integer, Integer>> matchweekToFixtures;
+    private Map<Integer, Map<Integer, Integer>> matchweekToFixtures;
 
     @Getter
-    private final List<Club> leagueClubs;
+    private List<Club> leagueClubs;
+    private boolean dataAlreadySet = false;
 
     @Autowired
     public Fixtures(User user, DatabaseController databaseController) {
         this.user = user;
         this.databaseController = databaseController;
+    }
 
-        leagueClubs = Club.getAllClubs(databaseController);
+    public void prepareFixturesData() {
+        if (!dataAlreadySet) {
 
-        matchweekToFixtures = new HashMap<>();
-        drawMatchweeks(leagueClubs);
-        leagueClubs.add(user.getClub());
+            leagueClubs = Club.getAllClubs(databaseController);
+            leagueClubs.add(Club.getClubById(user.getClubID(), databaseController));
+
+            matchweekToFixtures = new HashMap<>();
+            drawMatchweeks(leagueClubs);
+            leagueClubs.add(user.getClub());
+            dataAlreadySet = true;
+        }
     }
 
     private void drawMatchweeks(List<Club> clubs) {

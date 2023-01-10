@@ -2,7 +2,6 @@ package com.example.views;
 
 import com.example.controller.database.DatabaseController;
 import com.example.model.entities.Club;
-import com.example.model.entities.Player;
 import com.example.model.enums.ClubLogo;
 import com.example.model.Fixtures;
 import com.example.model.User;
@@ -17,8 +16,6 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.data.renderer.LitRenderer;
-import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.function.SerializableBiConsumer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -46,6 +43,8 @@ public class ClubView extends HorizontalLayout {
         this.user = user;
         this.fixtures = fixtures;
         this.databaseController = databaseController;
+
+        fixtures.prepareFixturesData();//TODO może jest lepszy sposób na wywołanie tego raz
 
         updatePositions();
         setSizeFull();

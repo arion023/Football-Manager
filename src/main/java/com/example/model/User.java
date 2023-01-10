@@ -59,7 +59,6 @@ public class User {
     //this.setBudget();
 
 
-
     public boolean setUserBasicsInfo(ResultSet userInfo) {
         // setting user id, mail, nickname, budget, formation, club_id
         int size = 0;
@@ -76,7 +75,7 @@ public class User {
                     int leagueID = userInfo.getInt("league_id");
                     int stadiumID = userInfo.getInt("stadium_id");
                     //TODO REPAIR CONSTRUCTOR TO ONLY NEEDED DATA
-                    this.club = new Club(clubID, clubName, null, 1000, null, 0, null, null);
+                    this.club = new Club(clubID, clubName, null, 1000, null, 0, 0, 0, 0, null, null);
                 } catch (SQLException e) {
                     throw new SQLException("Club of user not found"); //TODO SPECIAL EXCEPTION AND ERROR
                 }
@@ -91,11 +90,41 @@ public class User {
 
     public static boolean addNewUserToDB(String mail, String nickname, String clubName, DatabaseController dbController) {
         //TODO AUTOGENERETING ID AS TRIGGER IN DB (ACTUALLY HARDCODED)
-        String newClubCommand = "INSERT INTO user_club VALUES ( 349, '" + clubName + "', DEFAULT, DEFAULT, NULL )";
-        String newUserCommand = "INSERT INTO users VALUES ( 101, '" + mail + "', '" + nickname + "', DEFAULT, 349, NULL )";
+        int userId = getNewUserId();
+        int clubId = getNewUserClubId();
+        String newClubCommand = "INSERT INTO user_club VALUES (" + clubId + ", '" + clubName + "', DEFAULT, DEFAULT, NULL )";
+        String newUserCommand = "INSERT INTO users VALUES (" + userId + ", '" + mail + "', '" + nickname + "', DEFAULT," + 349 + ", NULL )";//TODO dodaćid klubu tutaj
         dbController.updateDatabase(newClubCommand);
         dbController.updateDatabase(newUserCommand);
         return true;
+    }
+
+    private static int getNewUserId() {
+        int maxId = 0;
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery("SELECT MAX(USER_ID) FROM USERS")) {
+            while (result.next()) {
+                maxId = result.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return maxId + 1;
+    }
+
+    private static int getNewUserClubId() {
+        int maxId = 0;
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery("SELECT MAX(CLUB_ID) FROM USER_CLUB")) {
+            while (result.next()) {
+                maxId = result.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return maxId + 1;
     }
 
     public static boolean setUserBasicAndClubFromDB(User usr, String mail) {
@@ -144,13 +173,12 @@ public class User {
 
     }
 
-    public List<MarketOffer> getAllOffers(){
+    public List<MarketOffer> getAllOffers() {
         List<MarketOffer> all = new ArrayList<>();
         all.addAll(this.offers);
         all.addAll(this.userOffers);
         return all;
     }
-
 
 
 //    public static boolean userExist(String usrMail) {

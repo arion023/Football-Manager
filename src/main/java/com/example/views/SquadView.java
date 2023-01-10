@@ -192,14 +192,10 @@ public class SquadView extends HorizontalLayout {
         var midfieldersInSquad = countPlayersInPositions(Position.getMidfieldPositions());
         var forwardsInSquad = countPlayersInPositions(Position.getForwardPositions());
 
-        if ((Position.GK.equals(position) && goalkeeperInSquad == 1)
+        return (Position.GK.equals(position) && goalkeeperInSquad == 1)
                 || (Position.getBackPositions().contains(position) && backsInSquad == formation.getDefendersNumber())
                 || (Position.getMidfieldPositions().contains(position) && midfieldersInSquad == formation.getMidfieldersNumber())
-                || (Position.getForwardPositions().contains(position) && forwardsInSquad == formation.getForwardsNumber())) {
-            return true;
-        }
-
-        return false;
+                || (Position.getForwardPositions().contains(position) && forwardsInSquad == formation.getForwardsNumber());
     }
 
     private long countPlayersInPositions(List<Position> positions) {
