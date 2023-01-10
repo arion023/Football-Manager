@@ -70,10 +70,9 @@ public class AppLayoutBasic extends AppLayout {
                 this.addNewUserDialog.open();
                 loggedUser = new Span("Welcome " + userFullName );
             }
-            else
+            else{
                 loggedUser = new Span("Welcome " + user.getNickname() + " " + user.getClub().getName() + "'s manager");
-
-            fulfillUserDataFromDB();
+                fulfillUserDataFromDB(); }
 
             loggedUser.getStyle()
                     .set(CSS_FONT_SIZE, "var(--lumo-font-size-m)");
@@ -113,6 +112,8 @@ public class AppLayoutBasic extends AppLayout {
     private void addNewUser(String mail, String nickname, String clubName) {
         //TODO
         User.addNewUserToDB(mail, nickname, clubName, dbController);
+
+        fulfillUserDataFromDB();
         this.addNewUserDialog.close();
     }
 
@@ -130,9 +131,9 @@ public class AppLayoutBasic extends AppLayout {
 
     private void fulfillUserDataFromDB() {
         //TODO move here setting club
+        user.setUserOffersFromDB();
         //user.setStadium()
         //user.setPlayers()
-        //user.setOffers()
         //user.setPosition()
         user.setSubstitutes(new ArrayList<>(Player.getAllPlayersFromClubWithStats(user.getClubID(), dbController))); //347 - Lech Poznań
     }
