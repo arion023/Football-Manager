@@ -51,37 +51,7 @@ public class AppLayoutBasic extends AppLayout {
         this.user = logUser;
         this.dbController = databaseController;
 
-        HorizontalLayout header;
-        DrawerToggle toggle = new DrawerToggle();
-
-        H1 title = new H1("Football Manager");
-        title.getStyle().set(CSS_FONT_SIZE, "var(--lumo-font-size-l)").set("margin", "0");
-
-        if (authContext.isAuthenticated()) {
-            Button logout = new Button("Logout", click -> this.authContext.logout());
-            String userFullName = authContext.getAuthenticatedUser(DefaultOidcUser.class).get().getFullName(); //TODO optional check
-            String usrMail = authContext.getAuthenticatedUser(DefaultOidcUser.class).get().getEmail();
-
-            Span loggedUser;
-
-            if (!User.setUserBasicAndClubFromDB(logUser, usrMail)) {
-                user.setMail(usrMail);
-                this.configAddNewUserDialog();
-                this.addNewUserDialog.open();
-                loggedUser = new Span("Welcome " + userFullName );
-            }
-            else //TODO nie wiem czy tu coś nie zginelp
-                loggedUser = new Span("Welcome " + user.getNickname() + " " + user.getClub().getName() + "'s manager");
-
-            fulfillUserDataFromDB();
-
-            loggedUser.getStyle()
-                    .set(CSS_FONT_SIZE, "var(--lumo-font-size-m)");
-
-            header = new HorizontalLayout(toggle, title, loggedUser, logout);
-        } else {
-            header = new HorizontalLayout(toggle, title);
-        }
+        HorizontalLayout header = checkUserAuthenticationAndReturnLayout();
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
         Tab welcome = new Tab(VaadinIcon.INFO_CIRCLE_O.create(), new RouterLink("Welcome", WelcomeView.class));
@@ -97,6 +67,40 @@ public class AppLayoutBasic extends AppLayout {
         addToDrawer(tabs);
         addToNavbar(header);
         setPrimarySection(Section.DRAWER);
+    }
+
+    private HorizontalLayout checkUserAuthenticationAndReturnLayout() {
+        HorizontalLayout header;
+        DrawerToggle toggle = new DrawerToggle();
+        H1 title = new H1("Football Manager");
+        title.getStyle().set(CSS_FONT_SIZE, "var(--lumo-font-size-l)").set("margin", "0");
+
+        if (authContext.isAuthenticated()) {
+            Button logout = new Button("Logout", click -> this.authContext.logout());
+            var userOptional = authContext.getAuthenticatedUser(DefaultOidcUser.class);
+            String userFullName = userOptional.map(DefaultOidcUser::getFullName).orElse("User");
+            String usrMail = userOptional.map(DefaultOidcUser::getEmail).orElse("useremail@example.com");
+
+            Span loggedUser;
+
+            if (!User.setUserBasicAndClubFromDB(this.user, usrMail)) {
+                user.setMail(usrMail);
+                this.configAddNewUserDialog();
+                this.addNewUserDialog.open();
+                loggedUser = new Span("Welcome " + userFullName);
+            } else { //TODO nie wiem czy tu coś nie zginelp
+                loggedUser = new Span("Welcome " + user.getNickname() + " " + user.getClub().getName() + "'s manager");
+            }
+            fulfillUserDataFromDB();
+
+            loggedUser.getStyle()
+                    .set(CSS_FONT_SIZE, "var(--lumo-font-size-m)");
+
+            header = new HorizontalLayout(toggle, title, loggedUser, logout);
+        } else {
+            header = new HorizontalLayout(toggle, title);
+        }
+        return header;
     }
 
     private void configAddNewUserDialog() {

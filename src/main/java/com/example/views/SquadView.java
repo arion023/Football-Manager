@@ -118,7 +118,8 @@ public class SquadView extends HorizontalLayout {
     private VerticalLayout getPlayerImageWithSurname(Player player) {
         VerticalLayout vL = new VerticalLayout();
         vL.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        Image shirt = new Image("images/shirt.png", "shirt");//TODO dać bramkarzowi inną koszulkę
+        String shirtImageName = player.getPosition().equals(Position.GK) ? "gk_shirt.png" : "shirt.png";
+        Image shirt = new Image("images/" + shirtImageName, "shirt");
 
         shirt.setHeight(100, Unit.PIXELS);
         Span surname = new Span(player.getSurname());
@@ -153,9 +154,7 @@ public class SquadView extends HorizontalLayout {
         vL.getStyle().set("overflow-y", "auto"); //Scroll
 
         Grid<Player> firstSquadGrid = createPlayersGrid();
-        firstSquadGrid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         Grid<Player> substitutesGrid = createPlayersGrid();
-        substitutesGrid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         firstSquadData = firstSquadGrid.setItems(user.getFirstSquad());
         substitutesData = substitutesGrid.setItems(user.getSubstitutes());
 
@@ -228,7 +227,7 @@ public class SquadView extends HorizontalLayout {
                 .setAutoWidth(true)
                 .setFlexGrow(0);
         grid.addColumn(Player::getPosition)
-                .setHeader("Pozycja")
+                .setHeader("Pos")
                 .setAutoWidth(true)
                 .setFlexGrow(0)
                 .setSortable(true);
@@ -254,6 +253,7 @@ public class SquadView extends HorizontalLayout {
         grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPhysically())
                 .setHeader("PHY")
                 .setAutoWidth(true);
+        grid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         return grid;
     }
 }

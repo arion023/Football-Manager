@@ -36,6 +36,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -112,7 +113,7 @@ public class GameplayView extends VerticalLayout {
         countAndSavePoints(user.getClub().getId(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals);
         simulateOtherMatches();
         updatePositions();
-//   SELECT MAX(CLUB_ID) FROM CLUB
+
         int matchId = getNewMatchId();
         Match match = new Match(matchId, user.getClub().getId(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals, fixtures.getCurrentMatchweek());
         saveMatchToDB(match);
@@ -174,19 +175,27 @@ public class GameplayView extends VerticalLayout {
             homeTeamPoints = 1;
             awayTeamPoints = 1;
         }
-        Club homeTeam = fixtures.getLeagueClubs().stream()
-                .filter(club -> club.getId() == homeTeamId)
-                .findFirst().get();
-        homeTeam.setCurrentPoints(homeTeam.getCurrentPoints() + homeTeamPoints);
-        homeTeam.setGoalsScored(homeTeam.getGoalsScored() + homeTeamGoalsTemp);
-        homeTeam.setGoalsConceded(homeTeam.getGoalsConceded() + awayTeamGoalsTemp);
+        var homeTeamOptional = findClub(homeTeamId);
+        if (homeTeamOptional.isPresent()) {
+            Club homeTeam = homeTeamOptional.get();
+            homeTeam.setCurrentPoints(homeTeam.getCurrentPoints() + homeTeamPoints);
+            homeTeam.setGoalsScored(homeTeam.getGoalsScored() + homeTeamGoalsTemp);
+            homeTeam.setGoalsConceded(homeTeam.getGoalsConceded() + awayTeamGoalsTemp);
+        }
 
-        Club awayTeam = fixtures.getLeagueClubs().stream()
-                .filter(club -> club.getId() == awayTeamId)
-                .findFirst().get();
-        awayTeam.setCurrentPoints(awayTeam.getCurrentPoints() + awayTeamPoints);
-        awayTeam.setGoalsScored(awayTeam.getGoalsScored() + awayTeamGoalsTemp);
-        awayTeam.setGoalsConceded(awayTeam.getGoalsConceded() + homeTeamGoalsTemp);
+        var awayTeamOptional = findClub(awayTeamId);
+        if (awayTeamOptional.isPresent()) {
+            Club awayTeam = awayTeamOptional.get();
+            awayTeam.setCurrentPoints(awayTeam.getCurrentPoints() + awayTeamPoints);
+            awayTeam.setGoalsScored(awayTeam.getGoalsScored() + awayTeamGoalsTemp);
+            awayTeam.setGoalsConceded(awayTeam.getGoalsConceded() + homeTeamGoalsTemp);
+        }
+    }
+
+    private Optional<Club> findClub(int clubId) {
+        return fixtures.getLeagueClubs().stream()
+                .filter(club -> club.getId() == clubId)
+                .findFirst();
     }
 
     private void updatePositions() {

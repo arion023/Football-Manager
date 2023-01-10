@@ -5,7 +5,6 @@ import com.example.model.MarketOffer;
 import com.example.model.entities.Player;
 import com.example.model.User;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -20,7 +19,6 @@ import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.data.selection.SingleSelect;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,7 +27,6 @@ import javax.annotation.security.PermitAll;
 
 @Route(value = "/market", layout = AppLayoutBasic.class)
 @PageTitle("Market")
-@PreserveOnRefresh
 @PermitAll
 public class MarketView extends HorizontalLayout {
     private final transient User user;

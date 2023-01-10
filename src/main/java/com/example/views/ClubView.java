@@ -85,7 +85,8 @@ public class ClubView extends HorizontalLayout {
 
         int opponentId = fixtures.getMatchweekToFixtures().get(fixtures.getCurrentMatchweek()).get(user.getClub().getId());
         user.setNextOpponentClubId(opponentId);
-        String opponentTeamName = fixtures.getLeagueClubs().stream().filter(club -> club.getId() == opponentId).findFirst().get().getName();
+        var clubOptional = fixtures.getLeagueClubs().stream().filter(club -> club.getId() == opponentId).findFirst();
+        String opponentTeamName = clubOptional.map(Club::getName).orElse("Opponent Name");
         user.setNextOpponentClubName(opponentTeamName);
 
         Image homeTeamLogo = new Image("images/user_club_logo.png", "user_club_logo");

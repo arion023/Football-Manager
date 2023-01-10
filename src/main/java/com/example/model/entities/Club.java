@@ -46,7 +46,6 @@ public class Club {
 
     public static Club getClubById(int clubId, DatabaseController dbController) {
         String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME), List.of("club_id = " + clubId));
-//        String query = "SELECT";
         List<Club> clubs = dbController.getClubsFromDB(query);
         if (clubs.size() == 1)
             return clubs.get(0);
@@ -58,18 +57,6 @@ public class Club {
         return dbController.getClubsFromDB(query);
     }
 
-
-//    public static List<Club> getAllClubsFromDB() { //TODO probably should be removed
-//        DatabaseController dbController = new DatabaseController();
-//        String query = dbController.createSelectQuery(DatabaseConfig.CLUBS_TABLE_NAME);
-//        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-//             Statement statement = connection.createStatement();
-//             ResultSet result = statement.executeQuery(query)) {
-//            return resultSetToClubs(result);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     public static List<Club> resultSetToClubs(ResultSet result) {
         List<Club> clubs = new ArrayList<>();

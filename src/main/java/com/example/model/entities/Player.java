@@ -80,9 +80,9 @@ public class Player extends Person {
                 var birthDate = result.getDate("birth_date");
                 var countryId = result.getString("country_id");
                 var clubId = result.getInt("club_id");
-                var position = result.getString("position_id");
+                var positionId = result.getInt("position_id");
 
-                Position positionEnum = getPositionEnum(position);
+                Position positionEnum = Position.getPositionById(positionId);
 
                 Player player;
                 try {
@@ -99,14 +99,4 @@ public class Player extends Person {
 
         return players;
     }
-
-
-    private static Position getPositionEnum(String position) {
-        var positions = Position.values();//TODO chyba powinna być wybrana jakoś ta pozycja na podstawie stringa a nie losowo
-        int index = new Random().nextInt(positions.length);
-        return positions[index];
-    }
-
-
-
 }
