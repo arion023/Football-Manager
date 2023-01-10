@@ -62,8 +62,7 @@ public class Club {
                 var clubId = result.getInt("club_id");
                 var name = result.getString("name");
 
-                Club club = new Club(clubId, name, null, 0,
-                        null, 0, 0, 0, 0, null, null);//TODO get proper data
+                Club club = new Club(clubId, name);//TODO get proper data
                 userClubs.add(club);
             }
         } catch (SQLException e) {

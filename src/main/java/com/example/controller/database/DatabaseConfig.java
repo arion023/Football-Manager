@@ -28,7 +28,6 @@ public class DatabaseConfig {
     public static final String MATCHES_TABLE_NAME = "match";
     public static final String EVENTS_TABLE_NAME = "event";
     public static final String USERS_TABLE_NAME = "users";
-    public static final String USER_CLUB_TABLE_NAME = "user_club";
     public static final String CLUB_POINTS_QUERY = "SELECT GET_POINTS(%d) FROM DUAL";
     public static final String CLUB_GOALS_SCORED_QUERY = "SELECT GET_SCORED_GOALS(%d) FROM DUAL";
     public static final String CLUB_GOALS_CONCEDED_QUERY = "SELECT GET_CONCEDED_GOALS(%d) FROM DUAL";

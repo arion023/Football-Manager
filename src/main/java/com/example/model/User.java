@@ -23,8 +23,7 @@ public class User {
     private String nickname;
     private int budget;
     private int clubId;
-    private int formationId; //TODO CHANGE ON FORMATION
-
+    private int formationId = 3;
     private Club club;
     private List<MarketOffer> offers;
     private List<MarketOffer> userOffers;
@@ -76,10 +75,9 @@ public class User {
     }
 
     public boolean addNewUserToDB(String mail, String nickname, String clubName) {
-        int userId = dbController.getNextId("USER_ID", "USERS");
-        int nextClubId = dbController.getNextId("CLUB_ID", "USER_CLUB");
-        String newClubCommand = "INSERT INTO user_club VALUES (" + nextClubId + ", '" + clubName + "', DEFAULT, DEFAULT, NULL )";
-        String newUserCommand = "INSERT INTO users VALUES (" + userId + ", '" + mail + "', '" + nickname + "', DEFAULT," + nextClubId + ", NULL )";
+        int nextClubId = dbController.getNextUserClubId("CLUB_ID", "CLUB");
+        String newClubCommand = "INSERT INTO club VALUES (" + nextClubId + ", '" + clubName + "', DEFAULT, DEFAULT, NULL )";
+        String newUserCommand = "INSERT INTO users VALUES (DEFAULT, '" + mail + "', '" + nickname + "', DEFAULT," + nextClubId + ", NULL )";
         dbController.updateDatabase(newClubCommand);
         dbController.updateDatabase(newUserCommand);
         return true;
@@ -95,7 +93,7 @@ public class User {
 
     public boolean setUserBasicAndClubFromDB(User usr, String mail) {
         //TODO MOVE ADDING CLUB TO OTHER FUN
-        String query = "SELECT * FROM " + DatabaseConfig.USERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.USER_CLUB_TABLE_NAME + " USING (club_id) WHERE mail = ?";
+        String query = "SELECT * FROM " + DatabaseConfig.USERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.CLUBS_TABLE_NAME + " USING (club_id) WHERE mail = ?";
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              PreparedStatement pstatement = connection.prepareStatement(query)
         ) {
@@ -150,8 +148,7 @@ public class User {
             this.offers.add(offer);
         }
 
-        int offerId = dbController.getNextId("OFFER_ID", DatabaseConfig.OFFER_TABLE_NAME);
-        String update = "INSERT INTO " + DatabaseConfig.OFFER_TABLE_NAME + " VALUES (" + offerId + ", " + this.getId() + ", " + offer.getPlayer().getId() + ", " + offer.getPrice() + " )";
+        String update = "INSERT INTO " + DatabaseConfig.OFFER_TABLE_NAME + " VALUES (DEFAULT, " + this.getId() + ", " + offer.getPlayer().getId() + ", " + offer.getPrice() + " )";
         dbController.updateDatabase(update);
     }
 

@@ -100,7 +100,7 @@ public class DatabaseController {
     }
 
     public Club getUserClubById(int clubId) {
-        String query = createSelectQuery(List.of("*"), List.of(USER_CLUB_TABLE_NAME), List.of("club_id = " + clubId));
+        String query = createSelectQuery(List.of("*"), List.of(CLUBS_TABLE_NAME), List.of("club_id = " + clubId));
         List<Club> clubs = getUserClubsFromDB(query);
 
         if (clubs.size() == 1) {
@@ -183,9 +183,9 @@ public class DatabaseController {
                 matchweek = rs.getInt(1);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return matchweek;
         }
-        return matchweek;
+        return matchweek == 0 ? 1 : matchweek;
     }
 
 
@@ -224,6 +224,20 @@ public class DatabaseController {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+        return maxId + 1;
+    }
+
+    public int getNextUserClubId(String idName, String tableName) {
+        int maxId = 0;
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery(String.format("SELECT MAX(%s) FROM %s WHERE %s <300", idName, tableName, idName))) {
+            while (result.next()) {
+                maxId = result.getInt(1);
+            }
+        } catch (SQLException e) {
+            return maxId + 1;
         }
         return maxId + 1;
     }

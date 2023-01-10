@@ -1,9 +1,12 @@
 package com.example.views;
 
+import com.example.controller.database.DatabaseConfig;
+import com.example.controller.database.DatabaseController;
 import com.example.model.enums.Formation;
 import com.example.model.entities.Player;
 import com.example.model.enums.Position;
 import com.example.model.User;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -36,6 +39,7 @@ import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
 public class SquadView extends HorizontalLayout {
 
     private final transient User user;
+    private final transient DatabaseController dbController;
     private final Select<Formation> selectFormation = createFormationSelect();
 
     private final Dialog fullTeamDialog = new Dialog();
@@ -46,8 +50,9 @@ public class SquadView extends HorizontalLayout {
     private GridListDataView<Player> substitutesData;
 
     @Autowired
-    public SquadView(User user) {
+    public SquadView(User user, DatabaseController dbController) {
         this.user = user;
+        this.dbController = dbController;
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
         ArrayList<Player> clubPlayers = user.getSubstitutes();
@@ -60,6 +65,12 @@ public class SquadView extends HorizontalLayout {
         configureDialogs();
         var playersLayout = playerListLayout(); //Must be called before pitchLayout()
         add(pitchLayout(), playersLayout, fullTeamDialog, positionsDialog);
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        String query = "UPDATE " + DatabaseConfig.USERS_TABLE_NAME + " SET FORMATION_ID = " + user.getFormationId() + " WHERE USER_ID = " + user.getId();
+        dbController.updateDatabase(query);
     }
 
     private ArrayList<Player> getFirstSquadWithFormation(List<Player> clubPlayers) {
@@ -208,8 +219,11 @@ public class SquadView extends HorizontalLayout {
         select.setLabel("Formation");
         select.setItemLabelGenerator(Formation::getName);
         select.setItems(Formation.values());
-        select.setValue(Formation.F_442);
-        select.addValueChangeListener(selectFormationComponentValueChangeEvent -> this.replace(this.getComponentAt(0), pitchLayout()));
+        select.setValue(Formation.getFormationById(user.getFormationId()));
+        select.addValueChangeListener(selectFormationComponentValueChangeEvent -> {
+            this.replace(this.getComponentAt(0), pitchLayout());
+            user.setFormationId(selectFormationComponentValueChangeEvent.getValue().getId());
+        });
         return select;
     }
 

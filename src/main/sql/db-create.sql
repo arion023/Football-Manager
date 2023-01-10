@@ -184,14 +184,6 @@ CREATE TABLE match
     match_week          NUMBER NOT NULL
 );
 
-INSERT INTO match VALUES ( 1, 340, 350, 1, 3, 1 );
-INSERT INTO match VALUES ( 2, 340, 350, 2, 2, 2 );
-INSERT INTO match VALUES ( 3, 350, 340, 0, 0, 3 );
-INSERT INTO match VALUES ( 4, 350, 340, 1, 2, 4 );
-INSERT INTO match VALUES ( 5, 340, 350, 1, 0, 5 );
-INSERT INTO match VALUES ( 6, 339, 338, 1, 2, 6 );
-
-
 CREATE TABLE event
 (
     event_id        NUMBER NOT NULL CONSTRAINT event_pk PRIMARY KEY,
@@ -326,14 +318,6 @@ ALTER TABLE trophy ADD CONSTRAINT cards_club_fk FOREIGN KEY(club_id)
 ALTER TABLE referee ADD CONSTRAINT referee_country_fk FOREIGN KEY(country_id)
 REFERENCES country (country_id);
 
-
---MATCH
-
-ALTER TABLE match ADD CONSTRAINT match_stadium_fk FOREIGN KEY(stadium_id)
-REFERENCES stadium (stadium_id);
-
-ALTER TABLE match ADD CONSTRAINT match_referee FOREIGN KEY(referee_id)
-REFERENCES referee (referee_id);
 
 
 --EVENT
