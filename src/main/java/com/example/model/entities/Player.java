@@ -101,7 +101,7 @@ public class Player extends Person {
     }
 
 
-    private static Position getPositionEnum(String position) {
+    public static Position getPositionEnum(String position) {
         var positions = Position.values();//TODO chyba powinna być wybrana jakoś ta pozycja na podstawie stringa a nie losowo
         int index = new Random().nextInt(positions.length);
         return positions[index];

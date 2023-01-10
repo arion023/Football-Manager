@@ -1,5 +1,6 @@
 package com.example.controller.database;
 
+import com.example.model.MarketOffer;
 import com.example.model.entities.Club;
 import com.example.model.entities.Player;
 import com.example.model.entities.Statistics;
@@ -78,6 +79,18 @@ public class DatabaseController {
             throw new RuntimeException(e);
         }
     }
+
+    public List<MarketOffer> getOffersFromDB(String query) {
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(query)) {
+            return MarketOffer.resultSetToType(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
     //UPDATE; INSERT; DROP; CREATE; DELETE etc
     public void updateDatabase(String command) {
