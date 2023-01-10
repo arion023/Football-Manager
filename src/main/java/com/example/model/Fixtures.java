@@ -2,7 +2,6 @@ package com.example.model;
 
 import com.example.controller.database.DatabaseController;
 import com.example.model.entities.Club;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ public class Fixtures {
     private static final int CLUBS_NO = 18;
 
     private final User user;
-    private final DatabaseController databaseController;
+    private final DatabaseController dbController;
     private final Random random = new Random();
     @Getter
     @Setter
@@ -30,16 +29,16 @@ public class Fixtures {
     private boolean dataAlreadySet = false;
 
     @Autowired
-    public Fixtures(User user, DatabaseController databaseController) {
+    public Fixtures(User user, DatabaseController dbController) {
         this.user = user;
-        this.databaseController = databaseController;
+        this.dbController = dbController;
     }
 
     public void prepareFixturesData() {
         if (!dataAlreadySet) {
 
-            leagueClubs = Club.getAllClubs(databaseController);
-            leagueClubs.add(Club.getClubById(user.getClubID(), databaseController));
+            leagueClubs = dbController.getAllClubs();
+            leagueClubs.add(dbController.getClubById(user.getClubID()));
 
             matchweekToFixtures = new HashMap<>();
             drawMatchweeks(leagueClubs);

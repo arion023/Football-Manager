@@ -37,7 +37,7 @@ public class User {
     @Autowired
     public User(DatabaseController dbController) {
         this.dbController = dbController;
-        this.offers = MarketOffer.getOffers(this.dbController);
+        this.offers = MarketOffer.getOffers(dbController);
         this.userOffers = new ArrayList<>();
         //TODO
         //String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.PLAYERS_TABLE_NAME), List.of("club_id = " + clubId));
@@ -88,7 +88,7 @@ public class User {
         }
     }
 
-    public static boolean addNewUserToDB(String mail, String nickname, String clubName, DatabaseController dbController) {
+    public boolean addNewUserToDB(String mail, String nickname, String clubName) {
         //TODO AUTOGENERETING ID AS TRIGGER IN DB (ACTUALLY HARDCODED)
         int userId = dbController.getNextId("USER_ID", "USERS");
         int clubId = dbController.getNextId("CLUB_ID", "USER_CLUB");
@@ -99,7 +99,7 @@ public class User {
         return true;
     }
 
-    public static boolean setUserBasicAndClubFromDB(User usr, String mail) {
+    public boolean setUserBasicAndClubFromDB(User usr, String mail) {
         //TODO MOVE ADDING CLUB TO OTHER FUN
         String query = "SELECT * FROM users INNER JOIN USER_CLUB USING (club_id) WHERE mail = ?";
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);

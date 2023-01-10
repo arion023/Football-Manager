@@ -74,7 +74,7 @@ public class GameplayView extends VerticalLayout {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         dialog.setHeaderTitle("Match finished");
-//        dialog.add(dialogLayout()); //TODO dialog nie wyświetla poprawnej wartości
+        dialog.add(dialogLayout()); //TODO dialog nie wyświetla poprawnej wartości
         dialog.setCloseOnOutsideClick(false);
         dialog.setCloseOnEsc(false);
 
@@ -102,9 +102,9 @@ public class GameplayView extends VerticalLayout {
 
         Span teams = new Span(user.getClub().getName() + " - " + user.getNextOpponentClubName());
         teams.getStyle().set(CSS_FONT_SIZE, "1.2rem");
-        Span result = new Span(homeTeamGoals + " - " + awayTeamGoals);
-        result.getStyle().set(CSS_FONT_SIZE, "1.5rem");
-        dialogLayout.add(clubLogos, teams, result);
+//        Span result = new Span(homeTeamGoals + " - " + awayTeamGoals);
+//        result.getStyle().set(CSS_FONT_SIZE, "1.5rem");
+        dialogLayout.add(clubLogos, teams);
 
         return dialogLayout;
     }
@@ -134,7 +134,7 @@ public class GameplayView extends VerticalLayout {
 
     private void simulateOtherMatches() {
         var allMatches = fixtures.getMatchweekToFixtures().get(fixtures.getCurrentMatchweek());
-        int matchId =  dbController.getNextId("MATCH_ID", "MATCH");
+        int matchId = dbController.getNextId("MATCH_ID", "MATCH");
         for (var match : allMatches.entrySet()) {
             if (match.getKey() != user.getClub().getId() && match.getValue() != user.getClub().getId()) {
 
@@ -256,7 +256,7 @@ public class GameplayView extends VerticalLayout {
         Grid<Player> awayTeamGrid = createPlayersGrid();
 
         players = homeTeamGrid.setItems(user.getFirstSquad());
-        awayTeamGrid.setItems(Player.getAllPlayersFromClubWithStats(user.getNextOpponentClubId(), dbController).subList(0, 11));//TODO wybrać dobre pozycje
+        awayTeamGrid.setItems(dbController.getAllPlayersFromClubWithStats(user.getNextOpponentClubId()).subList(0, 11));//TODO wybrać dobre pozycje
 
         homeTeamGrid.setMaxWidth(500, Unit.PIXELS);
         awayTeamGrid.setMaxWidth(500, Unit.PIXELS);
@@ -382,11 +382,6 @@ public class GameplayView extends VerticalLayout {
 
     private void endGameplay(UI ui, GameplayView gameplayView) {
         executorService.shutdown();
-        gameplayView.dialog.add(gameplayView.dialogLayout());
-        ui.access(() -> {
-                    gameplayView.replace(gameplayView.getComponentAt(4), gameplayView.dialog);
-                    gameplayView.dialog.open();
-                }
-        );
+        ui.access(gameplayView.dialog::open);
     }
 }

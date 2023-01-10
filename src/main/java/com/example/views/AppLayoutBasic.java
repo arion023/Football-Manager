@@ -1,7 +1,6 @@
 package com.example.views;
 
 import com.example.controller.database.DatabaseController;
-import com.example.model.entities.Player;
 import com.example.model.User;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -83,7 +82,7 @@ public class AppLayoutBasic extends AppLayout {
 
             Span loggedUser;
 
-            if (!User.setUserBasicAndClubFromDB(this.user, usrMail)) {
+            if (!user.setUserBasicAndClubFromDB(this.user, usrMail)) {
                 user.setMail(usrMail);
                 this.configAddNewUserDialog();
                 this.addNewUserDialog.open();
@@ -116,7 +115,7 @@ public class AppLayoutBasic extends AppLayout {
 
     private void addNewUser(String mail, String nickname, String clubName) {
         //TODO
-        User.addNewUserToDB(mail, nickname, clubName, dbController);
+        user.addNewUserToDB(mail, nickname, clubName);
         this.addNewUserDialog.close();
     }
 
@@ -138,6 +137,6 @@ public class AppLayoutBasic extends AppLayout {
         //user.setPlayers()
         //user.setOffers()
         //user.setPosition()
-        user.setSubstitutes(new ArrayList<>(Player.getAllPlayersFromClubWithStats(user.getClubID(), dbController))); //347 - Lech Poznań
+        user.setSubstitutes(new ArrayList<>(dbController.getAllPlayersFromClubWithStats(user.getClubID()))); //347 - Lech Poznań
     }
 }

@@ -18,7 +18,8 @@ public class MarketOffer {
     public static final int OFFERS_LIMIT = 40;
     private Player player;
     private int price;
-    public MarketOffer(Player player, int price){
+
+    public MarketOffer(Player player, int price) {
         this.player = player;
         this.price = price;
 
@@ -27,11 +28,11 @@ public class MarketOffer {
     public static List<MarketOffer> getOffers(DatabaseController dbController) {
         //TODO DO MORE REALISTIC  MAYBE??? (DONT ADD PLAYERS FROM USER CLUB)
         List<MarketOffer> offers = new ArrayList<>();
-        List<Player> allPlayers = Player.getAllPlayersFromDB(dbController);
+        List<Player> allPlayers = dbController.getAllPlayersFromDB();
         Collections.shuffle(allPlayers);
 
         List<Player> playersForSell = allPlayers.subList(0, MarketOffer.OFFERS_LIMIT);
-        for (Player player : playersForSell ){
+        for (Player player : playersForSell) {
             offers.add(new MarketOffer(player, player.estimatePrice()));
         }
 
@@ -39,36 +40,37 @@ public class MarketOffer {
     }
 
 
-    public int getPrice(){
+    public int getPrice() {
         return this.price;
     }
-    public String getName(){
+
+    public String getName() {
         return player.getName();
     }
 
-    public String getSurname(){
+    public String getSurname() {
         return player.getSurname();
     }
 
-    public String getNationality(){
+    public String getNationality() {
         if (player.getCountryId() != null)
             return player.getCountryId();
         else return "EMPTY";
     }
 
-    public String getPosition(){
+    public String getPosition() {
         if (player.getPosition() != null)
             return player.getPosition().getPositionName();
         else return "EMPTY";
     }
 
-    public int getOverall(){
+    public int getOverall() {
         if (player.getStatistics() != null)
             return player.getStatistics().getOverall();
         else return 0;
     }
 
-    public int getSellerId(){
+    public int getSellerId() {
         return player.getCurrentClubId();
     }
 

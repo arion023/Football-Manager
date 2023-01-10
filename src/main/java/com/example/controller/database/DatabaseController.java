@@ -47,19 +47,75 @@ public class DatabaseController {
         return query;
     }
 
+    public List<Player> getAllPlayersFromDB() {
+        String query = "SELECT * FROM " + DatabaseConfig.PLAYERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id)";
+        try {
+            return getPlayersFromDB(query);
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
+    }
 
-    public List<Player> getPlayersFromDB(String query) throws Exception {
+    public List<Player> getAllPlayersFromClubWithStats(int clubId) {
+        String query = "SELECT * FROM " + DatabaseConfig.PLAYERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id) WHERE club_id = " + clubId;
+        try {
+            return getPlayersFromDB(query);
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<Player> getPlayersByClub(int clubId) {
+        String query = createSelectQuery(List.of("*"), List.of(DatabaseConfig.PLAYERS_TABLE_NAME), List.of("club_id = " + clubId));
+        try {
+            return getPlayersFromDB(query);
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
+    }
+
+    private List<Player> getPlayersFromDB(String query) {
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {
-            return Player.resultSetToType(rs);
+            return Player.resultSetToPlayers(rs);
         } catch (SQLException e) {
             throw new RuntimeException(e); //TODO new custom exception
         }
     }
 
 
-    public List<Club> getClubsFromDB(String query) {
+    public  List<Club> getAllClubs() {
+        String query = createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME));
+        List<Club> clubs = getClubsFromDB(query);
+        String getPointsQuery = "SELECT GET_POINTS(%d) FROM DUAL";
+        String getScoredGoalsQuery = "SELECT GET_SCORED_GOALS(%d) FROM DUAL";
+        String getConcededGoalsQuery = "SELECT GET_CONCEDED_GOALS(%d) FROM DUAL";
+        for (var club : clubs) {
+            club.setCurrentPoints(callFunction(String.format(getPointsQuery, club.getId())));
+            club.setGoalsScored(callFunction(String.format(getScoredGoalsQuery, club.getId())));
+            club.setGoalsConceded(callFunction(String.format(getConcededGoalsQuery, club.getId())));
+            //TODO load matchweek from db
+            //TODO wczytać dane klubu gracza
+        }
+
+        return clubs;
+    }
+
+    public  Club getClubById(int clubId) {
+        String query = createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME), List.of("club_id = " + clubId));
+        List<Club> clubs = getClubsFromDB(query);
+        if (clubs.size() == 1)
+            return clubs.get(0);
+        else return null;
+    }
+
+    public  List<Club> getClubsByLeague(int leagueId) {
+        String query = createSelectQuery(List.of("*"), List.of(DatabaseConfig.CLUBS_TABLE_NAME), List.of("league_id = " + leagueId));
+        return getClubsFromDB(query);
+    }
+
+    private List<Club> getClubsFromDB(String query) {
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {
@@ -69,7 +125,12 @@ public class DatabaseController {
         }
     }
 
-    public Statistics getStatisticsFromDB(String query) {
+    public Statistics getStatisticsById(int playerId) {
+        String query = "SELECT " + DatabaseConfig.STATISTICS_TABLE_NAME +" WHERE player_id = " + playerId;
+        return getStatisticsFromDB(query);
+    }
+
+    private Statistics getStatisticsFromDB(String query) {
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {

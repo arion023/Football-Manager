@@ -1,7 +1,5 @@
 package com.example.model.entities;
 
-import com.example.controller.database.DatabaseConfig;
-import com.example.controller.database.DatabaseController;
 import com.example.model.enums.Position;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,8 +26,6 @@ public class Player extends Person {
         this.position = position;
     }
 
-
-
     public String getFullName() {
         return super.getName() + " " + super.getSurname();
     }
@@ -42,35 +38,7 @@ public class Player extends Person {
         } else return 0;
     }
 
-    public static List<Player> getAllPlayersFromDB(DatabaseController dbController) {
-        //String query = dbController.createSelectQuery(List.of(DatabaseConfig.PLAYERS_TABLE_NAME));
-        String query = "SELECT * FROM " + DatabaseConfig.PLAYERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id)";
-        try {
-            return dbController.getPlayersFromDB(query);
-        } catch (Exception e) {
-            return Collections.emptyList(); //TODO
-        }
-    }
-
-    public static List<Player> getAllPlayersFromClubWithStats(int clubId, DatabaseController dbController) {
-        String query = "SELECT * FROM " + DatabaseConfig.PLAYERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id) WHERE club_id = " + clubId;
-        try {
-            return dbController.getPlayersFromDB(query);
-        } catch (Exception e) {
-            return Collections.emptyList(); //TODO
-        }
-    }
-
-    public static List<Player> getPlayersByClub(int clubId, DatabaseController dbController) {
-        String query = dbController.createSelectQuery(List.of("*"), List.of(DatabaseConfig.PLAYERS_TABLE_NAME), List.of("club_id = " + clubId));
-        try {
-            return dbController.getPlayersFromDB(query);
-        } catch (Exception e) {
-            return Collections.emptyList(); //TODO
-        }
-    }
-
-    public static ArrayList<Player> resultSetToType(ResultSet result) {
+    public static List<Player> resultSetToPlayers(ResultSet result) {
         ArrayList<Player> players = new ArrayList<>();
         try {
             while (result.next()) {

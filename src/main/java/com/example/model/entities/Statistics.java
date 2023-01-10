@@ -23,11 +23,6 @@ public class Statistics {
     private int physically;
 
 
-    public static Statistics getStatisticsById(int playerId, DatabaseController dbController) {
-        String query = "SELECT " + DatabaseConfig.STATISTICS_TABLE_NAME +" WHERE player_id = " + playerId;
-        return dbController.getStatisticsFromDB(query);
-    }
-
     public static Statistics resultSetToType(ResultSet rs) {
         try {
                 var overall = rs.getInt("overall");
