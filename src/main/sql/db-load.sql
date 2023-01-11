@@ -27,8 +27,12 @@ ALTER SESSION SET nls_date_format='yyyy-mm-dd';
 INSERT INTO users VALUES(0, 'root@gmail.com', 'root', 50000, 4248, 0);
 INSERT INTO users VALUES (1, 'masikow200@gmail.com', 'martinez', 1000000, 4248, 0);
 INSERT INTO users VALUES (2, 'xarigamesx@gmail.com', 'arigames', 200, 4248, 0);
-
-INSERT INTO user_club VALUES (4248, 'Legia WArszawa', 'PL', 106, NULL);
+--SPECJALNIE 4242 zeby wyswietallo jakis zawdonikow dopoki nie bedzie odpowiednich triggerow albo metod?
+INSERT INTO user_club VALUES (4248, 'Legia Warszawa', 'PL', 106, NULL);
+INSERT INTO offer VALUES (1, 1, 158614, 1000);
+INSERT INTO offer VALUES (2, 1, 323510, 1000);
+INSERT INTO offer VALUES (3, 1, 207212, 1000);
+INSERT INTO offer VALUES (4, 1, 261674, 1000);
 
 
 commit;

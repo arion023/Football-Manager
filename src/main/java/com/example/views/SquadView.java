@@ -1,11 +1,17 @@
 package com.example.views;
 
+import com.example.controller.database.DatabaseConfig;
+import com.example.controller.database.DatabaseController;
 import com.example.model.enums.Formation;
 import com.example.model.entities.Player;
 import com.example.model.enums.Position;
 import com.example.model.User;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
@@ -33,23 +39,41 @@ import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
 public class SquadView extends HorizontalLayout {
 
     private final transient User user;
-    private final Select<Formation> selectFormation = createFormationSelect();
+    private final transient DatabaseController dbController;
+    private final Select<Formation> selectFormation;
+
+    private final Dialog fullTeamDialog = new Dialog();
+
+    private final Dialog positionsDialog = new Dialog();
 
     private GridListDataView<Player> firstSquadData;
     private GridListDataView<Player> substitutesData;
 
     @Autowired
-    public SquadView(User user) {
+    public SquadView(User user, DatabaseController dbController) {
         this.user = user;
+        this.dbController = dbController;
+
+        selectFormation = createFormationSelect();
+
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.CENTER);
         ArrayList<Player> clubPlayers = user.getSubstitutes();
-        if (user.getFirstSquad().isEmpty()) {
+
+        if (user.getFirstSquad().isEmpty()) { //TODO load at app start
             user.setFirstSquad(getFirstSquadWithFormation(clubPlayers));
             user.getSubstitutes().removeAll(user.getFirstSquad());
         }
+
+        configureDialogs();
         var playersLayout = playerListLayout(); //Must be called before pitchLayout()
-        add(pitchLayout(), playersLayout);
+        add(pitchLayout(), playersLayout, fullTeamDialog, positionsDialog, statisticsDialog(new Player()));
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        String query = "UPDATE " + DatabaseConfig.USERS_TABLE_NAME + " SET FORMATION_ID = " + user.getFormationId() + " WHERE USER_ID = " + user.getId();
+        dbController.updateDatabase(query);
     }
 
     private ArrayList<Player> getFirstSquadWithFormation(List<Player> clubPlayers) {
@@ -62,6 +86,42 @@ public class SquadView extends HorizontalLayout {
         firstSquadList.addAll(getPlayersFromPositions(clubPlayers, Position.getBackPositions()).subList(0, formation.getDefendersNumber()));
 
         return firstSquadList;
+    }
+
+    private void configureDialogs() {
+        Button fullTeamButton = new Button("Close");
+        fullTeamButton.addClickListener(event -> fullTeamDialog.close());
+        fullTeamDialog.getFooter().add(fullTeamButton);
+        fullTeamDialog.setHeaderTitle("First squad is full!");
+        fullTeamDialog.add(new Span("You already have 11 players in your first squad."));
+
+        Button positionsButton = new Button("Close");
+        positionsButton.addClickListener(event -> positionsDialog.close());
+        positionsDialog.getFooter().add(positionsButton);
+        positionsDialog.setHeaderTitle("Position line is full!");
+        positionsDialog.add(new Span("You already have enough players for this position line. Try to change formation."));
+    }
+
+    private Dialog statisticsDialog(Player player) {
+        Dialog statisticsDialog = new Dialog();
+        Button statisticsButton = new Button("Close");
+        statisticsButton.addClickListener(event -> statisticsDialog.close());
+        statisticsDialog.getFooter().add(statisticsButton);
+        statisticsDialog.setHeaderTitle(player.getName() + " " + player.getSurname() + "'s statistics");
+
+        VerticalLayout statistics = new VerticalLayout();
+        statistics.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+
+        statistics.add(new Span(String.format("Overall:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getOverall()))));
+        statistics.add(new Span(String.format("Pace:       %s", (player.getStatistics() == null ? "" : player.getStatistics().getPace()))));
+        statistics.add(new Span(String.format("Shooting:   %s", (player.getStatistics() == null ? "" : player.getStatistics().getShooting()))));
+        statistics.add(new Span(String.format("Passing:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getPassing()))));
+        statistics.add(new Span(String.format("Dribbling:  %s", (player.getStatistics() == null ? "" : player.getStatistics().getDribbling()))));
+        statistics.add(new Span(String.format("Defence:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getDefence()))));
+        statistics.add(new Span(String.format("Physically: %s", (player.getStatistics() == null ? "" : player.getStatistics().getPhysically()))));
+
+        statisticsDialog.add(statistics);
+        return statisticsDialog;
     }
 
     private VerticalLayout pitchLayout() {
@@ -94,7 +154,8 @@ public class SquadView extends HorizontalLayout {
     private VerticalLayout getPlayerImageWithSurname(Player player) {
         VerticalLayout vL = new VerticalLayout();
         vL.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        Image shirt = new Image("images/shirt.png", "shirt");//TODO dać bramkarzowi inną koszulkę
+        String shirtImageName = player.getPosition().equals(Position.GK) ? "gk_shirt.png" : "shirt.png";
+        Image shirt = new Image("images/" + shirtImageName, "shirt");
 
         shirt.setHeight(100, Unit.PIXELS);
         Span surname = new Span(player.getSurname());
@@ -133,27 +194,28 @@ public class SquadView extends HorizontalLayout {
         firstSquadData = firstSquadGrid.setItems(user.getFirstSquad());
         substitutesData = substitutesGrid.setItems(user.getSubstitutes());
 
-        firstSquadGrid.addColumn(new NativeButtonRenderer<>("Remove player",
-                player -> {
-                    firstSquadData.removeItem(player);
-                    substitutesData.addItem(player);
-                    this.replace(this.getComponentAt(0), pitchLayout());
-                }));
+        firstSquadGrid.addColumn(new NativeButtonRenderer<>("Remove",
+                        player -> {
+                            firstSquadData.removeItem(player);
+                            substitutesData.addItem(player);
+                            this.replace(this.getComponentAt(0), pitchLayout());
+                        }))
+                .setAutoWidth(true);
 
-        substitutesGrid.addColumn(new NativeButtonRenderer<>("Add player",
-                player -> {
-                    if (user.getFirstSquad().size() == 11) {
-                        //TODO komunikat
-                    } else if (checkPositions(player)) {
-                        //TODO komunikat
-                    } else {
-                        substitutesData.removeItem(player);
-                        firstSquadData.addItem(player);
-                        this.replace(this.getComponentAt(0), pitchLayout());
-                    }
-                }));
+        substitutesGrid.addColumn(new NativeButtonRenderer<>("Add",
+                        player -> {
+                            if (user.getFirstSquad().size() == 11) {
+                                fullTeamDialog.open();
+                            } else if (checkPositions(player)) {
+                                positionsDialog.open();
+                            } else {
+                                substitutesData.removeItem(player);
+                                firstSquadData.addItem(player);
+                                this.replace(this.getComponentAt(0), pitchLayout());
+                            }
+                        }))
+                .setAutoWidth(true);
 
-//        vL.setFlexGrow(1, firstSquadGrid); TODO rozciągnąć grid pierwszego składu
         vL.add(selectFormation, firstSquadGrid, substitutesGrid);
         return vL;
     }
@@ -166,14 +228,10 @@ public class SquadView extends HorizontalLayout {
         var midfieldersInSquad = countPlayersInPositions(Position.getMidfieldPositions());
         var forwardsInSquad = countPlayersInPositions(Position.getForwardPositions());
 
-        if ((Position.GK.equals(position) && goalkeeperInSquad == 1)
+        return (Position.GK.equals(position) && goalkeeperInSquad == 1)
                 || (Position.getBackPositions().contains(position) && backsInSquad == formation.getDefendersNumber())
                 || (Position.getMidfieldPositions().contains(position) && midfieldersInSquad == formation.getMidfieldersNumber())
-                || (Position.getForwardPositions().contains(position) && forwardsInSquad == formation.getForwardsNumber())) {
-            return true;
-        }
-
-        return false;
+                || (Position.getForwardPositions().contains(position) && forwardsInSquad == formation.getForwardsNumber());
     }
 
     private long countPlayersInPositions(List<Position> positions) {
@@ -187,8 +245,11 @@ public class SquadView extends HorizontalLayout {
         select.setLabel("Formation");
         select.setItemLabelGenerator(Formation::getName);
         select.setItems(Formation.values());
-        select.setValue(Formation.F_442);
-        select.addValueChangeListener(selectFormationComponentValueChangeEvent -> this.replace(this.getComponentAt(0), pitchLayout()));
+        select.setValue(Formation.getFormationById(user.getFormationId()));
+        select.addValueChangeListener(selectFormationComponentValueChangeEvent -> {
+            this.replace(this.getComponentAt(0), pitchLayout());
+            user.setFormationId(selectFormationComponentValueChangeEvent.getValue().getId());
+        });
         return select;
     }
 
@@ -206,7 +267,7 @@ public class SquadView extends HorizontalLayout {
                 .setAutoWidth(true)
                 .setFlexGrow(0);
         grid.addColumn(Player::getPosition)
-                .setHeader("Pozycja")
+                .setHeader("Pos")
                 .setAutoWidth(true)
                 .setFlexGrow(0)
                 .setSortable(true);
@@ -214,30 +275,14 @@ public class SquadView extends HorizontalLayout {
                 .setHeader("OV")
                 .setAutoWidth(true)
                 .setSortable(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPace())
-                .setHeader("PAC")
-                .setAutoWidth(true)
-                .setSortable(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getShooting())
-                .setHeader("SHO")
-                .setAutoWidth(true)
-                .setSortable(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPassing())
-                .setHeader("PAS")
-                .setAutoWidth(true)
-                .setSortable(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getDribbling())
-                .setHeader("DRI")
-                .setAutoWidth(true)
-                .setSortable(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getDefence())
-                .setHeader("DEF")
-                .setAutoWidth(true)
-                .setSortable(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPhysically())
-                .setHeader("PHY")
-                .setAutoWidth(true)
-                .setSortable(true);
+        grid.addColumn(new NativeButtonRenderer<>("Stats",
+                        player -> {
+                            var dialog = statisticsDialog(player);
+                            this.replace(this.getComponentAt(4), dialog);
+                            dialog.open();
+                        }))
+                .setAutoWidth(true);
+        grid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         return grid;
     }
 }

@@ -1,14 +1,11 @@
 package com.example.model.entities;
 
-import com.example.controller.database.DatabaseConfig;
-import com.example.controller.database.DatabaseController;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 @Getter
 @Setter
@@ -23,11 +20,6 @@ public class Statistics {
     private int physically;
 
 
-    public static Statistics getStatisticsById(int playerId, DatabaseController dbController) {
-        String query = "SELECT " + DatabaseConfig.STATISTICS_TABLE_NAME +" WHERE player_id = " + playerId;
-        return dbController.getStatisticsFromDB(query);
-    }
-
     public static Statistics resultSetToType(ResultSet rs) {
         try {
                 var overall = rs.getInt("overall");
@@ -40,7 +32,7 @@ public class Statistics {
                 return new Statistics(overall, pace, shooting, passing, dribbling, defence, physically);
 
         } catch (SQLException e) {
-            throw new RuntimeException(e); //TODO Dedicated exception
+            throw new RuntimeException(e);
         }
     }
 }

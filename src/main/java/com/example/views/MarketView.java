@@ -1,11 +1,9 @@
 package com.example.views;
 
-import com.example.controller.database.DatabaseController;
 import com.example.model.MarketOffer;
 import com.example.model.entities.Player;
 import com.example.model.User;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -20,7 +18,6 @@ import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.data.selection.SingleSelect;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,19 +26,17 @@ import javax.annotation.security.PermitAll;
 
 @Route(value = "/market", layout = AppLayoutBasic.class)
 @PageTitle("Market")
-@PreserveOnRefresh
 @PermitAll
 public class MarketView extends HorizontalLayout {
     private final transient User user;
-    private final transient DatabaseController dbController;
-    private Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
-    private FormLayout sellForm = new FormLayout();
+    private final Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
+    private final FormLayout sellForm = new FormLayout();
     ComboBox<Player> playerField;
     NumberField price;
-    private HorizontalLayout sellContent = new HorizontalLayout();
+    private final HorizontalLayout sellContent = new HorizontalLayout();
     private VerticalLayout operationSpace;
-    private VerticalLayout buttonSpace = new VerticalLayout();
-    private VerticalLayout sideBar = new VerticalLayout();
+    private final VerticalLayout buttonSpace = new VerticalLayout();
+    private final VerticalLayout sideBar = new VerticalLayout();
     private HorizontalLayout operationBar;
     private Button operationButton;
     private Tabs operationTabs;
@@ -50,11 +45,10 @@ public class MarketView extends HorizontalLayout {
     private Button budgetValue;
 
     @Autowired
-    public MarketView(User user, DatabaseController dbController){
+    public MarketView(User user){
         addClassName("Market");
         setSizeFull();
 
-        this.dbController = dbController;
         this.user = user;
 
         configureSideBar();
@@ -200,7 +194,7 @@ public class MarketView extends HorizontalLayout {
     private void sellOperation() {
         //setOperation(this.sellTab);
         if (!(playerField.isEmpty() || price.isEmpty())) {
-            user.sellPlayer(this.playerField.getValue());
+            user.sellPlayer(this.playerField.getValue(), price.getValue().intValue() );
             playerField.clear();
             price.clear();
             refreshData();
