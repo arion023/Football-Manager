@@ -66,6 +66,7 @@ public class AppLayoutBasic extends AppLayout {
         title.getStyle().set(CSS_FONT_SIZE, "var(--lumo-font-size-l)").set("margin", "0");
 
         if (authContext.isAuthenticated()) {
+            user.clear();
             Button logout = new Button("Logout", click -> this.authContext.logout());
             var userOptional = authContext.getAuthenticatedUser(DefaultOidcUser.class);
             String userFullName = userOptional.map(DefaultOidcUser::getFullName).orElse("User");
@@ -109,8 +110,8 @@ public class AppLayoutBasic extends AppLayout {
     private void addNewUser(String mail, String nickname, String clubName) {
         //TODO
         user.addNewUserToDB(mail, nickname, clubName);
+        user.setUserBasicAndClubFromDB(this.user, mail);
         fulfillUserDataFromDB();
-
         this.addNewUserDialog.close();
     }
 

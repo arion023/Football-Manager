@@ -24,15 +24,15 @@
 ALTER SESSION SET nls_date_format='yyyy-mm-dd';
 
 /* USERS */
+--TODO DELETE THIS
 INSERT INTO users VALUES(0, 'root@gmail.com', 'root', 50000, 4248, 0);
 INSERT INTO users VALUES (1, 'masikow200@gmail.com', 'martinez', 1000000, 4248, 0);
 INSERT INTO users VALUES (2, 'xarigamesx@gmail.com', 'arigames', 200, 4248, 0);
---SPECJALNIE 4242 zeby wyswietallo jakis zawdonikow dopoki nie bedzie odpowiednich triggerow albo metod?
-INSERT INTO user_club VALUES (4248, 'Legia Warszawa', 'PL', 106, NULL);
-INSERT INTO offer VALUES (1, 1, 158614, 1000);
-INSERT INTO offer VALUES (2, 1, 323510, 1000);
-INSERT INTO offer VALUES (3, 1, 207212, 1000);
-INSERT INTO offer VALUES (4, 1, 261674, 1000);
+INSERT INTO club VALUES (4248, 'Legia Warszawa', 'PL', 106, NULL);
+INSERT INTO offer VALUES (DEFAULT, 1, 158614, 1000);
+INSERT INTO offer VALUES (DEFAULT, 1, 323510, 1000);
+INSERT INTO offer VALUES (DEFAULT, 1, 207212, 1000);
+INSERT INTO offer VALUES (DEFAULT, 1, 261674, 1000);
 
 
 commit;
@@ -383,24 +383,24 @@ commit;
 
 -- LEAGUE: 106 EKSTRAKLASA
 
-INSERT INTO club VALUES ( 336, 'Jagiellonia', 'PL', 464000, 106, 1249 );
-INSERT INTO club VALUES ( 337, 'Slask Wroclaw', 'PL', 198000, 106, 18628 );
-INSERT INTO club VALUES ( 338, 'Wisla Krakow', 'PL', 747000, 106, 1258 );
-INSERT INTO club VALUES ( 339, 'Legia Warszawa', 'PL', 387000, 106, 1253 );
-INSERT INTO club VALUES ( 340, 'Gornik Zabrze', 'PL', 928000, 106, 18625 );
-INSERT INTO club VALUES ( 341, 'Wisla Plock', 'PL', 863000, 106, 1259 );
-INSERT INTO club VALUES ( 343, 'Lechia Gdansk', 'PL', 826000, 106, 18627 );
-INSERT INTO club VALUES ( 345, 'Zaglebie Lubin', 'PL', 651000, 106, 1260 );
-INSERT INTO club VALUES ( 347, 'Lech Poznan', 'PL', 411000, 106, 18626 );
-INSERT INTO club VALUES ( 348, 'Pogon Szczecin', 'PL', 739000, 106, 1256 );
-INSERT INTO club VALUES ( 349, 'Piast Gliwice', 'PL', 976000, 106, 1255 );
-INSERT INTO club VALUES ( 350, 'Cracovia Krakow', 'PL', 681000, 106, 1247 );
-INSERT INTO club VALUES ( 3487, 'Nieciecza', 'PL', 91000, 106, 18632 );
-INSERT INTO club VALUES ( 3491, 'Rakow Czestochowa', 'PL', 589000, 106, 18633 );
-INSERT INTO club VALUES ( 3493, 'Stal Mielec', 'PL', 936000, 106, 18634 );
-INSERT INTO club VALUES ( 3496, 'Warta Poznan', 'PL', 674000, 106, 10506 );
-INSERT INTO club VALUES ( 4248, 'Radomiak Radom', 'PL', 519000, 106, 18635 );
-INSERT INTO club VALUES ( 6941, 'Gornik Leczna', 'PL', 669000, 106, 5059 );
+INSERT INTO club VALUES ( 336, 'Jagiellonia', 'PL', 106, 1249 );
+INSERT INTO club VALUES ( 337, 'Slask Wroclaw', 'PL', 106, 18628 );
+INSERT INTO club VALUES ( 338, 'Wisla Krakow', 'PL', 106, 1258 );
+INSERT INTO club VALUES ( 339, 'Legia Warszawa', 'PL', 106, 1253 );
+INSERT INTO club VALUES ( 340, 'Gornik Zabrze', 'PL', 106, 18625 );
+INSERT INTO club VALUES ( 341, 'Wisla Plock', 'PL', 106, 1259 );
+INSERT INTO club VALUES ( 343, 'Lechia Gdansk', 'PL', 106, 18627 );
+INSERT INTO club VALUES ( 345, 'Zaglebie Lubin', 'PL', 106, 1260 );
+INSERT INTO club VALUES ( 347, 'Lech Poznan', 'PL', 106, 18626 );
+INSERT INTO club VALUES ( 348, 'Pogon Szczecin', 'PL', 106, 1256 );
+INSERT INTO club VALUES ( 349, 'Piast Gliwice', 'PL', 106, 1255 );
+INSERT INTO club VALUES ( 350, 'Cracovia Krakow', 'PL', 106, 1247 );
+INSERT INTO club VALUES ( 3487, 'Nieciecza', 'PL', 106, 18632 );
+INSERT INTO club VALUES ( 3491, 'Rakow Czestochowa', 'PL', 106, 18633 );
+INSERT INTO club VALUES ( 3493, 'Stal Mielec', 'PL', 106, 18634 );
+INSERT INTO club VALUES ( 3496, 'Warta Poznan', 'PL', 106, 10506 );
+INSERT INTO club VALUES ( 4248, 'Radomiak Radom', 'PL', 106, 18635 );
+INSERT INTO club VALUES ( 6941, 'Gornik Leczna', 'PL', 106, 5059 );
 
 --NO ERRORS
 
@@ -2106,5 +2106,16 @@ INSERT INTO player_stats VALUES (153623, 59, 38, 42, 67, 40, 87, 84 );
 INSERT INTO player VALUES ( 153623, 'Jordan Alan', 'Courtney-Perkins', '2002-11-06', 3496, 2, 'CZ' );
 INSERT INTO player_stats VALUES (199185, 71, 62, 72, 57, 70, 84, 83 );
 INSERT INTO player VALUES ( 199185, 'Witan', 'Sulaeman', '2001-10-08', 343, 3, 'ID' );
+
+-- NULL CLUBS
+INSERT INTO player_stats VALUES ( 1000, 71, 62, 72, 57, 70, 84, 83 );
+INSERT INTO player VALUES ( 1000, 'Witan', 'Sulaeman', '2001-10-08', 343, 3, 'ID' );
+INSERT INTO player_stats VALUES ( 1000, 71, 62, 72, 57, 70, 84, 83 );
+INSERT INTO player VALUES ( 1000, 'Witan', 'Sulaeman', '2001-10-08', 343, 3, 'ID' );
+INSERT INTO player_stats VALUES ( 1000, 71, 62, 72, 57, 70, 84, 83 );
+INSERT INTO player VALUES ( 1000, 'Witan', 'Sulaeman', '2001-10-08', 343, 3, 'ID' );
+INSERT INTO player_stats VALUES ( 1000, 71, 62, 72, 57, 70, 84, 83 );
+INSERT INTO player VALUES ( 1000, 'Witan', 'Sulaeman', '2001-10-08', 343, 3, 'ID' );
+
 
 commit;
