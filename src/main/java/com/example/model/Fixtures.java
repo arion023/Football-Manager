@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.example.controller.database.DatabaseController;
 import com.example.model.entities.Club;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ public class Fixtures {
     private static final int CLUBS_NO = 18;
 
     private final User user;
+    private final DatabaseController dbController;
     private final Random random = new Random();
     @Getter
     @Setter
@@ -23,15 +25,25 @@ public class Fixtures {
     private Map<Integer, Map<Integer, Integer>> matchweekToFixtures;
 
     @Getter
-    private final List<Club> leagueClubs = Club.getAllClubsFromDB();
+    private ArrayList<Club> leagueClubs;
+    private boolean dataAlreadySet = false;
 
     @Autowired
-    public Fixtures(User user) {
+    public Fixtures(User user, DatabaseController dbController) {
         this.user = user;
+        this.dbController = dbController;
+        this.leagueClubs = new ArrayList<>(dbController.getAllClubs());
+    }
 
-        matchweekToFixtures = new HashMap<>();
-        drawMatchweeks(leagueClubs);
-        leagueClubs.add(user.getClub());
+    public void prepareFixturesData() {
+        if (!dataAlreadySet) {
+            currentMatchweek = dbController.getCurrentMatchweek(user.getClubId());
+            leagueClubs.add(dbController.getUserClubById(user.getClubId()));
+
+            matchweekToFixtures = new HashMap<>();
+            drawMatchweeks(leagueClubs);
+            dataAlreadySet = true;
+        }
     }
 
     private void drawMatchweeks(List<Club> clubs) {
@@ -61,5 +73,14 @@ public class Fixtures {
         }
 
         return fixtures;
+    }
+
+    public void updatePositions() {
+        leagueClubs.sort(Comparator.comparing(Club::getCurrentPoints).reversed());
+        int currentPosition = 1;
+        for (var club : leagueClubs) {
+            club.setCurrentPosition(currentPosition);
+            currentPosition++;
+        }
     }
 }

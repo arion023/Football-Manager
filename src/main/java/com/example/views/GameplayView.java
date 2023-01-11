@@ -1,7 +1,10 @@
 package com.example.views;
 
+import com.example.controller.database.DatabaseConfig;
 import com.example.controller.database.DatabaseController;
 import com.example.model.*;
+import com.example.model.entities.Club;
+import com.example.model.entities.Match;
 import com.example.model.entities.Player;
 import com.example.model.enums.ClubLogo;
 import com.example.model.enums.GameplayEvents;
@@ -27,6 +30,13 @@ import com.vaadin.flow.router.RouterLink;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +55,7 @@ public class GameplayView extends VerticalLayout {
     private final transient Fixtures fixtures;
     private final transient DatabaseController dbController;
     private final Dialog dialog = new Dialog();
+    private final Random random = new Random();
 
     private int minutes = 0;
     private int homeTeamGoals = 0;
@@ -62,7 +73,7 @@ public class GameplayView extends VerticalLayout {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         dialog.setHeaderTitle("Match finished");
-        dialog.add(dialogLayout()); //TODO dialog nie wyświetla poprawnej wartości
+        dialog.add(dialogLayout());
         dialog.setCloseOnOutsideClick(false);
         dialog.setCloseOnEsc(false);
 
@@ -90,38 +101,84 @@ public class GameplayView extends VerticalLayout {
 
         Span teams = new Span(user.getClub().getName() + " - " + user.getNextOpponentClubName());
         teams.getStyle().set(CSS_FONT_SIZE, "1.2rem");
-        Span result = new Span(homeTeamGoals + " - " + awayTeamGoals);
-        result.getStyle().set(CSS_FONT_SIZE, "1.5rem");
-        dialogLayout.add(clubLogos, teams, result);
+        dialogLayout.add(clubLogos, teams);
 
         return dialogLayout;
     }
 
     private void saveMatch() {
-        fixtures.setCurrentMatchweek(fixtures.getCurrentMatchweek() + 1);
-//   SELECT MAX(CLUB_ID) FROM CLUB
-//        int maxId = 0;
-//        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-//             Statement statement = connection.createStatement();
-//             ResultSet result = statement.executeQuery("SELECT MAX(MATCH_ID) FROM MATCH")) {
-//            while (result.next()) {
-//                maxId = result.getInt(1);
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        Match match = new Match(maxId + 1, user.getClubID(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals, fixtures.getCurrentMatchweek());
-//        String query = "INSERT INTO MATCH VALUES(" + match.getId() + ", " + match.getHomeTeamId() + ", " + match.getAwayTeamId() + ", " + match.getHomeTeamGoals() + ", " + match.getAwayTeamGoals() + ", " + match.getMatchweek() + ")";
-//
-//
-//        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-//             Statement statement = connection.createStatement();
-//             ResultSet result = statement.executeQuery(query)) {
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+        countAndSavePoints(user.getClub().getId(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals);
+        simulateOtherMatches();
+        fixtures.updatePositions();
 
+        int matchId = dbController.getNextId("MATCH_ID", "MATCH");
+        Match match = new Match(matchId, user.getClub().getId(), user.getNextOpponentClubId(), homeTeamGoals, awayTeamGoals, fixtures.getCurrentMatchweek());
+        saveMatchToDB(match);
+
+        fixtures.setCurrentMatchweek(fixtures.getCurrentMatchweek() + 1);
+    }
+
+    private void saveMatchToDB(Match match) {
+        String query = "INSERT INTO MATCH VALUES(" + match.getId() + ", " + match.getHomeTeamId() + ", " + match.getAwayTeamId() + ", " + match.getHomeTeamGoals() + ", " + match.getAwayTeamGoals() + ", " + match.getMatchweek() + ")";
+
+        try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery(query)) {
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void simulateOtherMatches() {
+        var allMatches = fixtures.getMatchweekToFixtures().get(fixtures.getCurrentMatchweek());
+        int matchId = dbController.getNextId("MATCH_ID", "MATCH");
+        for (var match : allMatches.entrySet()) {
+            if (match.getKey() != user.getClub().getId() && match.getValue() != user.getClub().getId()) {
+
+                int homeGoals = random.nextInt(4);
+                int awayGoals = random.nextInt(4);
+                Match matchToSave = new Match(matchId, match.getKey(), match.getValue(), homeGoals, awayGoals, fixtures.getCurrentMatchweek());
+                matchId++;
+                saveMatchToDB(matchToSave);
+                countAndSavePoints(match.getKey(), match.getValue(), homeGoals, awayGoals);
+            }
+        }
+    }
+
+    private void countAndSavePoints(int homeTeamId, int awayTeamId, int homeTeamGoalsTemp, int awayTeamGoalsTemp) {
+        int homeTeamPoints;
+        int awayTeamPoints;
+        if (homeTeamGoalsTemp > awayTeamGoalsTemp) {
+            homeTeamPoints = 3;
+            awayTeamPoints = 0;
+        } else if (homeTeamGoalsTemp < awayTeamGoalsTemp) {
+            homeTeamPoints = 0;
+            awayTeamPoints = 3;
+        } else {
+            homeTeamPoints = 1;
+            awayTeamPoints = 1;
+        }
+        var homeTeamOptional = findClub(homeTeamId);
+        if (homeTeamOptional.isPresent()) {
+            Club homeTeam = homeTeamOptional.get();
+            homeTeam.setCurrentPoints(homeTeam.getCurrentPoints() + homeTeamPoints);
+            homeTeam.setGoalsScored(homeTeam.getGoalsScored() + homeTeamGoalsTemp);
+            homeTeam.setGoalsConceded(homeTeam.getGoalsConceded() + awayTeamGoalsTemp);
+        }
+
+        var awayTeamOptional = findClub(awayTeamId);
+        if (awayTeamOptional.isPresent()) {
+            Club awayTeam = awayTeamOptional.get();
+            awayTeam.setCurrentPoints(awayTeam.getCurrentPoints() + awayTeamPoints);
+            awayTeam.setGoalsScored(awayTeam.getGoalsScored() + awayTeamGoalsTemp);
+            awayTeam.setGoalsConceded(awayTeam.getGoalsConceded() + homeTeamGoalsTemp);
+        }
+    }
+
+    private Optional<Club> findClub(int clubId) {
+        return fixtures.getLeagueClubs().stream()
+                .filter(club -> club.getId() == clubId)
+                .findFirst();
     }
 
     private HorizontalLayout clubsInfoLayout() {
@@ -187,7 +244,7 @@ public class GameplayView extends VerticalLayout {
         Grid<Player> awayTeamGrid = createPlayersGrid();
 
         players = homeTeamGrid.setItems(user.getFirstSquad());
-        awayTeamGrid.setItems(Player.getAllPlayersFromClubWithStats(user.getNextOpponentClubId(), dbController).subList(0, 11));//TODO wybrać dobre pozycje
+        awayTeamGrid.setItems(dbController.getAllPlayersFromClubWithStats(user.getNextOpponentClubId()).subList(0, 11));//TODO wybrać dobre pozycje
 
         homeTeamGrid.setMaxWidth(500, Unit.PIXELS);
         awayTeamGrid.setMaxWidth(500, Unit.PIXELS);

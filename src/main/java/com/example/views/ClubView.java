@@ -1,20 +1,20 @@
 package com.example.views;
 
+import com.example.controller.database.DatabaseController;
 import com.example.model.entities.Club;
+import com.example.model.entities.Match;
 import com.example.model.enums.ClubLogo;
 import com.example.model.Fixtures;
 import com.example.model.User;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.function.SerializableBiConsumer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
@@ -31,12 +31,17 @@ public class ClubView extends HorizontalLayout {
 
     private final transient User user;
     private final transient Fixtures fixtures;
+    private final transient DatabaseController dbController;
 
 
     @Autowired
-    public ClubView(User user, Fixtures fixtures) {
+    public ClubView(User user, Fixtures fixtures, DatabaseController dbController) {
         this.user = user;
         this.fixtures = fixtures;
+        this.dbController = dbController;
+
+        fixtures.prepareFixturesData();
+        fixtures.updatePositions();
 
         setSizeFull();
         setDefaultVerticalComponentAlignment(Alignment.AUTO);
@@ -46,10 +51,10 @@ public class ClubView extends HorizontalLayout {
 
     private VerticalLayout clubInformation() {
         VerticalLayout infoLayout = new VerticalLayout();
-        infoLayout.setAlignItems(Alignment.CENTER);
-        H2 header = new H2(user.getClub().getName());
-        Paragraph paragraph = new Paragraph("Budget: " + user.getClub().getBudget() + " zl");
-        infoLayout.add(nextMatch(), header, paragraph, detailsLayout());
+        infoLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        H1 header = new H1(user.getClub().getName());
+        Paragraph paragraph = new Paragraph("Budget: " + user.getClub().getBudget() + " PLN");
+        infoLayout.add(nextMatch(), header, paragraph, previousMatches());
         return infoLayout;
     }
 
@@ -67,7 +72,8 @@ public class ClubView extends HorizontalLayout {
 
         int opponentId = fixtures.getMatchweekToFixtures().get(fixtures.getCurrentMatchweek()).get(user.getClub().getId());
         user.setNextOpponentClubId(opponentId);
-        String opponentTeamName = fixtures.getLeagueClubs().stream().filter(club -> club.getId() == opponentId).findFirst().get().getName();
+        var clubOptional = fixtures.getLeagueClubs().stream().filter(club -> club.getId() == opponentId).findFirst();
+        String opponentTeamName = clubOptional.map(Club::getName).orElse("Opponent Name");
         user.setNextOpponentClubName(opponentTeamName);
 
         Image homeTeamLogo = new Image("images/user_club_logo.png", "user_club_logo");
@@ -100,25 +106,52 @@ public class ClubView extends HorizontalLayout {
 
     private Grid<Club> leagueTable() {
         Grid<Club> grid = new Grid<>(Club.class, false);
-        grid.addColumn(Club::getName).setHeader("Club:");
-        grid.addColumn(c -> c.getPoints()).setHeader("Points:").setSortable(true); //TODO getPoints shouldnt be static
+        grid.addColumn(Club::getCurrentPosition)
+                .setHeader("Position")
+                .setFlexGrow(1)
+                .setSortable(true);
+        grid.addColumn(createLogoRenderer())
+                .setFlexGrow(1);
+        grid.addColumn(Club::getName)
+                .setHeader("Club")
+                .setFlexGrow(4);
+        grid.addColumn(Club::getCurrentPoints)
+                .setHeader("Points")
+                .setSortable(true)
+                .setFlexGrow(1);
+        grid.addColumn(Club::getGoalsScored)
+                .setHeader("Goals +")
+                .setFlexGrow(1);
+        grid.addColumn(Club::getGoalsConceded)
+                .setHeader("Goals -")
+                .setFlexGrow(1);
 
         grid.setItems(fixtures.getLeagueClubs());
         grid.setHeight(100, Unit.PERCENTAGE);
         return grid;
     }
 
-    private Details detailsLayout() {
-        Span stadium = new Span("Stadium: " + "Suzuki Arena " + ", " + "Ściegiennego 8, Kielce");
-        Span capacity = new Span("Capacity: " + 15000);
-        // TODO trophies list
-        VerticalLayout content = new VerticalLayout();
-        content.add(stadium);
-        content.add(capacity);
-        Details details = new Details("Details:", content);
-        details.setOpened(false);
+    private Grid<Match> previousMatches() { //TODO
+        Grid<Match> grid = new Grid<>(Match.class, false);
+        grid.addColumn(Match::getMatchweek)
+                .setHeader("Matchweek");
+        grid.addColumn(Match::getHomeTeamId);
+        grid.addColumn(Match::getAwayTeamId);
+        grid.addColumn(Match::getHomeTeamGoals);
+        grid.addColumn(Match::getAwayTeamGoals);
 
-        return details;
+        grid.setItems(dbController.getClubMatches(user.getClubId()));
+
+        return grid;
     }
+
+    private ComponentRenderer<Image, Club> createLogoRenderer() {
+        return new ComponentRenderer<>(Image::new, logoComponentUpdater);
+    }
+
+    private final SerializableBiConsumer<Image, Club> logoComponentUpdater = (image, club) -> {
+        image.setSrc(ClubLogo.getClubLogo(club.getName()));
+        image.setHeight(30, Unit.PIXELS);
+    };
 
 }

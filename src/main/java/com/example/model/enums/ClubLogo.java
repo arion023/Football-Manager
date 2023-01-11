@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Getter
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public enum ClubLogo {
     PIAST_GLIWICE_LOGO("Piast Gliwice", "images/clubs/piast_gliwice.png"),
     POGON_SZCZECIN_LOGO("Pogon Szczecin", "images/clubs/pogon_szczecin.png"),
     RADOMIAK_RADOM_LOGO("Radomiak Radom", "images/clubs/radomiak_radom.png"),
-    RAKOW_CZESTOCHOWA_LOGO("Rakow Czestochowa", "images/clubs/rakow-czestochowa.png"),
+    RAKOW_CZESTOCHOWA_LOGO("Rakow Czestochowa", "images/clubs/rakow_czestochowa.png"),
     SLASK_WROCLAW_LOGO("Slask Wroclaw", "images/clubs/slask_wroclaw.png"),
     STAL_MIELEC_LOGO("Stal Mielec", "images/clubs/stal_mielec.png"),
     TERMALICA_NIECIECZA_LOGO("Nieciecza", "images/clubs/termalica_nieciecza.png"),
@@ -31,6 +32,7 @@ public enum ClubLogo {
     private final String logoUrl;
 
     public static String getClubLogo(String clubName) {
-        return Arrays.stream(ClubLogo.values()).filter(e -> e.getName().equals(clubName)).findFirst().get().getLogoUrl();
+        Optional<ClubLogo> clubLogo = Arrays.stream(ClubLogo.values()).filter(e -> e.getName().equals(clubName)).findFirst();
+        return clubLogo.map(ClubLogo::getLogoUrl).orElse("images/user_club_logo.png");
     }
 }

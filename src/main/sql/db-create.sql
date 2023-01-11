@@ -164,13 +164,12 @@ CREATE TABLE referee
 
 CREATE TABLE match
 (
-match_id            NUMBER NOT NULL CONSTRAINT match_pk PRIMARY KEY,
-home_club           NUMBER NOT NULL,
-away_club           NUMBER NOT NULL,
-match_date          DATE NOT NULL,
-result              CHAR(3) NOT NULL,
-stadium_id          NUMBER NOT NULL,
-referee_id          NUMBER NOT NULL
+    match_id            NUMBER NOT NULL CONSTRAINT match_pk PRIMARY KEY,
+    home_club           NUMBER NOT NULL,
+    away_club           NUMBER NOT NULL,
+    home_goals          NUMBER NOT NULL,
+    away_goals          NUMBER NOT NULL,
+    match_week          NUMBER NOT NULL
 );
 
 CREATE TABLE event
@@ -295,14 +294,6 @@ ALTER TABLE trophy ADD CONSTRAINT cards_club_fk FOREIGN KEY(club_id)
 ALTER TABLE referee ADD CONSTRAINT referee_country_fk FOREIGN KEY(country_id)
 REFERENCES country (country_id);
 
-
---MATCH
-
-ALTER TABLE match ADD CONSTRAINT match_stadium_fk FOREIGN KEY(stadium_id)
-REFERENCES stadium (stadium_id);
-
-ALTER TABLE match ADD CONSTRAINT match_referee FOREIGN KEY(referee_id)
-REFERENCES referee (referee_id);
 
 
 --EVENT

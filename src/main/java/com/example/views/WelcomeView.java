@@ -13,7 +13,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import static com.example.model.utils.TextValues.FOOTBALL_MANAGER_DESCRIPTION;
 import static com.example.model.utils.TextValues.FOOTBALL_MANAGER_WELCOME;
 
-@Route(value = "/welcome", layout = AppLayoutBasic.class)
+@Route(value = "/", layout = AppLayoutBasic.class)
 @PageTitle("Welcome")
 @AnonymousAllowed
 public class WelcomeView extends HorizontalLayout {
