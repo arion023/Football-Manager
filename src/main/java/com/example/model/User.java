@@ -178,6 +178,11 @@ public class User {
     }
 
     public void clear() {
+        this.id = 0;
+        this.nickname = "";
+        this.mail = "";
+        this.clubId = 0;
+        this.club = null;
         this.budget = 0;
         this.firstSquad = new ArrayList<>();
         this.substitutes = new ArrayList<>();

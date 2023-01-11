@@ -26,6 +26,7 @@ public class Fixtures {
 
     @Getter
     private ArrayList<Club> leagueClubs;
+    @Setter
     private boolean dataAlreadySet = false;
 
     @Autowired
@@ -44,6 +45,10 @@ public class Fixtures {
             drawMatchweeks(leagueClubs);
             dataAlreadySet = true;
         }
+    }
+
+    public void resetLeagueClubs() {
+        this.leagueClubs.removeIf(club -> club.getId() == user.getClubId());
     }
 
     private void drawMatchweeks(List<Club> clubs) {
