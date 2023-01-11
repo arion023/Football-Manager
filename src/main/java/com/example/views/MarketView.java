@@ -4,12 +4,16 @@ import com.example.model.MarketOffer;
 import com.example.model.entities.Player;
 import com.example.model.User;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -37,6 +41,8 @@ public class MarketView extends HorizontalLayout {
     private VerticalLayout operationSpace;
     private final VerticalLayout buttonSpace = new VerticalLayout();
     private final VerticalLayout sideBar = new VerticalLayout();
+    private StatisticsDialog playerStatisticsDialog = new StatisticsDialog();
+    private GridContextMenu<MarketOffer> offerContexMenu;
     private HorizontalLayout operationBar;
     private Button operationButton;
     private Tabs operationTabs;
@@ -125,7 +131,35 @@ public class MarketView extends HorizontalLayout {
 
         this.offersGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
+        this.configOfferContextMenu();
+
+
         this.offersGrid.setItems(this.user.getOffers());
+
+    }
+
+    private void configOfferContextMenu() {
+        offerContexMenu = this.offersGrid.addContextMenu();
+        offerContexMenu.setOpenOnClick(true);
+
+        offerContexMenu.addItem("Statistics", event -> this.showStatistics());
+
+    }
+
+    private void showStatistics() {
+        SingleSelect<Grid<MarketOffer>, MarketOffer> playerSelect = this.offersGrid.asSingleSelect();
+        if (!playerSelect.isEmpty())
+        {
+            playerStatisticsDialog.setPlayer(playerSelect.getValue().getPlayer());
+            playerStatisticsDialog.open();
+
+        } else
+        {
+            Notification selectError = Notification.show("Player not selected!");
+            selectError.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            selectError.setPosition(Notification.Position.MIDDLE);
+        }
+
 
     }
 
