@@ -125,7 +125,7 @@ public class MarketView extends HorizontalLayout {
 
         this.offersGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        this.offersGrid.setItems(this.user.getAllOffers());
+        this.offersGrid.setItems(this.user.getOffers());
 
     }
 

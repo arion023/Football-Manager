@@ -116,16 +116,20 @@ public class User {
 
 
     public boolean buyPlayer(MarketOffer offer) {
-        //TODO UPDATE DATABASE
-
         if (this.budget - offer.getPrice() > 0) {
             this.removeOffer(offer);
-            this.budget -= offer.getPrice();
+            this.setBudget(this.getBudget() - offer.getPrice());
             this.addPlayer(offer.getPlayer());
             return true;
         } else {
             return false;
         }
+    }
+
+    public void setBudget(int budget) {
+        this.budget = budget;
+        String update = "UPDATE " + DatabaseConfig.USERS_TABLE_NAME + " SET budget = " + this.budget + " WHERE user_id = " + this.getId();
+        dbController.updateDatabase(update);
     }
 
     private void removeOffer(MarketOffer offer) {
@@ -163,8 +167,6 @@ public class User {
     public void sellPlayer(Player player, int price) {
         //TODO UPDATE DATABASE
         this.addOffer(new MarketOffer(player, price));
-        this.firstSquad.remove(player);
-        this.substitutes.remove(player);
 
     }
 
@@ -173,5 +175,12 @@ public class User {
         all.addAll(this.offers);
         all.addAll(this.userOffers);
         return all;
+    }
+
+    public void clear() {
+        this.budget = 0;
+        this.firstSquad = new ArrayList<>();
+        this.substitutes = new ArrayList<>();
+        this.offers = null;
     }
 }

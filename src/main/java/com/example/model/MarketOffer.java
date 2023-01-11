@@ -73,7 +73,7 @@ public class MarketOffer {
         try {
             while (rs.next()) {
                 int offerId = rs.getInt("offer_id");
-                int playerId = rs.getInt("user_id");
+                int playerId = rs.getInt("player_id");
                 int price = rs.getInt("price");
 
                 String name = rs.getString("name");

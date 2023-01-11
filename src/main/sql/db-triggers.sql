@@ -1,12 +1,16 @@
-CREATE OR REPLACE VIEW default_players
+drop view user_players;
+drop view default_clubs;
+drop view user_clubs;
+
+CREATE OR REPLACE VIEW user_players
 AS
 SELECT *
 FROM player WHERE player.club_id IN (SELECT club_id FROM users);
 
-CREATE OR REPLACE VIEW default_players
+CREATE MATERIALIZED VIEW default_players
 AS
 SELECT *
-FROM player WHERE player.club_id NOT IN (SELECT club_id FROM club);
+FROM player WHERE player.club_id NOT IN (SELECT club_id FROM users);
 
 
 CREATE OR REPLACE VIEW user_clubs
@@ -28,7 +32,6 @@ FOR EACH ROW
 DECLARE
     players_counter NUMBER;
 BEGIN
-    DBMS_SNAPSHOT.REFRESH('default_players');
     -- 2 5 5 3
     --GK
     SELECT count(player_id) INTO players_counter FROM player WHERE club_id = :new.club_id;
@@ -66,10 +69,14 @@ BEGIN
         END LOOP;
 
 END;
-
 /
 
+
+DROP TRIGGER generate_user;
+
 INSERT INTO club VALUES (4000, 'Legia Warszawa', 'PL', 106, NULL);
+
+DELETE FROM club WHERE club_id = 4000;
 
 DELETE FROM users WHERE user_id = 100;
 
