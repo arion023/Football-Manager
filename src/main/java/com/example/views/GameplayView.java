@@ -100,7 +100,7 @@ public class GameplayView extends VerticalLayout {
         HorizontalLayout clubLogos = new HorizontalLayout(homeTeamLogo, awayTeamLogo);
 
         Span teams = new Span(user.getClub().getName() + " - " + user.getNextOpponentClubName());
-        teams.getStyle().set(CSS_FONT_SIZE, "1.2rem");
+        teams.getStyle().set(CSS_FONT_SIZE, "1rem");
         dialogLayout.add(clubLogos, teams);
 
         return dialogLayout;

@@ -83,4 +83,10 @@ public class Fixtures {
             currentPosition++;
         }
     }
+
+    public Optional<Club> findClubById(int clubId) {
+        return leagueClubs.stream()
+                .filter(club -> club.getId() == clubId)
+                .findFirst();
+    }
 }

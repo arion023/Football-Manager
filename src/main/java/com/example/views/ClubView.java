@@ -14,7 +14,6 @@ import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.function.SerializableBiConsumer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
@@ -28,6 +27,9 @@ import static com.example.model.utils.CssValues.CSS_FONT_SIZE;
 @PageTitle("Club")
 @PermitAll
 public class ClubView extends HorizontalLayout {
+
+    private static final String HOME_TEAM = "Home Team";
+    private static final String AWAY_TEAM = "Away Team";
 
     private final transient User user;
     private final transient Fixtures fixtures;
@@ -54,7 +56,8 @@ public class ClubView extends HorizontalLayout {
         infoLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         H1 header = new H1(user.getClub().getName());
         Paragraph paragraph = new Paragraph("Budget: " + user.getClub().getBudget() + " PLN");
-        infoLayout.add(nextMatch(), header, paragraph, previousMatches());
+        H2 lastMatches = new H2("Last Matches");
+        infoLayout.add(nextMatch(), header, paragraph, lastMatches, previousMatches());
         return infoLayout;
     }
 
@@ -134,11 +137,29 @@ public class ClubView extends HorizontalLayout {
     private Grid<Match> previousMatches() { //TODO
         Grid<Match> grid = new Grid<>(Match.class, false);
         grid.addColumn(Match::getMatchweek)
-                .setHeader("Matchweek");
-        grid.addColumn(Match::getHomeTeamId);
-        grid.addColumn(Match::getAwayTeamId);
-        grid.addColumn(Match::getHomeTeamGoals);
-        grid.addColumn(Match::getAwayTeamGoals);
+                .setHeader("Matchweek")
+                .setAutoWidth(true)
+                .setFlexGrow(1);
+        grid.addColumn(createHomeTeamLogoRenderer())
+                .setAutoWidth(true)
+                .setFlexGrow(2);
+        grid.addColumn(match -> fixtures.findClubById(match.getHomeTeamId()).map(Club::getName).orElse(HOME_TEAM))
+                .setHeader(HOME_TEAM)
+                .setAutoWidth(true)
+                .setFlexGrow(3);
+        grid.addColumn(Match::getHomeTeamGoals)
+                .setAutoWidth(true)
+                .setFlexGrow(1);
+        grid.addColumn(Match::getAwayTeamGoals)
+                .setAutoWidth(true)
+                .setFlexGrow(1);
+        grid.addColumn(match -> fixtures.findClubById(match.getAwayTeamId()).map(Club::getName).orElse(AWAY_TEAM))
+                .setHeader(AWAY_TEAM)
+                .setAutoWidth(true)
+                .setFlexGrow(3);
+        grid.addColumn(createAwayLogoRenderer())
+                .setAutoWidth(true)
+                .setFlexGrow(2);
 
         grid.setItems(dbController.getClubMatches(user.getClubId()));
 
@@ -146,12 +167,23 @@ public class ClubView extends HorizontalLayout {
     }
 
     private ComponentRenderer<Image, Club> createLogoRenderer() {
-        return new ComponentRenderer<>(Image::new, logoComponentUpdater);
+        return new ComponentRenderer<>(Image::new, (image, club) -> {
+            image.setSrc(ClubLogo.getClubLogo(club.getName()));
+            image.setHeight(30, Unit.PIXELS);
+        });
     }
 
-    private final SerializableBiConsumer<Image, Club> logoComponentUpdater = (image, club) -> {
-        image.setSrc(ClubLogo.getClubLogo(club.getName()));
-        image.setHeight(30, Unit.PIXELS);
-    };
+    private ComponentRenderer<Image, Match> createHomeTeamLogoRenderer() {
+        return new ComponentRenderer<>(Image::new, (image, match) -> {
+            image.setSrc(ClubLogo.getClubLogo(fixtures.findClubById(match.getHomeTeamId()).map(Club::getName).orElse(HOME_TEAM)));
+            image.setHeight(30, Unit.PIXELS);
+        });
+    }
 
+    private ComponentRenderer<Image, Match> createAwayLogoRenderer() {
+        return new ComponentRenderer<>(Image::new, (image, match) -> {
+            image.setSrc(ClubLogo.getClubLogo(fixtures.findClubById(match.getAwayTeamId()).map(Club::getName).orElse(AWAY_TEAM)));
+            image.setHeight(30, Unit.PIXELS);
+        });
+    }
 }
