@@ -43,7 +43,7 @@ public enum GameplayEvents {
 
     public static GameplayEvents getRandomEvent() {
         ArrayList<GameplayEvents> allValues = new ArrayList<>(List.of(GameplayEvents.values()));
-        allValues.addAll(List.of(GOAL, GOAL, GOAL));
+        allValues.addAll(List.of(GOAL, GOAL, GOAL, GOAL));
         return allValues.get(random.nextInt(allValues.size()));
     }
 
