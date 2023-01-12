@@ -103,24 +103,28 @@ public class SquadView extends HorizontalLayout {
     }
 
     private Dialog statisticsDialog(Player player) {
-        Dialog statisticsDialog = new Dialog();
-        Button statisticsButton = new Button("Close");
-        statisticsButton.addClickListener(event -> statisticsDialog.close());
-        statisticsDialog.getFooter().add(statisticsButton);
-        statisticsDialog.setHeaderTitle(player.getName() + " " + player.getSurname() + "'s statistics");
-
-        VerticalLayout statistics = new VerticalLayout();
-        statistics.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-
-        statistics.add(new Span(String.format("Overall:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getOverall()))));
-        statistics.add(new Span(String.format("Pace:       %s", (player.getStatistics() == null ? "" : player.getStatistics().getPace()))));
-        statistics.add(new Span(String.format("Shooting:   %s", (player.getStatistics() == null ? "" : player.getStatistics().getShooting()))));
-        statistics.add(new Span(String.format("Passing:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getPassing()))));
-        statistics.add(new Span(String.format("Dribbling:  %s", (player.getStatistics() == null ? "" : player.getStatistics().getDribbling()))));
-        statistics.add(new Span(String.format("Defence:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getDefence()))));
-        statistics.add(new Span(String.format("Physically: %s", (player.getStatistics() == null ? "" : player.getStatistics().getPhysically()))));
-
-        statisticsDialog.add(statistics);
+        StatisticsDialog statisticsDialog = new StatisticsDialog();
+        if (player.getStatistics() != null){
+            statisticsDialog.setPlayer(player);
+        }
+//        Dialog statisticsDialog = new Dialog();
+//        Button statisticsButton = new Button("Close");
+//        statisticsButton.addClickListener(event -> statisticsDialog.close());
+//        statisticsDialog.getFooter().add(statisticsButton);
+//        statisticsDialog.setHeaderTitle(player.getName() + " " + player.getSurname() + "'s statistics");
+//
+//        VerticalLayout statistics = new VerticalLayout();
+//        statistics.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+//
+//        statistics.add(new Span(String.format("Overall:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getOverall()))));
+//        statistics.add(new Span(String.format("Pace:       %s", (player.getStatistics() == null ? "" : player.getStatistics().getPace()))));
+//        statistics.add(new Span(String.format("Shooting:   %s", (player.getStatistics() == null ? "" : player.getStatistics().getShooting()))));
+//        statistics.add(new Span(String.format("Passing:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getPassing()))));
+//        statistics.add(new Span(String.format("Dribbling:  %s", (player.getStatistics() == null ? "" : player.getStatistics().getDribbling()))));
+//        statistics.add(new Span(String.format("Defence:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getDefence()))));
+//        statistics.add(new Span(String.format("Physically: %s", (player.getStatistics() == null ? "" : player.getStatistics().getPhysically()))));
+//
+//        statisticsDialog.add(statistics);
         return statisticsDialog;
     }
 

@@ -106,10 +106,18 @@ public class AppLayoutBasic extends AppLayout {
     private void configAddNewUserDialog() {
         this.addNewUserDialog = new Dialog();
         this.addNewUserDialog.setHeaderTitle("New User");
+        this.addNewUserDialog.setCloseOnEsc(false);
+        this.addNewUserDialog.setCloseOnOutsideClick(false);
 
         VerticalLayout dialogLayout = createAddNewUserLayout();
         this.addNewUserDialog.add(dialogLayout);
-        Button addButton = new Button("Create", e -> this.addNewUser(user.getMail(), managerNickname.getValue(), clubNameField.getValue())); //TODO StringUtils.capitalize()
+
+        Button addButton = new Button("Create", e -> {
+            if(!clubNameField.isInvalid() && !managerNickname.isInvalid()){
+
+            this.addNewUser(user.getMail(), managerNickname.getValue(), clubNameField.getValue());
+            }
+        });
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addNewUserDialog.getFooter().add(addButton);
     }
@@ -124,7 +132,9 @@ public class AppLayoutBasic extends AppLayout {
 
     private VerticalLayout createAddNewUserLayout() {
         clubNameField = new TextField("Club name");
+        clubNameField.setMinLength(3);
         managerNickname = new TextField("Manager nickname");
+        managerNickname.setMinLength(3);
 
         VerticalLayout addNewUserLayout = new VerticalLayout(clubNameField, managerNickname);
         addNewUserLayout.setAlignItems(FlexComponent.Alignment.STRETCH);

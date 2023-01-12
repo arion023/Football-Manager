@@ -158,7 +158,7 @@ public class DatabaseController {
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {
-            return MarketOffer.resultSetToType(rs);
+            return MarketOffer.resultSetToMarketOffer(rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -187,7 +187,7 @@ public class DatabaseController {
         } catch (SQLException e) {
             return matchweek;
         }
-        return matchweek == 0 ? 1 : matchweek;
+        return matchweek == 0 ? 1 : matchweek + 1;
     }
 
 

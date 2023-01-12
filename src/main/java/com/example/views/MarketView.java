@@ -1,10 +1,13 @@
 package com.example.views;
 
 import com.example.model.MarketOffer;
+import com.example.model.entities.Club;
 import com.example.model.entities.Player;
 import com.example.model.User;
+import com.example.model.enums.ClubLogo;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -20,6 +23,7 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.selection.SingleSelect;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -126,7 +130,7 @@ public class MarketView extends HorizontalLayout {
         this.offersGrid.addColumn(MarketOffer::getSurname).setHeader("Surname");
         this.offersGrid.addColumn(MarketOffer::getNationality).setHeader("Nationality");
         this.offersGrid.addColumn(MarketOffer::getClubName).setHeader("Seller");
-        this.offersGrid.addColumn(MarketOffer::createLogoRenderer);
+        this.offersGrid.addColumn(createLogoRenderer());
         this.offersGrid.addColumn(MarketOffer::getPosition).setHeader("Position");
         this.offersGrid.addColumn(MarketOffer::getOverall).setHeader("Overall");
         this.offersGrid.addColumn(MarketOffer::getPrice).setHeader("Price");
@@ -137,7 +141,13 @@ public class MarketView extends HorizontalLayout {
 
 
         this.offersGrid.setItems(this.user.getOffers());
+    }
 
+    public ComponentRenderer<Image, MarketOffer> createLogoRenderer() {
+        return new ComponentRenderer<>(Image::new, (image, marketOffer) -> {
+            image.setSrc(ClubLogo.getClubLogo(marketOffer.getClubName()));
+            image.setHeight(30, Unit.PIXELS);
+        });
     }
 
     private void configOfferContextMenu() {
@@ -228,9 +238,6 @@ public class MarketView extends HorizontalLayout {
         this.offersGrid.setItems(this.user.getAllOffers());
         playerField.setItems(this.user.getAllPlayers());
         budgetValue.setText(String.valueOf(user.getBudget()));
-
-
-
     }
 
 

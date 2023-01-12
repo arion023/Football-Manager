@@ -1,13 +1,8 @@
 package com.example.model;
 
-import com.example.model.entities.Club;
 import com.example.model.entities.Player;
 import com.example.model.entities.Statistics;
-import com.example.model.enums.ClubLogo;
 import com.example.model.enums.Position;
-import com.vaadin.flow.component.Unit;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.data.renderer.ComponentRenderer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -70,18 +65,11 @@ public class MarketOffer {
         else return 0;
     }
 
-    public ComponentRenderer<Image, Club> createLogoRenderer() {
-        return new ComponentRenderer<>(Image::new, (image, club) -> {
-            image.setSrc(ClubLogo.getClubLogo(this.getClubName()));
-            image.setHeight(30, Unit.PIXELS);
-        });
-    }
-
     public int getSellerId() {
         return player.getCurrentClubId();
     }
 
-    public static List<MarketOffer> resultSetToType(ResultSet rs) {
+    public static List<MarketOffer> resultSetToMarketOffer(ResultSet rs) {
         List<MarketOffer> offers = new ArrayList<>();
         try {
             while (rs.next()) {
