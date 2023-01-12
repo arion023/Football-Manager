@@ -67,7 +67,7 @@ public class SquadView extends HorizontalLayout {
 
         configureDialogs();
         var playersLayout = playerListLayout(); //Must be called before pitchLayout()
-        add(pitchLayout(), playersLayout, fullTeamDialog, positionsDialog);
+        add(pitchLayout(), playersLayout, fullTeamDialog, positionsDialog, statisticsDialog(new Player()));
     }
 
     @Override
@@ -100,6 +100,28 @@ public class SquadView extends HorizontalLayout {
         positionsDialog.getFooter().add(positionsButton);
         positionsDialog.setHeaderTitle("Position line is full!");
         positionsDialog.add(new Span("You already have enough players for this position line. Try to change formation."));
+    }
+
+    private Dialog statisticsDialog(Player player) {
+        Dialog statisticsDialog = new Dialog();
+        Button statisticsButton = new Button("Close");
+        statisticsButton.addClickListener(event -> statisticsDialog.close());
+        statisticsDialog.getFooter().add(statisticsButton);
+        statisticsDialog.setHeaderTitle(player.getName() + " " + player.getSurname() + "'s statistics");
+
+        VerticalLayout statistics = new VerticalLayout();
+        statistics.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+
+        statistics.add(new Span(String.format("Overall:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getOverall()))));
+        statistics.add(new Span(String.format("Pace:       %s", (player.getStatistics() == null ? "" : player.getStatistics().getPace()))));
+        statistics.add(new Span(String.format("Shooting:   %s", (player.getStatistics() == null ? "" : player.getStatistics().getShooting()))));
+        statistics.add(new Span(String.format("Passing:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getPassing()))));
+        statistics.add(new Span(String.format("Dribbling:  %s", (player.getStatistics() == null ? "" : player.getStatistics().getDribbling()))));
+        statistics.add(new Span(String.format("Defence:    %s", (player.getStatistics() == null ? "" : player.getStatistics().getDefence()))));
+        statistics.add(new Span(String.format("Physically: %s", (player.getStatistics() == null ? "" : player.getStatistics().getPhysically()))));
+
+        statisticsDialog.add(statistics);
+        return statisticsDialog;
     }
 
     private VerticalLayout pitchLayout() {
@@ -172,26 +194,27 @@ public class SquadView extends HorizontalLayout {
         firstSquadData = firstSquadGrid.setItems(user.getFirstSquad());
         substitutesData = substitutesGrid.setItems(user.getSubstitutes());
 
-        //TODO buttony wychodzą poza grid
-        firstSquadGrid.addColumn(new NativeButtonRenderer<>("Remove player",
-                player -> {
-                    firstSquadData.removeItem(player);
-                    substitutesData.addItem(player);
-                    this.replace(this.getComponentAt(0), pitchLayout());
-                }));
+        firstSquadGrid.addColumn(new NativeButtonRenderer<>("Remove",
+                        player -> {
+                            firstSquadData.removeItem(player);
+                            substitutesData.addItem(player);
+                            this.replace(this.getComponentAt(0), pitchLayout());
+                        }))
+                .setAutoWidth(true);
 
-        substitutesGrid.addColumn(new NativeButtonRenderer<>("Add player",
-                player -> {
-                    if (user.getFirstSquad().size() == 11) {
-                        fullTeamDialog.open();
-                    } else if (checkPositions(player)) {
-                        positionsDialog.open();
-                    } else {
-                        substitutesData.removeItem(player);
-                        firstSquadData.addItem(player);
-                        this.replace(this.getComponentAt(0), pitchLayout());
-                    }
-                }));
+        substitutesGrid.addColumn(new NativeButtonRenderer<>("Add",
+                        player -> {
+                            if (user.getFirstSquad().size() == 11) {
+                                fullTeamDialog.open();
+                            } else if (checkPositions(player)) {
+                                positionsDialog.open();
+                            } else {
+                                substitutesData.removeItem(player);
+                                firstSquadData.addItem(player);
+                                this.replace(this.getComponentAt(0), pitchLayout());
+                            }
+                        }))
+                .setAutoWidth(true);
 
         vL.add(selectFormation, firstSquadGrid, substitutesGrid);
         return vL;
@@ -252,23 +275,12 @@ public class SquadView extends HorizontalLayout {
                 .setHeader("OV")
                 .setAutoWidth(true)
                 .setSortable(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPace())
-                .setHeader("PAC")
-                .setAutoWidth(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getShooting())
-                .setHeader("SHO")
-                .setAutoWidth(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPassing())
-                .setHeader("PAS")
-                .setAutoWidth(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getDribbling())
-                .setHeader("DRI")
-                .setAutoWidth(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getDefence())
-                .setHeader("DEF")
-                .setAutoWidth(true);
-        grid.addColumn(player -> player.getStatistics() == null ? "" : player.getStatistics().getPhysically())
-                .setHeader("PHY")
+        grid.addColumn(new NativeButtonRenderer<>("Stats",
+                        player -> {
+                            var dialog = statisticsDialog(player);
+                            this.replace(this.getComponentAt(4), dialog);
+                            dialog.open();
+                        }))
                 .setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         return grid;

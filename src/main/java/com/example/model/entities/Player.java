@@ -2,6 +2,7 @@ package com.example.model.entities;
 
 import com.example.model.enums.Position;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.*;
@@ -12,6 +13,7 @@ import static java.lang.Math.pow;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Player extends Person {
 
     private int currentClubId;

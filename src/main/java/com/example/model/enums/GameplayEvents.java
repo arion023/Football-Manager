@@ -3,6 +3,7 @@ package com.example.model.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -41,7 +42,8 @@ public enum GameplayEvents {
     private final String description;
 
     public static GameplayEvents getRandomEvent() {
-        var allValues = List.of(GameplayEvents.values());
+        ArrayList<GameplayEvents> allValues = new ArrayList<>(List.of(GameplayEvents.values()));
+        allValues.addAll(List.of(GOAL, GOAL, GOAL, GOAL));
         return allValues.get(random.nextInt(allValues.size()));
     }
 

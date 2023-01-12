@@ -1,6 +1,7 @@
 package com.example.views;
 
 import com.example.controller.database.DatabaseController;
+import com.example.model.Fixtures;
 import com.example.model.User;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -31,6 +32,7 @@ public class AppLayoutBasic extends AppLayout {
 
     private final transient AuthenticationContext authContext;
     private final transient User user;
+    private final transient Fixtures fixtures;
     private final transient DatabaseController dbController;
     private Dialog addNewUserDialog;
     private TextField clubNameField;
@@ -38,9 +40,10 @@ public class AppLayoutBasic extends AppLayout {
 
 
     @Autowired
-    public AppLayoutBasic(AuthenticationContext authContext, User logUser, DatabaseController databaseController) {
+    public AppLayoutBasic(AuthenticationContext authContext, User logUser, Fixtures fixtures, DatabaseController databaseController) {
         this.authContext = authContext;
         this.user = logUser;
+        this.fixtures = fixtures;
         this.dbController = databaseController;
 
         HorizontalLayout header = checkUserAuthenticationAndReturnLayout();
@@ -66,8 +69,12 @@ public class AppLayoutBasic extends AppLayout {
         title.getStyle().set(CSS_FONT_SIZE, "var(--lumo-font-size-l)").set("margin", "0");
 
         if (authContext.isAuthenticated()) {
-            user.clear();
-            Button logout = new Button("Logout", click -> this.authContext.logout());
+            Button logout = new Button("Logout", click -> {
+                fixtures.setDataAlreadySet(false);
+                fixtures.resetLeagueClubs();
+                user.clear();
+                this.authContext.logout();
+            });
             var userOptional = authContext.getAuthenticatedUser(DefaultOidcUser.class);
             String userFullName = userOptional.map(DefaultOidcUser::getFullName).orElse("User");
             String usrMail = userOptional.map(DefaultOidcUser::getEmail).orElse("useremail@example.com");
@@ -78,11 +85,11 @@ public class AppLayoutBasic extends AppLayout {
                 user.setMail(usrMail);
                 this.configAddNewUserDialog();
                 this.addNewUserDialog.open();
-                loggedUser = new Span("Welcome " + userFullName );
-            }
-            else{
+                loggedUser = new Span("Welcome " + userFullName);
+            } else {
                 loggedUser = new Span("Welcome " + user.getNickname() + " " + user.getClub().getName() + "'s manager");
-                fulfillUserDataFromDB(); }
+                fulfillUserDataFromDB();
+            }
 
             loggedUser.getStyle()
                     .set(CSS_FONT_SIZE, "var(--lumo-font-size-m)");
