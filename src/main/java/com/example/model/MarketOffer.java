@@ -1,8 +1,13 @@
 package com.example.model;
 
+import com.example.model.entities.Club;
 import com.example.model.entities.Player;
 import com.example.model.entities.Statistics;
+import com.example.model.enums.ClubLogo;
 import com.example.model.enums.Position;
+import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -20,6 +25,7 @@ public class MarketOffer {
     public static final int OFFERS_LIMIT = 40;
     private int id;
     private Player player;
+    private String clubName;
     private int price;
 
     public MarketOffer(Player player, int price) {
@@ -64,6 +70,13 @@ public class MarketOffer {
         else return 0;
     }
 
+    public ComponentRenderer<Image, Club> createLogoRenderer() {
+        return new ComponentRenderer<>(Image::new, (image, club) -> {
+            image.setSrc(ClubLogo.getClubLogo(this.getClubName()));
+            image.setHeight(30, Unit.PIXELS);
+        });
+    }
+
     public int getSellerId() {
         return player.getCurrentClubId();
     }
@@ -76,11 +89,12 @@ public class MarketOffer {
                 int playerId = rs.getInt("player_id");
                 int price = rs.getInt("price");
 
-                String name = rs.getString("name");
+                String name = rs.getString("player_name");
                 String surname = rs.getString("surname");
                 var birthDate = rs.getDate("birth_date");
-                String countryId = rs.getString("country_id");
+                String countryId = rs.getString("player_country_id");
                 int clubId = rs.getInt("club_id");
+                String clubName = rs.getString("club_name");
                 int positionId = rs.getInt("position_id");
 
                 Position positionEnum = Position.getPositionById(positionId);
@@ -92,7 +106,9 @@ public class MarketOffer {
                 } catch (SQLException e) {
                     player = new Player(playerId, name, surname, birthDate.toLocalDate(), countryId, clubId, null, positionEnum);
                 }
-                offers.add(new MarketOffer(offerId, player, price));
+                MarketOffer mo = new MarketOffer(offerId, player, price);
+                mo.setClubName(clubName);
+                offers.add(mo);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

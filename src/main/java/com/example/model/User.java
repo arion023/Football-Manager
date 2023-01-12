@@ -84,8 +84,10 @@ public class User {
     }
 
     public void setUserOffersFromDB() {
-        String myOffers = "SELECT * FROM " + DatabaseConfig.OFFER_TABLE_NAME + " INNER JOIN " + DatabaseConfig.PLAYERS_TABLE_NAME + " USING (player_id) INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id) WHERE user_id = " + this.getId() + " AND club_id = " + this.getClubId();
-        String restOffers = "SELECT * FROM " + DatabaseConfig.OFFER_TABLE_NAME + " INNER JOIN " + DatabaseConfig.PLAYERS_TABLE_NAME + " USING (player_id) INNER JOIN " + DatabaseConfig.STATISTICS_TABLE_NAME + " USING (player_id) WHERE user_id = " + this.getId() + " AND club_id != " + this.getClubId();
+        String myOffers = "SELECT * FROM " + DatabaseConfig.OFFERS_ALL_INFO_VIEW
+                + " WHERE user_id = " + this.getId() + " AND club_id = " + this.getClubId();
+        String restOffers = "SELECT * FROM " + DatabaseConfig.OFFERS_ALL_INFO_VIEW
+                + " WHERE user_id = " + this.getId() + " AND club_id != " + this.getClubId();
         this.userOffers = dbController.getOffersFromDB(myOffers);
         this.offers = dbController.getOffersFromDB(restOffers);
 

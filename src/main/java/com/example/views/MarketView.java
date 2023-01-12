@@ -125,7 +125,8 @@ public class MarketView extends HorizontalLayout {
         this.offersGrid.addColumn(MarketOffer::getName).setHeader("Name");
         this.offersGrid.addColumn(MarketOffer::getSurname).setHeader("Surname");
         this.offersGrid.addColumn(MarketOffer::getNationality).setHeader("Nationality");
-        this.offersGrid.addColumn(MarketOffer::getSellerId).setHeader("Seller");
+        this.offersGrid.addColumn(MarketOffer::getClubName).setHeader("Seller");
+        this.offersGrid.addColumn(MarketOffer::createLogoRenderer);
         this.offersGrid.addColumn(MarketOffer::getPosition).setHeader("Position");
         this.offersGrid.addColumn(MarketOffer::getOverall).setHeader("Overall");
         this.offersGrid.addColumn(MarketOffer::getPrice).setHeader("Price");
