@@ -32,6 +32,7 @@ import javax.annotation.security.PermitAll;
 @PageTitle("Market")
 @PermitAll
 public class MarketView extends HorizontalLayout {
+    private static final int NOTIFICATION_TIME = 1500;
     private final transient User user;
     private final Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
     private final FormLayout sellForm = new FormLayout();
@@ -157,7 +158,8 @@ public class MarketView extends HorizontalLayout {
         {
             Notification selectError = Notification.show("Player not selected!");
             selectError.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            selectError.setPosition(Notification.Position.MIDDLE);
+            selectError.setPosition(Notification.Position.TOP_CENTER);
+            selectError.setDuration(NOTIFICATION_TIME);
         }
 
 
@@ -206,7 +208,18 @@ public class MarketView extends HorizontalLayout {
         SingleSelect<Grid<MarketOffer>, MarketOffer> playerSelect = this.offersGrid.asSingleSelect();
         if (!playerSelect.isEmpty()) {
             user.buyPlayer(playerSelect.getValue());
+
+            Notification selectError = Notification.show("Successful!");
+            selectError.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            selectError.setPosition(Notification.Position.TOP_CENTER);
+            selectError.setDuration(NOTIFICATION_TIME);
+
             refreshData();
+        } else {
+            Notification selectError = Notification.show("Player not selected!");
+            selectError.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            selectError.setPosition(Notification.Position.TOP_CENTER);
+            selectError.setDuration(NOTIFICATION_TIME);
         }
     }
 
@@ -214,6 +227,9 @@ public class MarketView extends HorizontalLayout {
         this.offersGrid.setItems(this.user.getAllOffers());
         playerField.setItems(this.user.getAllPlayers());
         budgetValue.setText(String.valueOf(user.getBudget()));
+
+
+
     }
 
 
@@ -231,13 +247,24 @@ public class MarketView extends HorizontalLayout {
             user.sellPlayer(this.playerField.getValue(), price.getValue().intValue() );
             playerField.clear();
             price.clear();
+
+            Notification selectError = Notification.show("Successful!");
+            selectError.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            selectError.setPosition(Notification.Position.TOP_CENTER);
+            selectError.setDuration(NOTIFICATION_TIME);
+
             refreshData();
+        } else {
+            Notification inputError = Notification.show("Empty input fields!");
+            inputError.setPosition(Notification.Position.TOP_CENTER);
+            inputError.setDuration(NOTIFICATION_TIME);
+            inputError.addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 
 
     private void setBuying() {
-        operationButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        operationButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         operationButton.setText("Buy");
         operationSpace.add(offersGrid);
     }

@@ -22,6 +22,7 @@ public class StatisticsDialog extends Dialog {
     VerticalLayout secondColumn = new VerticalLayout();
     VerticalLayout overallLayout = new VerticalLayout();
     Span overall = new Span();
+    Label overallLabel = new Label("Overall: ");
 
     StatisticsDialog (){
         this.setHeaderTitle("Statistics");
@@ -32,14 +33,23 @@ public class StatisticsDialog extends Dialog {
         VerticalLayout dialogLayout = new VerticalLayout();
         this.statisticsContent = new HorizontalLayout(firstColumn, secondColumn);
 
+        this.playerName.getElement().getStyle().set("font-weight", "bold");
+        this.playerName.getElement().getStyle().set("font-size", "20px");
 
-        this.overallLayout.add(new Label("Overall: "), overall);
+        this.overall.getElement().getThemeList().add("badge contrast");
+        this.overall.getElement().getStyle().set("font-size", "28px");
+
+        this.overallLabel.getElement().getStyle().set("font-size", "18px");
+        this.overallLabel.getElement().getStyle().set("font-weight", "bold");
+
+        this.overallLayout.add(overallLabel, overall);
         this.overallLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         this.overallLayout.setFlexGrow(1);
 
         Button closeButton = new Button("Close", buttonClickEvent -> { this.close(); });
 
         dialogLayout.add(this.playerName, overallLayout, statisticsContent, closeButton);
+        dialogLayout.setPadding(false);
         dialogLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
 
@@ -76,11 +86,14 @@ public class StatisticsDialog extends Dialog {
 
         Span valueSpan = new Span(Integer.toString(value));
         valueSpan.getElement().getThemeList().add("badge contrast");
+        valueSpan.getElement().getStyle().set("font-weight", "bold");
 
         Label statLabel = new Label(name);
-        statLabel.setWidth("25em");
 
-        row.add(new Label(name), valueSpan);
+        row.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
+        row.setWidth("10em");
+
+        row.add(statLabel, valueSpan);
         return row;
     }
 
