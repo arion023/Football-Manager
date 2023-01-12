@@ -4,12 +4,16 @@ import com.example.model.MarketOffer;
 import com.example.model.entities.Player;
 import com.example.model.User;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -28,6 +32,7 @@ import javax.annotation.security.PermitAll;
 @PageTitle("Market")
 @PermitAll
 public class MarketView extends HorizontalLayout {
+    private static final int NOTIFICATION_TIME = 1500;
     private final transient User user;
     private final Grid<MarketOffer> offersGrid = new Grid<>(MarketOffer.class);
     private final FormLayout sellForm = new FormLayout();
@@ -37,6 +42,8 @@ public class MarketView extends HorizontalLayout {
     private VerticalLayout operationSpace;
     private final VerticalLayout buttonSpace = new VerticalLayout();
     private final VerticalLayout sideBar = new VerticalLayout();
+    private StatisticsDialog playerStatisticsDialog = new StatisticsDialog();
+    private GridContextMenu<MarketOffer> offerContexMenu;
     private HorizontalLayout operationBar;
     private Button operationButton;
     private Tabs operationTabs;
@@ -118,14 +125,44 @@ public class MarketView extends HorizontalLayout {
         this.offersGrid.addColumn(MarketOffer::getName).setHeader("Name");
         this.offersGrid.addColumn(MarketOffer::getSurname).setHeader("Surname");
         this.offersGrid.addColumn(MarketOffer::getNationality).setHeader("Nationality");
-        this.offersGrid.addColumn(MarketOffer::getSellerId).setHeader("Seller");
+        this.offersGrid.addColumn(MarketOffer::getClubName).setHeader("Seller");
+        this.offersGrid.addColumn(MarketOffer::createLogoRenderer);
         this.offersGrid.addColumn(MarketOffer::getPosition).setHeader("Position");
         this.offersGrid.addColumn(MarketOffer::getOverall).setHeader("Overall");
         this.offersGrid.addColumn(MarketOffer::getPrice).setHeader("Price");
 
         this.offersGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
+        this.configOfferContextMenu();
+
+
         this.offersGrid.setItems(this.user.getOffers());
+
+    }
+
+    private void configOfferContextMenu() {
+        offerContexMenu = this.offersGrid.addContextMenu();
+        offerContexMenu.setOpenOnClick(true);
+
+        offerContexMenu.addItem("Statistics", event -> this.showStatistics());
+
+    }
+
+    private void showStatistics() {
+        SingleSelect<Grid<MarketOffer>, MarketOffer> playerSelect = this.offersGrid.asSingleSelect();
+        if (!playerSelect.isEmpty())
+        {
+            playerStatisticsDialog.setPlayer(playerSelect.getValue().getPlayer());
+            playerStatisticsDialog.open();
+
+        } else
+        {
+            Notification selectError = Notification.show("Player not selected!");
+            selectError.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            selectError.setPosition(Notification.Position.TOP_CENTER);
+            selectError.setDuration(NOTIFICATION_TIME);
+        }
+
 
     }
 
@@ -172,7 +209,18 @@ public class MarketView extends HorizontalLayout {
         SingleSelect<Grid<MarketOffer>, MarketOffer> playerSelect = this.offersGrid.asSingleSelect();
         if (!playerSelect.isEmpty()) {
             user.buyPlayer(playerSelect.getValue());
+
+            Notification selectError = Notification.show("Successful!");
+            selectError.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            selectError.setPosition(Notification.Position.TOP_CENTER);
+            selectError.setDuration(NOTIFICATION_TIME);
+
             refreshData();
+        } else {
+            Notification selectError = Notification.show("Player not selected!");
+            selectError.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            selectError.setPosition(Notification.Position.TOP_CENTER);
+            selectError.setDuration(NOTIFICATION_TIME);
         }
     }
 
@@ -180,6 +228,9 @@ public class MarketView extends HorizontalLayout {
         this.offersGrid.setItems(this.user.getAllOffers());
         playerField.setItems(this.user.getAllPlayers());
         budgetValue.setText(String.valueOf(user.getBudget()));
+
+
+
     }
 
 
@@ -197,13 +248,24 @@ public class MarketView extends HorizontalLayout {
             user.sellPlayer(this.playerField.getValue(), price.getValue().intValue() );
             playerField.clear();
             price.clear();
+
+            Notification selectError = Notification.show("Successful!");
+            selectError.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            selectError.setPosition(Notification.Position.TOP_CENTER);
+            selectError.setDuration(NOTIFICATION_TIME);
+
             refreshData();
+        } else {
+            Notification inputError = Notification.show("Empty input fields!");
+            inputError.setPosition(Notification.Position.TOP_CENTER);
+            inputError.setDuration(NOTIFICATION_TIME);
+            inputError.addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 
 
     private void setBuying() {
-        operationButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        operationButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         operationButton.setText("Buy");
         operationSpace.add(offersGrid);
     }
