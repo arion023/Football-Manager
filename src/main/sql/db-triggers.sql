@@ -24,6 +24,13 @@ AS
 SELECT *
 FROM club WHERE club_id NOT IN (SELECT club_id FROM users);
 
+--MarketOffer.resultSetToType use this
+CREATE OR REPLACE VIEW offers_all_info
+AS
+SELECT user_id, offer_id, player_id, price, player.name as player_name, surname, BIRTH_DATE, PLAYER.COUNTRY_ID as player_country_id, club_id, CLUB.NAME as club_name, POSITION_ID, OVERALL, pace, SHOOTING, PASSING, DRIBBLING, DEFENCE, PHYSICAL
+FROM offer INNER JOIN player USING (player_id) INNER JOIN PLAYER_STATS USING (PLAYER_ID) INNER JOIN CLUB USING (CLUB_ID);
+
+
 
 --TODO make copy of players
 CREATE OR REPLACE TRIGGER generate_user
