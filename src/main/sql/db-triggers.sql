@@ -44,25 +44,25 @@ BEGIN
     SELECT count(player_id) INTO players_counter FROM player WHERE club_id = :new.club_id;
     IF players_counter < 11 THEN
 
-    FOR rand_player IN (SELECT * FROM default_players WHERE POSITION_ID = 1 ORDER BY DBMS_RANDOM.value FETCH NEXT 2 ROWS ONLY)
+    FOR rand_player IN (SELECT * FROM player WHERE POSITION_ID = 1 ORDER BY DBMS_RANDOM.value FETCH NEXT 2 ROWS ONLY)
     LOOP
         UPDATE player SET club_id = :new.club_id WHERE player_id = rand_player.PLAYER_ID;
     END LOOP;
 
     --DEFENCE
-    FOR rand_player IN (SELECT * FROM default_players WHERE POSITION_ID = 2 ORDER BY DBMS_RANDOM.value FETCH NEXT 5 ROWS ONLY)
+    FOR rand_player IN (SELECT * FROM player WHERE POSITION_ID = 2 ORDER BY DBMS_RANDOM.value FETCH NEXT 5 ROWS ONLY)
         LOOP
             UPDATE player SET club_id = :new.club_id WHERE player_id = rand_player.PLAYER_ID;
         END LOOP;
 
     --MIDFIELDERS
-    FOR rand_player IN (SELECT * FROM default_players WHERE POSITION_ID = 3 ORDER BY DBMS_RANDOM.value FETCH NEXT 5 ROWS ONLY)
+    FOR rand_player IN (SELECT * FROM player WHERE POSITION_ID = 3 ORDER BY DBMS_RANDOM.value FETCH NEXT 5 ROWS ONLY)
         LOOP
             UPDATE player SET club_id = :new.club_id WHERE player_id = rand_player.PLAYER_ID;
         END LOOP;
 
     --FORWARDS
-    FOR  rand_player IN (SELECT * FROM default_players WHERE POSITION_ID = 4 ORDER BY DBMS_RANDOM.value FETCH NEXT 3 ROWS ONLY)
+    FOR  rand_player IN (SELECT * FROM player WHERE POSITION_ID = 4 ORDER BY DBMS_RANDOM.value FETCH NEXT 3 ROWS ONLY)
         LOOP
             UPDATE player SET club_id = :new.club_id WHERE player_id = rand_player.PLAYER_ID;
         END LOOP;
@@ -70,7 +70,7 @@ BEGIN
     END IF;
 
     --OFFER
-    FOR rand_player IN (SELECT * FROM default_players ORDER BY DBMS_RANDOM.value FETCH NEXT 30 ROWS ONLY)
+    FOR rand_player IN (SELECT * FROM player ORDER BY DBMS_RANDOM.value FETCH NEXT 30 ROWS ONLY)
         LOOP
             INSERT INTO offer VALUES(DEFAULT, :new.USER_ID, rand_player.PLAYER_ID, (SELECT TRUNC ((DBMS_RANDOM.NORMAL * 10000) + 50000) to_int FROM DUAL));
         END LOOP;
