@@ -55,7 +55,7 @@ public class ClubView extends HorizontalLayout {
         VerticalLayout infoLayout = new VerticalLayout();
         infoLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         H1 header = new H1(user.getClub().getName());
-        Paragraph paragraph = new Paragraph("Budget: " + user.getClub().getBudget() + " PLN");
+        Paragraph paragraph = new Paragraph("Budget: " + user.getBudget() + " PLN");
         H2 lastMatches = new H2("Last Matches");
         infoLayout.add(nextMatch(), header, paragraph, lastMatches, previousMatches());
         return infoLayout;
