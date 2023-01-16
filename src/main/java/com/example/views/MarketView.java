@@ -246,11 +246,9 @@ public class MarketView extends HorizontalLayout {
         operationButton.addClickListener(buttonClickEvent -> this.sellOperation());
         operationButton.setText("Sell");
         operationSpace.add(sellContent);
-        //operationContent.setFlexGrow(2, sellingForm);
     }
 
     private void sellOperation() {
-        //setOperation(this.sellTab);
         if (!(playerField.isEmpty() || price.isEmpty())) {
             user.sellPlayer(this.playerField.getValue(), price.getValue().intValue() );
             playerField.clear();

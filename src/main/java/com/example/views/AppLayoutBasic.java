@@ -123,7 +123,6 @@ public class AppLayoutBasic extends AppLayout {
     }
 
     private void addNewUser(String mail, String nickname, String clubName) {
-        //TODO
         user.addNewUserToDB(mail, nickname, clubName);
         user.setUserBasicAndClubFromDB(this.user, mail);
         fulfillUserDataFromDB();
@@ -145,11 +144,7 @@ public class AppLayoutBasic extends AppLayout {
     }
 
     private void fulfillUserDataFromDB() {
-        //TODO move here setting club
         user.setUserOffersFromDB();
-        //user.setStadium()
-        //user.setPlayers()
-        //user.setPosition()
-        user.setSubstitutes(new ArrayList<>(dbController.getAllPlayersFromClubWithStats(user.getClubId()))); //347 - Lech Poznań
+        user.setSubstitutes(new ArrayList<>(dbController.getAllPlayersFromClubWithStats(user.getClubId())));
     }
 }

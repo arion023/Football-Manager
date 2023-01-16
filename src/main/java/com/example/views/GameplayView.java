@@ -244,7 +244,7 @@ public class GameplayView extends VerticalLayout {
         Grid<Player> awayTeamGrid = createPlayersGrid();
 
         players = homeTeamGrid.setItems(user.getFirstSquad());
-        awayTeamGrid.setItems(dbController.getAllPlayersFromClubWithStats(user.getNextOpponentClubId()).subList(0, 11));//TODO wybrać dobre pozycje
+        awayTeamGrid.setItems(dbController.getAllPlayersFromClubWithStats(user.getNextOpponentClubId()).subList(0, 11));
 
         homeTeamGrid.setMaxWidth(500, Unit.PIXELS);
         awayTeamGrid.setMaxWidth(500, Unit.PIXELS);

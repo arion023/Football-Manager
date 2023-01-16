@@ -94,7 +94,6 @@ public class User {
     }
 
     public boolean setUserBasicAndClubFromDB(User usr, String mail) {
-        //TODO MOVE ADDING CLUB TO OTHER FUN
         String query = "SELECT * FROM " + DatabaseConfig.USERS_TABLE_NAME + " INNER JOIN " + DatabaseConfig.CLUBS_TABLE_NAME + " USING (club_id) WHERE mail = ?";
         try (Connection connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
              PreparedStatement pstatement = connection.prepareStatement(query)
@@ -167,7 +166,6 @@ public class User {
     }
 
     public void sellPlayer(Player player, int price) {
-        //TODO UPDATE DATABASE
         this.addOffer(new MarketOffer(player, price));
 
     }

@@ -134,7 +134,7 @@ public class ClubView extends HorizontalLayout {
         return grid;
     }
 
-    private Grid<Match> previousMatches() { //TODO
+    private Grid<Match> previousMatches() {
         Grid<Match> grid = new Grid<>(Match.class, false);
         grid.addColumn(Match::getMatchweek)
                 .setHeader("Matchweek")
