@@ -78,6 +78,39 @@ BEGIN
 END;
 /
 
+CREATE OR REPLACE TRIGGER player_history_update
+    AFTER UPDATE ON player
+    FOR EACH ROW
+    WHEN (old.CLUB_ID != new.CLUB_ID)
+DECLARE
+    curr_date DATE;
+BEGIN
+
+    SELECT TO_DATE(SYSDATE, 'yyyy-mm-dd') INTO curr_date FROM dual;
+
+    UPDATE player_history SET end_date = curr_date WHERE PLAYER_ID = :old.PLAYER_ID AND CLUB_ID = :old.CLUB_ID;
+
+    INSERT INTO player_history VALUES (DEFAULT, :new.PLAYER_ID, :new.CLUB_ID, curr_date, NULL);
+
+    DBMS_OUTPUT.PUT_LINE('Change recorded!');
+END;
+/
+
+CREATE OR REPLACE TRIGGER player_history_insert
+    AFTER INSERT ON player
+    FOR EACH ROW
+DECLARE
+    curr_date DATE;
+BEGIN
+
+    SELECT TO_DATE(SYSDATE, 'yyyy-mm-dd') INTO curr_date FROM dual;
+
+    INSERT INTO player_history VALUES (DEFAULT, :new.PLAYER_ID, :new.CLUB_ID, curr_date, NULL);
+
+    DBMS_OUTPUT.PUT_LINE('Change recorded!');
+END;
+/
+
 
 DROP TRIGGER generate_user;
 
@@ -88,7 +121,12 @@ DELETE FROM club WHERE club_id = 4000;
 DELETE FROM users WHERE user_id = 100;
 
 INSERT INTO users VALUES (100, 'mail@gmail.com', 'essa', 1000000, 4000, NULL);
---
+
+
+
+-- TESTING
+
+
 --SELECT * FROM player WHERE CLUB_ID = 4000;
 --SELECT * FROM offer WHERE user_id = 100;
 --
