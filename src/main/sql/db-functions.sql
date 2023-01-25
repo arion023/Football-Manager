@@ -59,6 +59,21 @@ BEGIN
 END;
 /
 
+create or replace PROCEDURE add_offers_to_user(
+u_id IN NUMBER
+) IS
+BEGIN
+
+    --OFFER
+    FOR rand_player IN (SELECT * FROM player ORDER BY DBMS_RANDOM.value FETCH NEXT 30 ROWS ONLY)
+            LOOP
+    INSERT INTO offer VALUES(DEFAULT, u_id, rand_player.PLAYER_ID, (SELECT TRUNC ((DBMS_RANDOM.NORMAL * 10000) + 50000) to_int FROM DUAL));
+    END LOOP;
+
+END;
+/
+
+
 
 select unique get_points(340)
 from dual;
