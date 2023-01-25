@@ -68,3 +68,18 @@ from dual;
 
 select unique get_conceded_goals(340)
 from dual;
+
+
+create or replace PROCEDURE update_club_countries
+AS
+league_country CHAR(2);
+BEGIN
+FOR club_rec IN (SELECT club_id, league_id FROM CLUB WHERE country_id is Null)
+    LOOP
+        EXIT WHEN club_rec.league_id is null;
+SELECT lg.country_id INTO league_country FROM
+    CLUB c join LEAGUE lg on c.league_id = lg.league_id where c.club_id = club_rec.club_id;
+UPDATE CLUB SET country_id = league_country WHERE club_id = club_rec.club_id;
+END LOOP;
+END;
+/
