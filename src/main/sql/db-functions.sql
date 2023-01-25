@@ -59,10 +59,13 @@ BEGIN
 END;
 /
 
-create or replace PROCEDURE add_offers_to_user(
+
+create or replace PROCEDURE reset_user_offers(
 u_id IN NUMBER
 ) IS
 BEGIN
+
+    delete offer where USER_ID = u_id;
 
     --OFFER
     FOR rand_player IN (SELECT * FROM player ORDER BY DBMS_RANDOM.value FETCH NEXT 30 ROWS ONLY)
