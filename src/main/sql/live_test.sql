@@ -19,27 +19,27 @@ INSERT INTO player VALUES ( 1001, 'Witan', 'Sulaeman', '2001-10-08', 11, 3, 'ID'
 SELECT * FROM player_history;
 
 
--- PROCEDURE
+-- PROCEDURE RESET_USER_OFFERS
 
-alter trigger GENERATE_USER disable;
+alter trigger GENERATE_USER enable;
 
 delete club where CLUB_ID = 1013;
-delete users where NICKNAME = 'addofferstest';
+delete users where NICKNAME = 'resetOffers';
 
 INSERT INTO club VALUES (1013, 'test113', 'PL', 106, NULL);
-INSERT INTO USERS VALUES ( default, 'addoffers@', 'addofferstest', 1000000, 1013, NULL );
+INSERT INTO USERS VALUES ( default, 'addoffers@', 'resetOffers', 1000000, 1013, NULL );
 
-SELECT user_id from users where NICKNAME = 'addofferstest';
-select * from OFFER where USER_ID = 9; --wstawic user id z zapytania powyzej
+SELECT user_id from users where NICKNAME = 'resetOffers';
+select * from OFFER where USER_ID = 11; --wstawic user id z zapytania powyzej
 
 declare
     u_id NUMBER;
 begin
-    SELECT user_id into u_id from users where NICKNAME = 'addofferstest';
-    ADD_OFFERS_TO_USER(u_id);
+    SELECT user_id into u_id from users where NICKNAME = 'resetOffers';
+    RESET_USER_OFFERS(u_id);
 end;
 
-select * from OFFER where USER_ID = 9; --wstawic user id z zapytania powyzej
+select * from OFFER where USER_ID = 11; --wstawic user id z zapytania powyzej
 
 
 
