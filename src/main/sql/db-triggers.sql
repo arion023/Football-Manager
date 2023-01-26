@@ -32,7 +32,6 @@ FROM offer INNER JOIN player USING (player_id) INNER JOIN PLAYER_STATS USING (PL
 
 
 
---TODO make copy of players
 CREATE OR REPLACE TRIGGER generate_user
 AFTER INSERT ON users
 FOR EACH ROW

@@ -8,33 +8,9 @@
 -- PLAYER_STATS
 -- PLAYER
 
-/* NOT LOADED - DYNAMIC */
--- PLAYER_CLUB_HISTORY (not yet) join
--- COACH_CLUB_HISTORY (not yet) join
--- TROPHY       (not yet)//dynamic
--- REFEREE      delete?
--- MATCH        (not yet)//dynamic
--- EVENTS (EVENTS)         (not yet)//dynamic
--- TYPE_EVENTS              (not yet)
-
-
-
 /* DATES IN THIS FORMAT */
 
 ALTER SESSION SET nls_date_format='yyyy-mm-dd';
-
-/* USERS */
---TODO DELETE THIS
-INSERT INTO users VALUES(0, 'root@gmail.com', 'root', 50000, 4248, 0);
-INSERT INTO users VALUES (1, 'masikow200@gmail.com', 'martinez', 1000000, 4248, 0);
-INSERT INTO users VALUES (2, 'xarigamesx@gmail.com', 'arigames', 200, 4248, 0);
-INSERT INTO club VALUES (4248, 'Legia Warszawa', 'PL', 106, NULL);
-INSERT INTO offer VALUES (DEFAULT, 1, 158614, 1000);
-INSERT INTO offer VALUES (DEFAULT, 1, 323510, 1000);
-INSERT INTO offer VALUES (DEFAULT, 1, 207212, 1000);
-INSERT INTO offer VALUES (DEFAULT, 1, 261674, 1000);
-
-
 commit;
 
 /*  COUNTRY */
@@ -2106,16 +2082,4 @@ INSERT INTO player_stats VALUES (153623, 59, 38, 42, 67, 40, 87, 84 );
 INSERT INTO player VALUES ( 153623, 'Jordan Alan', 'Courtney-Perkins', '2002-11-06', 3496, 2, 'CZ' );
 INSERT INTO player_stats VALUES (199185, 71, 62, 72, 57, 70, 84, 83 );
 INSERT INTO player VALUES ( 199185, 'Witan', 'Sulaeman', '2001-10-08', 343, 3, 'ID' );
-
--- NULL CLUBS
-INSERT INTO player_stats VALUES ( 1000, 71, 62, 72, 57, 70, 84, 83 );
-INSERT INTO player VALUES ( 1000, 'Witan', 'Sulaeman', '2001-10-08', 343, 3, 'ID' );
-INSERT INTO player_stats VALUES ( 1000, 71, 62, 72, 57, 70, 84, 83 );
-INSERT INTO player VALUES ( 1000, 'Witan', 'Sulaeman', '2001-10-08', 343, 3, 'ID' );
-INSERT INTO player_stats VALUES ( 1000, 71, 62, 72, 57, 70, 84, 83 );
-INSERT INTO player VALUES ( 1000, 'Witan', 'Sulaeman', '2001-10-08', 343, 3, 'ID' );
-INSERT INTO player_stats VALUES ( 1000, 71, 62, 72, 57, 70, 84, 83 );
-INSERT INTO player VALUES ( 1000, 'Witan', 'Sulaeman', '2001-10-08', 343, 3, 'ID' );
-
-
 commit;
