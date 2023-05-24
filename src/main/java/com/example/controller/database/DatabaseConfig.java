@@ -8,9 +8,9 @@ public class DatabaseConfig {
         throw new IllegalStateException("Utility class");
     }
 
-    public static final String URL = "jdbc:oracle:thin:@//ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";
-    public static final String USER = "z07";
-    public static final String PASSWORD = "kiycvj";
+    public static final String URL = "jdbc:oracle:thin:@localhost:1521:XE";
+    public static final String USER = "system";
+    public static final String PASSWORD = "toor";
 
     public static final String SELECT = "SELECT";
     public static final String FROM = "FROM";
