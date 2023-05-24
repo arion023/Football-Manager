@@ -1,40 +1,34 @@
-# PAP22Z-Z07
+# Football Manager
 
-## Zespół 07
+## Osoby tworzące projekt
 
 - Marcin Kowalczyk
 - Stanisław Sikorski
 - Daniel Tomala
 
 ## Opis Projektu
-Tematem projektu będzie stworzenie aplikacji/gry w stylu "Football Managera".
+Projekt "Football Managera" powstał w calu zaliczenia przedmiotu Programowanie Aplikacyjne.
 
-### Funkcjonalności podstawowe
-- Tworzenie klubu
-- Kupno zawodników
-- Sprzedaż zawodników
-- Rozgrywanie meczów
-- Podgląd statystyk zawodników
+Środowisko: IntelliJ
 
-### Funkcjonalności dodatkowe
-- Dynamicznie zmieniające się okoliczności (np. zmienne warunki atmosferyczne, kontuzje zawodników)
-- Dodatkowe ligi
-- Rozgrywki międzynarodowe
+## Konfiguracja
+Trzeba zdefiniować własną bazę danych Oracle oraz wykonać w niej skrypty znajdujące się w folderze `sql` i zdefiniować nowe wartości połączenia z baza danych w pliku databaseConfig.java.
 
-### Iteracje
-##### Etap 2 (Prototyp):
-- Stworzenie modelu danych
-- Podstawowy interfejs graficzny
-- Połączenie z bazą danych
-- Wstępna komunikacja pomiędzy warstwami architektury 
-##### Etap 3 (Działająca aplikacja):
-- Serwer z metodami REST
-- Dopracowany interfejs graficzny
-- Zaimplementowanie wszystkich funkcjonalności podstawowych
-- Dokumentacja
-##### Etap 4 (Poprawki):
-- Uwzględnienie uwag prowadzącego
-- Ewentualne dodanie funkcjonalności dodatkowych 
 
-### Technologie
-- Spring Boot, Vaadin, JDBC
+## Finalny wygląd projektu
+
+### Widok powitalny
+![welcome_screen](img/welcome_screen.png)
+
+### Klub
+![welcome_screen](img/club_screen.png)
+
+### Gameplay
+![welcome_screen](img/gameplay_screen.png)
+
+### Zawodnicy
+![welcome_screen](img/squad_screen.png)
+
+### Market
+![welcome_screen](img/market_screen.png)
+
