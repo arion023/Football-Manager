@@ -23,7 +23,7 @@ INSERT INTO club VALUES (2222, 'test club 2', Null, 106, Null);
 
 -- Creating a player assigned to the first club
 INSERT INTO player_stats VALUES (1111111, 57, 53, 39, 70, 36, 91, 57 );
-INSERT INTO player VALUES ( 1111111, 'Test', 'Player', '2000-01-01', 1111, 2, 'PL' );
+INSERT INTO player VALUES ( 1111111, 'Test', 'Player', NULL, 1111, 2, 'PL' );
 
 /*============================================================================/
 /                      PLAYER_HISTORY_UPDATE TRIGGER                          /
@@ -65,7 +65,9 @@ select * from club where country_id is null;
 -- As we can see club 1 and 2 don't have countries assigned
 
 -- country_id will be updated according to league_id (league of ID 106 is polish)
-exec update_club_countries;
+begin
+update_club_countries();
+end;
 select * from club where club_id = 1111 or club_id = 2222;
 
 
